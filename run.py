@@ -15,6 +15,7 @@ class gameBoard:
         self.visited.append((middle, middle))
 
     def print(self):
+        print("\n")
         for row in self.board:
             print(" ".join(row))
     
@@ -29,6 +30,20 @@ class gameBoard:
     def add_to_visited(self,x, y):
         self.visited.append((x, y)) 
         self.board[x][y] = get_emojis(":radio_button:")[0]
+
+    def parse_move(self, move):
+        if move == "help":
+            print("\nValid moves:\n"
+            "inventory - prints your current inventory\n"
+            "status - prints your current status\n"
+            "map - prints the map\n"
+            "N - moves North\n"
+            "E - moves East\n"
+            "S - moves South\n"
+            "W - moves West\n"
+            )
+        elif move == "map":
+            self.print()
 
 class Player:
 
@@ -50,10 +65,10 @@ class Player:
         self.alive = False
     
     def print_status(self):
-        print(f"You have {self.health} health. Your score is {self.score}.")
+        print(f"\nYou have {self.health} health. Your score is {self.score}.\n")
     
     def get_move(self):
-        print("Enter 'help' for instructions.")
+        print("Enter 'help' for instructions.\n")
         move = input("Enter a move: ")
         return move
 
@@ -77,9 +92,12 @@ def main():
     player = Player(30, 0, [])
     board.introduce(player)
     while player.alive:
-        board.print()
         player.print_status()
         move = player.get_move()
+        board.parse_move(move)
+        while move == "help":
+            board.parse_move(move)
+            move = player.get_move()
         if move == "break":
             break
 main()
