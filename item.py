@@ -1,4 +1,4 @@
-import effect
+from effect import Effect
 
 class Item:
 
@@ -13,5 +13,5 @@ class HealthItem(Item):
         self.health_effect = health_effect
 
     def use(self, target):
-        effect = Effect(f"you used {self.name}", health_effect)
+        effect = Effect(f"you used {self.name}", self.health_effect)
         target.affect_health(effect)

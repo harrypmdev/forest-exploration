@@ -6,6 +6,7 @@ class GameBoard:
     def __init__(self, size):
         tree, player = utility.get_emojis(":evergreen_tree:", ":diamond_with_a_dot:")
         self.size = size
+        self.entities = []
         self.board = [[tree for x in range(size)] for y in range(size)]
         self.visited = []
         middle = (math.floor(size/2))
@@ -32,21 +33,7 @@ class GameBoard:
         self.board[x][y] = utility.get_emojis(":radio_button:")[0]
 
     def parse_move(self, move, player):
-        if move == "help":
-            print("\nValid moves:\n"
-            "inventory - prints your current inventory\n"
-            "status - prints your current status\n"
-            "map - prints the map\n"
-            "N - moves North\n"
-            "E - moves East\n"
-            "S - moves South\n"
-            "W - moves West\n"
-            )
-        elif move == "map":
+        if move == "map":
             self.print()
-        elif move == "status":
-            player.print_status()
-        elif move == "inventory":
-            player.print_inventory()
-        elif move == "break":
-            exit()
+        else:
+            return False
