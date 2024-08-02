@@ -2,6 +2,7 @@ import math
 import os
 from game_board import GameBoard
 from player import Player
+from enemy import Enemy
 from effect import Effect
 from item import *
 from utility import *
@@ -55,11 +56,16 @@ def get_move():
 
 def main():
     board = GameBoard(5)
-    player = Player(30, 0, [], board)
-    potion = HealthItem("potion", "A potion that deals 10 damage.", -10)
+    player = Player(30, board, 0, [])
+    potion = HealthItem("health potion", "A potion that heals 10 health.", 10)
     player.inventory.append(potion)
     board.introduce(player)
     player.print_status()
+    ogre = Enemy(20, "ogre", board, 5, 0.7, "was clubbed")
+    ogre.print_status()
+    ogre.attack(player)
+    ogre.attack(player)
+    ogre.attack(player)
     while player.alive:
         move = get_move()
         parse_move(move, board, player)

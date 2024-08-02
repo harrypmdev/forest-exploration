@@ -5,7 +5,7 @@ class Player(Entity):
     A class to represent the player.
     """
 
-    def __init__(self, health, score, inventory, board):
+    def __init__(self, health, board, score, inventory, ):
         super().__init__(health, "player", board)
         self.score = score
         self.inventory = inventory
