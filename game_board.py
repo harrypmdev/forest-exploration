@@ -1,10 +1,10 @@
-import utility
 import math
+from utility import *
 
 class GameBoard:
 
     def __init__(self, size):
-        tree, player = utility.get_emojis(":evergreen_tree:", ":diamond_with_a_dot:")
+        tree, player = get_emojis(":evergreen_tree:", ":diamond_with_a_dot:")
         self.size = size
         self.entities = []
         self.board = [[tree for x in range(size)] for y in range(size)]
@@ -30,7 +30,7 @@ class GameBoard:
 
     def add_to_visited(self,x, y):
         self.visited.append((x, y)) 
-        self.board[x][y] = utility.get_emojis(":radio_button:")[0]
+        self.board[x][y] = get_emojis(":radio_button:")[0]
 
     def parse_move(self, move, player):
         if move == "map":

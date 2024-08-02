@@ -1,10 +1,10 @@
 import math
 import os
-import game_board
-import player as play
-import utility
-import item
-import effect
+from game_board import GameBoard
+from player import Player
+from effect import Effect
+from item import *
+from utility import *
 
 def parse_move(move, board, player):
     board_moves = ("N", "E," "S", "S", "map")
@@ -48,15 +48,20 @@ def parse_use_move(move, board, player):
     else:
         return false
 
+def get_move():
+    print("Enter 'help' for instructions.")
+    move = input("Enter a move: ")
+    return move
+
 def main():
-    board = game_board.GameBoard(5)
-    player = play.Player(30, 0, [], board)
-    potion = item.HealthItem("potion", "A potion that deals 10 damage.", -10)
+    board = GameBoard(5)
+    player = Player(30, 0, [], board)
+    potion = HealthItem("potion", "A potion that deals 10 damage.", -10)
     player.inventory.append(potion)
     board.introduce(player)
     player.print_status()
     while player.alive:
-        move = player.get_move()
+        move = get_move()
         parse_move(move, board, player)
 
 main()
