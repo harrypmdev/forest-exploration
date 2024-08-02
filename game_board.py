@@ -1,7 +1,7 @@
 import utility
 import math
 
-class gameBoard:
+class GameBoard:
 
     def __init__(self, size):
         tree, player = utility.get_emojis(":evergreen_tree:", ":diamond_with_a_dot:")
