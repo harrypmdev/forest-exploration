@@ -24,10 +24,13 @@ def parse_move(move, board, player):
         "S - moves South\n"
         "W - moves West\n"
         )
+        return True
     elif move in ("status", "health", "points", "score"):
         player.print_status()
+        return True
     elif move == "inventory":
         player.print_inventory()
+        return True
     elif move == "break":
         exit()
     elif "use" in move:
@@ -35,7 +38,9 @@ def parse_move(move, board, player):
     elif "describe" in move:
         return parse_describe_move(move, player)
     elif move in board_moves:
-        board.parse_move(move, player)
+        return board.parse_move(move, player)
+    else:
+        return False
 
 def parse_use_move(move, board, player):
     parts = move.split()
