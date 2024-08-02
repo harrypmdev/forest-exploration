@@ -1,4 +1,8 @@
+
 class Player:
+    """
+    A class to represent the player.
+    """
 
     def __init__(self, health, score, inventory):
         self.health = health
@@ -10,6 +14,10 @@ class Player:
         self.health = max(0, self.health + effect.value)
         if self.health == 0:
             self.die(effect)
+        elif effect.value >= 0:
+            print(f"{effect.name.capitalize()} and restored {effect.value} health.")
+        else:
+            print(f"{effect.name.capitalize()} and received {abs(effect.value)} damage.")
     
     def die(self, effect):
         print('═' * 80)
