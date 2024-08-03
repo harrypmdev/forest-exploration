@@ -12,6 +12,7 @@ class Entity:
             #board.add_to_current_area_entities(self)
 
     def affect_health(self, effect, output_message = True):
+        sickness_changed = ""
         if not self.alive:
             print(f"\nThe {self.name} is dead, so nothing happens.\n")
             return
@@ -19,11 +20,14 @@ class Entity:
         if self.health == 0:
             self.die(effect)
             return
+        elif self.health > 2:
+            self.sick = False
+            sickness_changed = " Its sickness was cured."
         if not output_message:
             return
         target_text = "on yourself" if self.name == "player" else f"on {self.name}"
         effect_text = f"restoring {effect.value} health" if effect.value >= 0 else f"dealing {effect.value} damage"
-        print(f"\n{effect.name.capitalize()} {target_text} {effect_text}!\n")
+        print(f"\n{effect.name.capitalize()} {target_text} {effect_text}!{sickness_changed}\n")
     
     def die(self, effect):
         print(f'\nThe {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')

@@ -18,8 +18,10 @@ def main():
     player = Player(30, board, 0, [])
     potion = HealthItem("health potion", "A potion that heals 10 health.", 10)
     throwing_star = HealthItem("throwing star", "A weapon that deals 5 damage.", -5)
+    bomb = HealthItem("bomb", "An explosive weapon that causes 15 damage.", -15)
     player.inventory.append(potion)
     player.inventory.append(throwing_star)
+    player.inventory.append(bomb)
     board.introduce(player)
     player.print_status()
     while player.alive:
@@ -28,7 +30,7 @@ def main():
             parse_move(move.lower(), board, player)
         except GameError as e:
             print(str(e))
-        #except Exception:
-            #print("\nNot a valid move! Try again.\n")
+        except Exception:
+            print("\nNot a valid move! Try again.\n")
 
 main()

@@ -27,7 +27,7 @@ class Area:
                 if entity.name in entity_names:
                     entity_names.remove(entity.name)
             if len(entity_names) > 0:
-                entity_health = random.randrange(1, 12)
+                entity_health = random.randrange(1, 10)
                 animal = Entity(entity_health, random.choice(entity_names), self.board, entity_health <= 2)
                 self.entities.append(animal)
                 self.generate_benign_entities(chance*0.7)
