@@ -29,7 +29,7 @@ def main():
             parse_move(move, board, player)
         except GameError as e:
             print(str(e))
-        except Exception:
-            print("\nNot a valid move! Try again.\n")
+        #except Exception:
+            #print("\nNot a valid move! Try again.\n")
 
 main()

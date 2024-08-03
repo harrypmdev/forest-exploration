@@ -12,7 +12,7 @@ def get_emojis(*args):
     return emoji_list
 
 def parse_move(move, board, player):
-    board_moves = ("N", "E," "S", "S", "map")
+    board_moves = ("N", "E", "S", "W", "map")
     if move == "help":
         print("\nValid moves:\n"
         "inventory - prints your current inventory\n"
@@ -45,7 +45,7 @@ def parse_move(move, board, player):
 def parse_status_move(move, board, player):
     if " of " in move:
         entity_name = move.split(" of ",1)[1]
-        for entity in board.entities:
+        for entity in board.get_current_area_entities():
             if entity.name == entity_name:
                 entity.print_status()
                 return False
@@ -65,7 +65,7 @@ def parse_use_move(move, board, player):
     target = player
     if item_name != parts[1] and " on " in parts[1][len(item_name):]:
         enemy_name = parts[1].split(" on ",1)[1]
-        for entity in board.entities:
+        for entity in board.get_current_area_entities():
             if entity.name == enemy_name:
                 target = entity
         if target == player:

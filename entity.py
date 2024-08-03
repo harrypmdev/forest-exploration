@@ -7,7 +7,7 @@ class Entity:
         self.name = name
         self.health = health
         self.alive = True
-        board.entities.append(self)
+        board.add_to_current_area_entities(self)
 
     def affect_health(self, effect, output_message = True):
         if not self.alive:
