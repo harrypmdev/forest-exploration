@@ -12,7 +12,7 @@ def get_emojis(*args):
     return emoji_list
 
 def parse_move(move, board, player):
-    board_moves = ("N", "E", "S", "W", "map", "look")
+    board_moves = ("n", "e", "s", "w", "map", "look")
     if move == "help":
         print("\nValid moves:\n"
         "inventory - prints your current inventory\n"

@@ -10,7 +10,7 @@ class GameBoard:
         self.board = [[tree for x in range(size)] for y in range(size)]
         self.visited = []
         middle = (math.floor(size/2))
-        self.current_location = Area(middle, middle)
+        self.current_location = Area(middle, middle, self)
         self.board[middle][middle] = player
 
     def print(self):
@@ -41,7 +41,7 @@ class GameBoard:
     def parse_move(self, move, player):
         if move == "map":
             self.print()
-        elif move in ("N", "E", "S", "W"):
+        elif move in ("n", "e", "s", "w"):
             self.move(move)
         elif move == "look":
             self.look()
@@ -62,16 +62,16 @@ class GameBoard:
     def move(self, direction):
         new_x = self.current_location.x
         new_y = self.current_location.y
-        if direction == "N":
+        if direction == "n":
             new_y = self.current_location.y - 1
             travel_string = "\nYou travelled North.\n"
-        elif direction == "S":
+        elif direction == "s":
             new_y = self.current_location.y + 1
             travel_string = "\nYou travelled South.\n"
-        elif direction == "E":
+        elif direction == "e":
             new_x = self.current_location.x + 1
             travel_string = "\nYou travelled East.\n"
-        elif direction == "W":
+        elif direction == "w":
             new_x = self.current_location.x - 1
             travel_string = "\nYou travelled West.\n"
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
@@ -80,7 +80,7 @@ class GameBoard:
             if self.check_visited(new_y, new_x):
                 self.current_location = self.get_visited_area(new_y, new_x)
             else:
-                self.current_location = Area(new_y, new_x)
+                self.current_location = Area(new_y, new_x, self)
             self.board[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
         else:
             raise GameError("\nCannot move in this direction.\n")
@@ -88,12 +88,16 @@ class GameBoard:
     def look(self):
         print("\n" + self.current_location.description)
         if len(self.current_location.entities) == 0:
-            print("There is no living creature present except you.")
+            print("There is no living creatures present except you.")
         elif len(self.current_location.entities) == 1:
             print(f"There is {self.current_location.entities[0].indefinite_name()}.")
         else:
-            print("There are multiple living creatures present:\n")
+            print("There are multiple creatures present:")
             for entity in self.current_location.entities:
-                print(entity.indefinite_name())
+                if not entity.alive:
+                    print(f"A dead {entity.name}")
+                else:
+                    sick_string = " (it looks sick and weak)" if entity.sick == True else ""
+                    print(f"{entity.name.capitalize()}{sick_string}")
         print("")
         

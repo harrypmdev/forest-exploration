@@ -3,12 +3,13 @@ class Entity:
     A class for game entities, inherited by Player and Enemy.
     """
 
-    def __init__(self, health, name, board):
+    def __init__(self, health, name, board, sick = False):
         self.name = name
         self.health = health
         self.alive = True
-        if name != "player":
-            board.add_to_current_area_entities(self)
+        self.sick = sick
+        #if name != "player":
+            #board.add_to_current_area_entities(self)
 
     def affect_health(self, effect, output_message = True):
         if not self.alive:
@@ -29,10 +30,11 @@ class Entity:
         self.alive = False
     
     def print_status(self):
+        sick_status = " It looks sick and weak." if self.sick == True else ""
         if self.health == 0:
             print(f"\n{self.name.capitalize()} is dead.\n")
         else:
-            print(f"\n{self.name.capitalize()} has {self.health} health.\n")
+            print(f"\n{self.name.capitalize()} has {self.health} health.{sick_status}\n")
     
     def indefinite_name(self):
         vowels = ("a", "e", "i", "o", "u")

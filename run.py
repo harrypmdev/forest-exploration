@@ -22,11 +22,10 @@ def main():
     player.inventory.append(throwing_star)
     board.introduce(player)
     player.print_status()
-    rabbit = Entity(3, "rabbit", board)
     while player.alive:
         move = get_move()
         try:
-            parse_move(move, board, player)
+            parse_move(move.lower(), board, player)
         except GameError as e:
             print(str(e))
         #except Exception:
