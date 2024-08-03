@@ -7,11 +7,12 @@ class Entity:
         self.name = name
         self.health = health
         self.alive = True
-        board.add_to_current_area_entities(self)
+        if name != "player":
+            board.add_to_current_area_entities(self)
 
     def affect_health(self, effect, output_message = True):
         if not self.alive:
-            print(f"\n{self.name.capitalize()} is dead, so nothing happens.\n")
+            print(f"\nThe {self.name} is dead, so nothing happens.\n")
             return
         self.health = max(0, self.health + effect.value)
         if self.health == 0:
@@ -24,7 +25,7 @@ class Entity:
         print(f"\n{effect.name.capitalize()} {target_text} {effect_text}!\n")
     
     def die(self, effect):
-        print(f'\n{self.name.capitalize()} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
+        print(f'\nThe {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
         self.alive = False
     
     def print_status(self):
@@ -32,3 +33,11 @@ class Entity:
             print(f"\n{self.name.capitalize()} is dead.\n")
         else:
             print(f"\n{self.name.capitalize()} has {self.health} health.\n")
+    
+    def indefinite_name(self):
+        vowels = ("a", "e", "i", "o", "u")
+        dead_string = "" if self.alive else "dead "
+        if self.name[0] in vowels and self.alive:
+            return f"an {self.name}"
+        else:
+            return f"a {dead_string}{self.name}"

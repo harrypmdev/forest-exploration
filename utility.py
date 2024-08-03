@@ -12,7 +12,7 @@ def get_emojis(*args):
     return emoji_list
 
 def parse_move(move, board, player):
-    board_moves = ("N", "E", "S", "W", "map")
+    board_moves = ("N", "E", "S", "W", "map", "look")
     if move == "help":
         print("\nValid moves:\n"
         "inventory - prints your current inventory\n"
@@ -73,7 +73,7 @@ def parse_use_move(move, board, player):
     item_used = False
     for item in player.inventory:
         if item.name == item_name:
-            item.use(target)
+            item.use(player, target)
             item_used = True
     if not item_used:
         raise GameError(f"\nNo item in inventory called {parts[1]}.\n")

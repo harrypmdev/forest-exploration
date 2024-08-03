@@ -28,7 +28,8 @@ class GameBoard:
               "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══")
 
     def add_to_visited(self, location):
-        self.visited.append(location) 
+        if not self.check_visited(location.y, location.x):
+            self.visited.append(location) 
         self.board[location.y][location.x] = get_emojis(":radio_button:")[0]
     
     def add_to_current_area_entities(self, entity):
@@ -42,6 +43,8 @@ class GameBoard:
             self.print()
         elif move in ("N", "E", "S", "W"):
             self.move(move)
+        elif move == "look":
+            self.look()
         else:
             return False
     
@@ -61,22 +64,36 @@ class GameBoard:
         new_y = self.current_location.y
         if direction == "N":
             new_y = self.current_location.y - 1
+            travel_string = "\nYou travelled North.\n"
         elif direction == "S":
             new_y = self.current_location.y + 1
+            travel_string = "\nYou travelled South.\n"
         elif direction == "E":
             new_x = self.current_location.x + 1
+            travel_string = "\nYou travelled East.\n"
         elif direction == "W":
             new_x = self.current_location.x - 1
+            travel_string = "\nYou travelled West.\n"
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
-            if not self.check_visited(new_y, new_x):
-                self.add_to_visited(self.current_location)
-                self.current_location = Area(new_y, new_x)
+            print(travel_string)
+            self.add_to_visited(self.current_location)
+            if self.check_visited(new_y, new_x):
+                self.current_location = self.get_visited_area(new_y, new_x)
             else:
-                self.current_location =self.get_visited_area(new_y, new_x)
-                self.board[new_y][new_x] = get_emojis(":radio_button:")[0]
+                self.current_location = Area(new_y, new_x)
             self.board[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
-            for location in self.visited:
-                print(str(location.y), str(location.x))
         else:
             raise GameError("\nCannot move in this direction.\n")
+
+    def look(self):
+        print("\n" + self.current_location.description)
+        if len(self.current_location.entities) == 0:
+            print("There is no living creature present except you.")
+        elif len(self.current_location.entities) == 1:
+            print(f"There is {self.current_location.entities[0].indefinite_name()}.")
+        else:
+            print("There are multiple living creatures present:\n")
+            for entity in self.current_location.entities:
+                print(entity.indefinite_name())
+        print("")
         
