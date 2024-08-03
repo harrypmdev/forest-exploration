@@ -1,4 +1,6 @@
 import emoji
+from player import Player
+from game_error import GameError
 
 def get_emojis(*args):
     """
@@ -43,21 +45,29 @@ def parse_move(move, board, player):
         return False
 
 def parse_use_move(move, board, player):
-    parts = move.split()
-    if parts[0] != "use" or parts[1] not in (item.name for item in player.inventory):
+    parts = []
+    parts.append(move[:3])
+    parts.append(move[3:])
+    parts = [part.strip() for part in parts]
+    item_name = find_item_name(player, parts[1])
+    if parts[0] != "use" and not item_name:
         return False
-    if len(parts) == 2:
-        for item in player.inventory:
-            if item.name == parts[1]:
-                item.use(player)
-    elif len(parts) == 4:
-        if parts[2] != "on":
-            return False
+    target = player
+    if item_name != parts[1] and " on " in parts[1][len(item_name):]:
+        enemy_name = parts[1].split(" on ",1)[1]
         for entity in board.entities:
-            if parts[4] == entity.name:
-                player.inventory.index(parts[1].use(entity))
-    else:
-        return false
+            if entity.name == enemy_name:
+                target = entity
+        if target == player:
+            raise GameError(f"\nNo entity called {enemy_name} in the area.\n")
+    item_used = False
+    for item in player.inventory:
+        if item.name == item_name:
+            item.use(target)
+            item_used = True
+    if not item_used:
+        raise GameError(f"\nNo item in inventory called {parts[1]}.\n")
+    return False
 
 def parse_describe_move(move, player):
     parts = []
@@ -70,3 +80,11 @@ def parse_describe_move(move, player):
         if item.name == parts[1]:
             print("\n" + item.description + "\n")
             return True
+    
+def find_item_name(player: Player, item_name: str) -> str:
+    for inventory_item in player.inventory:
+        if inventory_item.name == item_name:
+            return item_name
+    if len(item_name) > 0:
+        return find_item_name(player, item_name[:-1])
+    return ""

@@ -4,6 +4,7 @@ from game_board import GameBoard
 from player import Player
 from enemy import Enemy
 from effect import Effect
+from game_error import GameError
 from item import *
 from utility import *
 
@@ -20,6 +21,11 @@ def main():
     player.print_status()
     while player.alive:
         move = get_move()
-        parse_move(move, board, player)
+        try:
+            parse_move(move, board, player)
+        except GameError as e:
+            print(str(e))
+        except Exception:
+            print("Not a valid move! Try again.")
 
 main()

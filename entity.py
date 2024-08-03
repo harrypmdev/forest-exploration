@@ -17,8 +17,8 @@ class Entity:
         if not output_message:
             return
         target_text = "on yourself" if self.name == "player" else f"on {self.name}"
-        effect_text = "restoring" if effect.value >= 0 else "dealing"
-        print(f"\n{effect.name.capitalize()} {target_text} {effect_text} {effect.value} health.\n")
+        effect_text = f"restoring {effect.value} health" if effect.value >= 0 else f"dealing {effect.value} damage"
+        print(f"\n{effect.name.capitalize()} {target_text} {effect_text}!\n")
     
     def die(self, effect):
         print(f'\n{self.name.capitalize()} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
