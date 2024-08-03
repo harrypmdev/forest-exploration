@@ -1,6 +1,6 @@
 class Entity:
     """
-    An abstract class to be inherited by Player, Enemy and any other entities.
+    A class for game entities, inherited by Player and Enemy.
     """
 
     def __init__(self, health, name, board):
@@ -10,6 +10,9 @@ class Entity:
         board.entities.append(self)
 
     def affect_health(self, effect, output_message = True):
+        if not self.alive:
+            print(f"\n{self.name.capitalize()} is dead, so nothing happens.\n")
+            return
         self.health = max(0, self.health + effect.value)
         if self.health == 0:
             self.die(effect)
@@ -25,4 +28,7 @@ class Entity:
         self.alive = False
     
     def print_status(self):
-        print(f"\n{self.name.capitalize()} has {self.health} health.\n")
+        if self.health == 0:
+            print(f"\n{self.name.capitalize()} is dead.\n")
+        else:
+            print(f"\n{self.name.capitalize()} has {self.health} health.\n")

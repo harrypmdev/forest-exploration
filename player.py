@@ -25,4 +25,5 @@ class Player(Entity):
             return
         print("\nYour inventory:")
         for item in self.inventory:
-            print(f"{item.name}\n")
+            print(f"{item.name}")
+        print("")

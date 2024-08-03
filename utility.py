@@ -27,12 +27,10 @@ def parse_move(move, board, player):
         "W - moves West\n"
         )
         return True
-    elif move in ("status", "health", "points", "score"):
-        player.print_status()
-        return True
+    elif "status" in move:
+        return parse_status_move(move, board, player)
     elif move == "inventory":
         player.print_inventory()
-        return True
     elif move == "break":
         exit()
     elif "use" in move:
@@ -42,6 +40,18 @@ def parse_move(move, board, player):
     elif move in board_moves:
         return board.parse_move(move, player)
     else:
+        raise Exception
+
+def parse_status_move(move, board, player):
+    if " of " in move:
+        entity_name = move.split(" of ",1)[1]
+        for entity in board.entities:
+            if entity.name == entity_name:
+                entity.print_status()
+                return False
+        raise GameError(f"\nNo entity called {entity_name} in area.\n")
+    else:
+        player.print_status()
         return False
 
 def parse_use_move(move, board, player):
