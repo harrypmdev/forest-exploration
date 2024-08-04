@@ -10,6 +10,7 @@ class Enemy(Entity):
         self.max_damage = max_damage
         self.accuracy = accuracy
         self.attack_name = attack_name
+        board.in_battle = True
     
     def attack(self, target):
         if random.random() > self.accuracy:

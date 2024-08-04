@@ -1,15 +1,20 @@
 import random
 from entity import Entity
+from enemy import Enemy
 
 class Area:
 
-    def __init__(self, y, x, board):
+    def __init__(self, y, x, board, hostiles = True):
         self.y = y
         self.x = x
         self.board = board
         self.description = self.generate_description()
         self.entities = []
-        self.generate_benign_entities(0.5)
+        animal_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "wild dog"]
+        enemy_names = ["ogre", "vampire bat", "giant scorpion", "slime", "dwarf wyvern", "goblin"]
+        self.generate_entities(0.25, animal_names, 1, 10, Entity)
+        if hostiles:
+            self.generate_entities(0.4, enemy_names, 4, 17, Enemy, )
     
     def generate_description(self):
         tree_adjectives = ("bushy", "tall", "short", "thin and white", 
@@ -20,14 +25,41 @@ class Area:
         ground_sentence = f"The ground is {random.choice(ground_adjectives)}."
         return tree_sentence + " " + ground_sentence
     
-    def generate_benign_entities(self, chance):
+    def generate_entities(self, chance, names, health_min, health_max, EntityType):
+        attack_names = {
+            "ogre": "you were clubbed", 
+            "vampire bat": "your blood was sucked", 
+            "giant scorpion": "you got stung", 
+            "slime": "you got slimed", 
+            "dwarf wyvern": "you got burnt to a crisp", 
+            "goblin": "you got clawed and scratched"}
+        local_names = names[:]
         if random.random() < chance:
-            entity_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "wild dog"]
             for entity in self.entities:
-                if entity.name in entity_names:
-                    entity_names.remove(entity.name)
-            if len(entity_names) > 0:
-                entity_health = random.randrange(1, 10)
-                animal = Entity(entity_health, random.choice(entity_names), self.board, entity_health <= 2)
-                self.entities.append(animal)
-                self.generate_benign_entities(chance*0.7)
+                if entity.name in local_names:
+                    local_names.remove(entity.name)
+            if len(local_names) > 0:
+                entity_health = random.randrange(health_min, health_max)
+                if EntityType == Enemy:
+                    max_damage = random.randrange(3, 8)
+                    accuracy = random.random() + 0.15
+                    name_choice = random.choice(local_names)
+                    attack_name = attack_names[name_choice]
+                    entity = EntityType(
+                        entity_health, 
+                        name_choice, 
+                        self.board, 
+                        max_damage,
+                        accuracy,
+                        attack_name
+                    )
+                else:
+                    entity = EntityType(
+                        entity_health, 
+                        random.choice(local_names), 
+                        self.board, 
+                        entity_health <= 2,
+                    )
+                self.entities.append(entity)
+                self.generate_entities(chance*0.4, local_names, health_min, health_max, EntityType)
+    

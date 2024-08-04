@@ -1,6 +1,7 @@
 import math
 from utility import *
 from area import Area
+from enemy import Enemy
 
 class GameBoard:
 
@@ -10,14 +11,15 @@ class GameBoard:
         self.board = [[tree for x in range(size)] for y in range(size)]
         self.visited = []
         middle = (math.floor(size/2))
-        self.current_location = Area(middle, middle, self)
+        self.current_location = Area(middle, middle, self, False)
         self.board[middle][middle] = player
+        self.in_battle = False
 
     def print(self):
         print("\n")
         for row in self.board:
             print(" ".join(row))
-        print("\n")
+        print("")
     
     def introduce(self, player):
         print("═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══\n"
@@ -60,20 +62,23 @@ class GameBoard:
                 return area
     
     def move(self, direction):
+        if self.in_battle:
+            print("\nCannot travel whilst in battle! Enter 'flee' to attempt to flee.\n")
+            return False
         new_x = self.current_location.x
         new_y = self.current_location.y
         if direction == "n":
             new_y = self.current_location.y - 1
-            travel_string = "\nYou travelled North.\n"
+            travel_string = "\nYou travelled North."
         elif direction == "s":
             new_y = self.current_location.y + 1
-            travel_string = "\nYou travelled South.\n"
+            travel_string = "\nYou travelled South."
         elif direction == "e":
             new_x = self.current_location.x + 1
-            travel_string = "\nYou travelled East.\n"
+            travel_string = "\nYou travelled East."
         elif direction == "w":
             new_x = self.current_location.x - 1
-            travel_string = "\nYou travelled West.\n"
+            travel_string = "\nYou travelled West."
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
             print(travel_string)
             self.add_to_visited(self.current_location)
@@ -82,13 +87,17 @@ class GameBoard:
             else:
                 self.current_location = Area(new_y, new_x, self)
             self.board[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
+            self.look()
+            if self.currently_in_battle():
+                print("A hostile creature is present! You are now in battle.\n")
         else:
             raise GameError("\nCannot move in this direction.\n")
 
-    def look(self):
-        print("\n" + self.current_location.description)
+    def look(self, line_break = True):
+        line_break = "\n" if line_break else ""
+        print(f"{line_break}{self.current_location.description}")
         if len(self.current_location.entities) == 0:
-            print("There is no living creatures present except you.")
+            print("There are no living creatures present except you.")
         elif len(self.current_location.entities) == 1:
             print(f"There is {self.current_location.entities[0].indefinite_name()}.")
         else:
@@ -100,4 +109,15 @@ class GameBoard:
                     sick_string = " (it looks sick and weak)" if entity.sick == True else ""
                     print(f"{entity.name.capitalize()}{sick_string}")
         print("")
+    
+    def end_turn(self, player):
+        self.in_battle = True if self.currently_in_battle() else False
+        for entity in self.current_location.entities:
+            if type(entity) == Enemy and entity.alive:
+                entity.attack(player)
         
+    def currently_in_battle(self):
+        for entity in self.current_location.entities:
+            if type(entity) == Enemy and entity.alive:
+                return True
+        return False

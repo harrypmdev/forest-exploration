@@ -16,8 +16,9 @@ class Player(Entity):
         print('═' * 80)
         self.alive = False
     
-    def print_status(self):
-        print(f"\nYou have {self.health} health. Your score is {self.score}.\n")
+    def print_status(self, line_break = True):
+        line_break = "\n" if line_break else ""
+        print(f"\nYou have {self.health} health. Your score is {self.score}.{line_break}")
     
     def print_inventory(self):
         if not self.inventory:

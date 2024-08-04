@@ -27,11 +27,13 @@ def main():
     player.inventory.append(gun)
     player.inventory.append(poison)
     board.introduce(player)
-    player.print_status()
+    player.print_status(False)
+    board.look(False)
     while player.alive:
         move = get_move()
         try:
-            parse_move(move.lower(), board, player)
+            if parse_move(move.lower(), board, player):
+                board.end_turn(player)
         except GameError as e:
             print(str(e))
         #except Exception:
