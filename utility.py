@@ -1,4 +1,7 @@
+import random
 import emoji
+from effect import Effect
+from entity import Entity
 from player import Player
 from game_error import GameError
 
@@ -33,6 +36,8 @@ def parse_move(move, board, player):
         player.print_inventory()
     elif move == "break":
         exit()
+    elif "punch" in move:
+        return parse_punch_move(move, board, player)
     elif "use" in move:
         return parse_use_move(move, board, player)
     elif "describe" in move:
@@ -41,6 +46,17 @@ def parse_move(move, board, player):
         return board.parse_move(move, player)
     else:
         raise Exception
+
+def parse_punch_move(move, board, player):
+    entity_name = move.split(" ",1)[1]
+    for entity in board.get_current_area_entities():
+        if entity.name == entity_name:
+            damage = -random.randrange(1, 3)
+            entity.affect_health(Effect("you punched it", damage), False)
+            if entity.alive:
+                print(f"\nYou punched {entity.name} dealing {str(abs(damage))} damage.\n")
+            return True
+        raise GameError(f"\nNo entity called {entity_name} in area.\n")  
 
 def parse_status_move(move, board, player):
     if " of " in move:
