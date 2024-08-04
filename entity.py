@@ -8,8 +8,6 @@ class Entity:
         self.health = health
         self.alive = True
         self.sick = sick
-        #if name != "player":
-            #board.add_to_current_area_entities(self)
 
     def affect_health(self, effect, output_message = True):
         sickness_changed = ""
