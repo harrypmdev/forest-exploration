@@ -13,11 +13,11 @@ class Enemy(Entity):
         board.in_battle = True
     
     def attack(self, target):
-        if random.random() > self.accuracy:
+        if random.random() < self.accuracy:
             damage = math.ceil(self.max_damage * (random.random() * self.accuracy))
             attack = Effect(f"{self.attack_name} by {self.name}", -damage)
             print(f"{self.name.capitalize()} attacked and it hit!")
-            print(f"{target.name.capitalize()} {attack.name} for {str(damage)} damage.")
+            print(f"{target.name.capitalize()} {attack.name} for {str(damage)} damage.\n")
             target.affect_health(attack, False)
         else:
-            print(f"{self.name.capitalize()} attacked and it missed!")
+            print(f"{self.name.capitalize()} attacked and it missed!\n")

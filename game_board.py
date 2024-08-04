@@ -1,4 +1,5 @@
 import math
+import random
 from utility import *
 from area import Area
 from enemy import Enemy
@@ -27,6 +28,7 @@ class GameBoard:
               f"Your game board has {self.size}x{self.size} dimensions.\n"
               f"Your player starts with {player.health} health.\n"
               "Enter N, E, S or W to travel North, East, South and West.\n"
+              "Enter 'tutorial' if it is your first time playing.\n"
               "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══")
 
     def add_to_visited(self, location):
@@ -42,11 +44,13 @@ class GameBoard:
 
     def parse_move(self, move, player):
         if move == "map":
-            self.print()
+            return self.print()
         elif move in ("n", "e", "s", "w"):
-            self.move(move)
+            return self.move(move)
         elif move == "look":
-            self.look()
+            return self.look()
+        elif move == "flee":
+            return self.flee()
         else:
             return False
     
@@ -61,8 +65,8 @@ class GameBoard:
             if area.y == y and area.x == x:
                 return area
     
-    def move(self, direction):
-        if self.in_battle:
+    def move(self, direction, flee = False):
+        if self.in_battle and not flee:
             print("\nCannot travel whilst in battle! Enter 'flee' to attempt to flee.\n")
             return False
         new_x = self.current_location.x
@@ -80,6 +84,7 @@ class GameBoard:
             new_x = self.current_location.x - 1
             travel_string = "\nYou travelled West."
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
+            print("Fled successfully!")
             print(travel_string)
             self.add_to_visited(self.current_location)
             if self.check_visited(new_y, new_x):
@@ -107,11 +112,12 @@ class GameBoard:
                     print(f"A dead {entity.name}")
                 else:
                     sick_string = " (it looks sick and weak)" if entity.sick == True else ""
-                    print(f"{entity.name.capitalize()}{sick_string}")
+                    hostile_string = " (hostile) " if type(entity) == Enemy else ""
+                    print(f"{entity.name.capitalize()}{sick_string}{hostile_string}")
         print("")
     
     def end_turn(self, player):
-        self.in_battle = True if self.currently_in_battle() else False
+        self.in_battle = self.currently_in_battle()
         for entity in self.current_location.entities:
             if type(entity) == Enemy and entity.alive:
                 entity.attack(player)
@@ -121,3 +127,14 @@ class GameBoard:
             if type(entity) == Enemy and entity.alive:
                 return True
         return False
+    
+    def flee(self):
+        directions = ("n", "e", "s", "w")
+        if random.random() > 0.55:
+            try:
+                self.move(random.choice(directions), True)
+            except GameError:
+                flee(self)
+        else:
+            print("Flee unsuccessful! You have not moved.\n")
+        return True

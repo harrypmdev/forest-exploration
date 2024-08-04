@@ -27,12 +27,12 @@ class Area:
     
     def generate_entities(self, chance, names, health_min, health_max, EntityType):
         attack_names = {
-            "ogre": "you were clubbed", 
-            "vampire bat": "your blood was sucked", 
-            "giant scorpion": "you got stung", 
-            "slime": "you got slimed", 
-            "dwarf wyvern": "you got burnt to a crisp", 
-            "goblin": "you got clawed and scratched"}
+            "ogre": "was clubbed", 
+            "vampire bat": "had their blood sucked", 
+            "giant scorpion": "got stung", 
+            "slime": "got slimed", 
+            "dwarf wyvern": "got burnt", 
+            "goblin": "got clawed and scratched"}
         local_names = names[:]
         if random.random() < chance:
             for entity in self.entities:
@@ -41,8 +41,8 @@ class Area:
             if len(local_names) > 0:
                 entity_health = random.randrange(health_min, health_max)
                 if EntityType == Enemy:
-                    max_damage = random.randrange(3, 8)
-                    accuracy = random.random() + 0.15
+                    max_damage = random.randrange(3, 12)
+                    accuracy = random.randrange(50, 100) / 100
                     name_choice = random.choice(local_names)
                     attack_name = attack_names[name_choice]
                     entity = EntityType(
@@ -61,5 +61,5 @@ class Area:
                         entity_health <= 2,
                     )
                 self.entities.append(entity)
-                self.generate_entities(chance*0.4, local_names, health_min, health_max, EntityType)
+                self.generate_entities(chance*0.3, local_names, health_min, health_max, EntityType)
     

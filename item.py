@@ -6,11 +6,14 @@ class Item:
         self.name = name
         self.description = description
         self.durability = durability
+        self.break_message = durability > 1
 
     def affect_durability(self, user, value):
         self.durability += value
         if self.durability <= 0:
             user.inventory.remove(self)
+            if self.break_message:
+                print(f"{self.name.capitalize()} broke!")
 
 class HealthItem(Item):
 
@@ -20,7 +23,7 @@ class HealthItem(Item):
         self.target_item = target_item
 
     def use(self, user, target):
-        effect = Effect(f"you used {self.name}", self.health_effect)
+        effect = Effect(f"you used your {self.name}", self.health_effect)
         if target.affect_health(effect):
             user.score += 10
         self.affect_durability(user, -1)

@@ -15,7 +15,7 @@ def get_emojis(*args):
     return emoji_list
 
 def parse_move(move, board, player):
-    board_moves = ("n", "e", "s", "w", "map", "look")
+    board_moves = ("n", "e", "s", "w", "map", "look", "flee")
     if move == "help":
         print("\nValid moves:\n"
         "inventory - lists your current inventory\n"
@@ -23,6 +23,7 @@ def parse_move(move, board, player):
         "status of (creature name) - outputs the status of a creature\n"
         "look - gives a description of the area\n"
         "punch (creature name) - attacks a creature\n"
+        "flee - run from battle in a random direction\n"
         "map - outputs the map\n"
         "describe (item name) - gives the description of an inventory item\n"
         "use (item name) - uses an item\n"
@@ -33,6 +34,14 @@ def parse_move(move, board, player):
         "W - moves West\n"
         )
         return True
+    elif "tutorial" in move:
+        print("\nTutorial:\n"
+        "Travel around the map using N, E, S and W commands to accumulate points\n"
+        "and find the amulet of power! You get points by defeating enemies, healing\n"
+        "sick animals and finding special items. When you enter an area with a hostile\n"
+        "creature, you enter battle. In battle, you will be attacked every turn until\n"
+        "the enemy is defeated. You can use items on the enemy, attempt to flee, or simply\n"
+        "'punch' the enemy if you have no items to use. Good luck!\n")
     elif "status" in move:
         return parse_status_move(move, board, player)
     elif move == "inventory":
@@ -51,7 +60,7 @@ def parse_move(move, board, player):
         raise Exception
 
 def parse_punch_move(move, board, player):
-    entity_name = move.split(" ",1)[1]
+    entity_name = move[6:]
     for entity in board.get_current_area_entities():
         if entity.name == entity_name:
             damage = -random.randrange(1, 3)
@@ -99,7 +108,7 @@ def parse_use_move(move, board, player):
                 item_used = True
     if not item_used:
         raise GameError(f"\nNo item in inventory called {parts[1]}.\n")
-    return False
+    return True
 
 def parse_describe_move(move, player):
     parts = []

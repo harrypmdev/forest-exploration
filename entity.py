@@ -24,7 +24,7 @@ class Entity:
         if not output_message:
             return False
         target_text = "on yourself" if self.name == "player" else f"on {self.name}"
-        effect_text = f"restoring {effect.value} health" if effect.value >= 0 else f"dealing {effect.value} damage"
+        effect_text = f"restoring {effect.value} health" if effect.value >= 0 else f"dealing {abs(effect.value)} damage"
         print(f"\n{effect.name.capitalize()} {target_text} {effect_text}!{sickness_changed}\n")
         return False
     
