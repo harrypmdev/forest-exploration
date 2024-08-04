@@ -18,9 +18,12 @@ def parse_move(move, board, player):
     board_moves = ("n", "e", "s", "w", "map", "look")
     if move == "help":
         print("\nValid moves:\n"
-        "inventory - prints your current inventory\n"
-        "status - prints your current status\n"
-        "map - prints the map\n"
+        "inventory - lists your current inventory\n"
+        "status - outputs your current status\n"
+        "status of (creature name) - outputs the status of a creature\n"
+        "look - gives a description of the area\n"
+        "punch (creature name) - attacks a creature\n"
+        "map - outputs the map\n"
         "describe (item name) - gives the description of an inventory item\n"
         "use (item name) - uses an item\n"
         "use (item name) on (target) - uses an item on a target\n"
@@ -89,8 +92,11 @@ def parse_use_move(move, board, player):
     item_used = False
     for item in player.inventory:
         if item.name == item_name:
-            item.use(player, target)
-            item_used = True
+            if item.target_item and target == player:
+                raise GameError(f"\nThis item must be targeted at a creature.\n")
+            else:
+                item.use(player, target)
+                item_used = True
     if not item_used:
         raise GameError(f"\nNo item in inventory called {parts[1]}.\n")
     return False

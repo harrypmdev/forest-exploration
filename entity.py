@@ -21,8 +21,8 @@ class Entity:
             self.die(effect)
             return True
         elif self.health > 2:
+            sickness_changed = " Its sickness was cured." if self.sick else ""
             self.sick = False
-            sickness_changed = " Its sickness was cured."
         if not output_message:
             return False
         target_text = "on yourself" if self.name == "player" else f"on {self.name}"

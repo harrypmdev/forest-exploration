@@ -14,9 +14,10 @@ class Item:
 
 class HealthItem(Item):
 
-    def __init__(self, name, description, health_effect, durability = 1):
+    def __init__(self, name, description, health_effect, durability = 1, target_item = False):
         super().__init__(name, description, durability)
         self.health_effect = health_effect
+        self.target_item = target_item
 
     def use(self, user, target):
         effect = Effect(f"you used {self.name}", self.health_effect)
