@@ -12,7 +12,7 @@ class Player(Entity):
     
     def die(self, effect):
         print('═' * 80)
-        print(f'You died! You ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
+        print(f'You died! Player {effect.name} causing {abs(effect.value)} damage and ran out of health!\n')
         print('═' * 80)
         self.alive = False
     

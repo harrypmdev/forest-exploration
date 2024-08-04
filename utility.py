@@ -33,7 +33,7 @@ def parse_move(move, board, player):
         "S - moves South\n"
         "W - moves West\n"
         )
-        return True
+        return False
     elif "tutorial" in move:
         print("\nTutorial:\n"
         "Travel around the map using N, E, S and W commands to accumulate points\n"
@@ -42,6 +42,7 @@ def parse_move(move, board, player):
         "creature, you enter battle. In battle, you will be attacked every turn until\n"
         "the enemy is defeated. You can use items on the enemy, attempt to flee, or simply\n"
         "'punch' the enemy if you have no items to use. Good luck!\n")
+        return False
     elif "status" in move:
         return parse_status_move(move, board, player)
     elif move == "inventory":

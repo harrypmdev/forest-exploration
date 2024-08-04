@@ -11,6 +11,10 @@ class Enemy(Entity):
         self.accuracy = accuracy
         self.attack_name = attack_name
         board.in_battle = True
+        self.loot = []
+        for item in board.item_field:
+            if random.random < 0.2:
+                self.loot.append(item)
     
     def attack(self, target):
         if random.random() < self.accuracy:
@@ -21,3 +25,8 @@ class Enemy(Entity):
             target.affect_health(attack, False)
         else:
             print(f"{self.name.capitalize()} attacked and it missed!\n")
+        
+    def search(self, player):
+        for item in self.loot:
+            player.inventory.append(item)
+        return self.loot

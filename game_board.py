@@ -15,6 +15,15 @@ class GameBoard:
         self.current_location = Area(middle, middle, self, False)
         self.board[middle][middle] = player
         self.in_battle = False
+        self.item_field = self.generate_items()
+    
+    def generate_items(self):
+        items = []
+        items.append(HealthItem("health potion", "A potion that heals 10 health.", 10))
+        items.append(HealthItem("throwing star", "A weapon that deals 5 damage.", -7, target_item=True))
+        items.append(HealthItem("sword", "A sword that will last for a short while.", -4, 5, True))
+        return items
+        
 
     def print(self):
         print("\n")
@@ -129,6 +138,9 @@ class GameBoard:
         return False
     
     def flee(self):
+        if not self.in_battle:
+            print("\nCannot flee if not in battle! Move using N, E, S, W commands.\n")
+            return False
         directions = ("n", "e", "s", "w")
         if random.random() > 0.55:
             try:
