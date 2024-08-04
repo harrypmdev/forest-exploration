@@ -19,15 +19,16 @@ class Entity:
         self.health = max(0, self.health + effect.value)
         if self.health == 0:
             self.die(effect)
-            return
+            return True
         elif self.health > 2:
             self.sick = False
             sickness_changed = " Its sickness was cured."
         if not output_message:
-            return
+            return False
         target_text = "on yourself" if self.name == "player" else f"on {self.name}"
         effect_text = f"restoring {effect.value} health" if effect.value >= 0 else f"dealing {effect.value} damage"
         print(f"\n{effect.name.capitalize()} {target_text} {effect_text}!{sickness_changed}\n")
+        return False
     
     def die(self, effect):
         print(f'\nThe {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')

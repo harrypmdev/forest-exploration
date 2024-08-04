@@ -19,9 +19,11 @@ def main():
     potion = HealthItem("health potion", "A potion that heals 10 health.", 10)
     throwing_star = HealthItem("throwing star", "A weapon that deals 5 damage.", -5)
     bomb = HealthItem("bomb", "An explosive weapon that causes 15 damage.", -15)
+    gun = HealthItem("machine gun", "A gun that deals 20 damage. Reusable.", -20, 100)
     player.inventory.append(potion)
     player.inventory.append(throwing_star)
     player.inventory.append(bomb)
+    player.inventory.append(gun)
     board.introduce(player)
     player.print_status()
     while player.alive:
