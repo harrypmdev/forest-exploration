@@ -12,6 +12,12 @@ class Parser:
     def __init__(self, player, board):
         self.player = player
         self.board = board
+        self.valid_moves = (
+        "help", "tutorial", "inventory", 
+        "status", "status of", "punch", 
+        "use", "use on", "describe", "map",
+        "search", "quit", "go", "look"
+        )
 
     def parse_move(self, move: str) -> bool:
         """
@@ -21,7 +27,6 @@ class Parser:
         Raises exception if move is invalid.
         """
         command, noun, noun_two = self.split_move(move.lower())
-        # Dictionary of valid moves and their respective subroutines
         moves = {
             "help": (print_help, ()),
             "tutorial": (print_tutorial, ()),
@@ -29,7 +34,7 @@ class Parser:
             "status": (self.player.print_status, ()),
             "status of": (self.parse_status_of, (noun, )),
             "punch": (self.parse_punch, (noun, )),
-            "use": (self.parse_use, (noun, )),
+            "use": (self.parse_use, (noun, self.player)),
             "use on": (self.parse_use_on, (noun, noun_two)),
             "describe": (self.parse_describe, (noun, )),
             "search": (self.parse_search, (noun, )),
@@ -49,6 +54,8 @@ class Parser:
         """
         parts = move.split(" ")
         command = parts[0].lower()
+        if command not in self.valid_moves:
+            raise GameError(f"\n{command} is not a valid command! Try again.\n")
         if len(parts) == 1:
             return command, "", ""
         if len(parts) == 2:
@@ -60,7 +67,7 @@ class Parser:
             command="use on"
             return command, parts[1], parts[3]
         else:
-            raise Exception
+            raise GameError(f"\n'{command}' does not work in this way! Enter 'tutorial' for tutorial or 'help' for valid moves list.\n")
 
     def parse_search(self, command, noun, board, player):
         entity_name = move.split("search ",1)[1]
@@ -107,26 +114,25 @@ class Parser:
             player.print_status()
             return False
 
-    def parse_use(self, noun):
+    def parse_use(self, noun, target):
         for item in self.player.inventory:
             if item.name == noun:
-                item.use(self.player, self.player)
+                item.use(self.player, target)
                 return False
+        print (f"\nNo item named {noun} in inventory.\n")
         return False
 
     def parse_use_on(self, noun, noun_two):
         for entity in self.board.current_location.entities:
             if entity.name == noun_two:
-                pass
+                return self.parse_use(noun, entity)
+        print (f"\nNo creature named {noun_two} in area.\n")
+        return False
 
-    def parse_describe(self, move, player):
-        parts = []
-        parts.append(move[:8])
-        parts.append(move[8:])
-        parts = [part.strip() for part in parts]
-        if parts[0] != "describe" or parts[1] not in (item.name for item in player.inventory):
-            return False
-        for item in player.inventory:
-            if item.name == parts[1]:
-                print("\n" + item.description + "\n")
-                return True
+    def parse_describe(self, noun):
+        for item in self.player.inventory:
+            if item.name == noun:
+                print(f"\n{item.description}\n")
+                return False
+        print (f"\nNo item named {noun} in inventory.\n")
+        return False
