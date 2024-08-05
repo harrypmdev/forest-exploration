@@ -22,7 +22,7 @@ class GameBoard:
         items = {}
         items[HealthItem("potion", "A potion that heals 10 health.", 10)] = 0.05
         items[HealthItem("berries", "A tasty food. Heals 3 health.", 3)] = 0.05
-        items[HealthItem("tomahawk", "A one-time use weapon that deals 5 damage.", -7, target_item=True)] = 0.1
+        items[HealthItem("tomahawk", "A one-time use weapon that deals 7 damage.", -7, target_item=True)] = 0.1
         items[HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)] = 0.05
         items[HealthItem("katana", "A super deadly sword that deals 10 damage.", -10, 7, True)] = 0.05
         items[HealthItem("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)] = 0.05
@@ -30,7 +30,7 @@ class GameBoard:
         
 
     def print(self):
-        print("\n")
+        print("")
         for row in self.board:
             print(" ".join(row))
         print("")
@@ -46,8 +46,12 @@ class GameBoard:
 
     def add_to_visited(self, location):
         if not self.check_visited(location.y, location.x):
-            self.visited.append(location) 
-        self.board[location.y][location.x] = get_emojis(":radio_button:")[0]
+            self.visited.append(location)
+        if self.in_battle:
+            self.board[location.y][location.x] = get_emojis(":collision:")[0]  
+        else:
+            self.board[location.y][location.x] = get_emojis(":radio_button:")[0]   
+        
     
     def add_to_current_area_entities(self, entity):
         self.current_location.entities.append(entity)
@@ -84,16 +88,16 @@ class GameBoard:
             return False
         new_x = self.current_location.x
         new_y = self.current_location.y
-        if direction == "n":
+        if direction == "north":
             new_y = self.current_location.y - 1
             travel_string = "\nYou travelled North."
-        elif direction == "s":
+        elif direction == "south":
             new_y = self.current_location.y + 1
             travel_string = "\nYou travelled South."
-        elif direction == "e":
+        elif direction == "east":
             new_x = self.current_location.x + 1
             travel_string = "\nYou travelled East."
-        elif direction == "w":
+        elif direction == "west":
             new_x = self.current_location.x - 1
             travel_string = "\nYou travelled West."
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
@@ -144,14 +148,14 @@ class GameBoard:
     
     def flee(self):
         if not self.in_battle:
-            print("\nCannot flee if not in battle! Move using N, E, S, W commands.\n")
+            print("\nCannot flee if not in battle! Move using 'go' command.\n")
             return False
-        directions = ("n", "e", "s", "w")
+        directions = ("north", "east", "south", "west")
         if random.random() > 0.55:
             try:
                 self.move(random.choice(directions), True)
             except GameError:
-                flee(self)
+                self.flee()
         else:
-            print("Flee unsuccessful! You have not moved.\n")
+            print("\nFlee unsuccessful! You have not moved.\n")
         return True

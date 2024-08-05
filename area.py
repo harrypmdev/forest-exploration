@@ -10,11 +10,11 @@ class Area:
         self.board = board
         self.description = self.generate_description()
         self.entities = []
-        animal_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "wild dog"]
+        animal_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "dog"]
         enemy_names = ["ogre", "vampire", "scorpion", "slime", "wyvern", "goblin"]
         self.generate_entities(0.25, animal_names, 1, 10, Entity)
         if hostiles:
-            self.generate_entities(0.4, enemy_names, 4, 17, Enemy, )
+            self.generate_entities(0.6, enemy_names, 4, 17, Enemy, )
     
     def generate_description(self):
         tree_adjectives = ("bushy", "tall", "short", "thin and white", 

@@ -3,6 +3,7 @@ import emoji
 from effect import Effect
 from entity import Entity
 from player import Player
+from enemy import Enemy
 from utility import *
 from game_board import GameBoard
 from game_error import GameError
@@ -16,7 +17,7 @@ class Parser:
         "help", "tutorial", "inventory", 
         "status", "status of", "punch", 
         "use", "use on", "describe", "map",
-        "search", "quit", "go", "look"
+        "search", "quit", "go", "look", "flee"
         )
 
     def parse_move(self, move: str) -> bool:
@@ -27,6 +28,7 @@ class Parser:
         Raises exception if move is invalid.
         """
         command, noun, noun_two = self.split_move(move.lower())
+        # A dictionary of moves and their respective subroutine
         moves = {
             "help": (print_help, ()),
             "tutorial": (print_tutorial, ()),
@@ -38,11 +40,15 @@ class Parser:
             "use on": (self.parse_use_on, (noun, noun_two)),
             "describe": (self.parse_describe, (noun, )),
             "search": (self.parse_search, (noun, )),
+            "go": (self.board.move, (noun, )),
+            "map": (self.board.print, ()),
+            "look": (self.board.look, ()),
+            "flee": (self.board.flee, ()),
             "quit": (exit, ()),
         }
         try:
             command_func, args = moves[command]
-            command_func(*args)
+            return command_func(*args)
         except KeyError:
             raise GameError(f"\n{command} not a valid move! Try again.\n")     
 
@@ -69,65 +75,60 @@ class Parser:
         else:
             raise GameError(f"\n'{command}' does not work in this way! Enter 'tutorial' for tutorial or 'help' for valid moves list.\n")
 
-    def parse_search(self, command, noun, board, player):
-        entity_name = move.split("search ",1)[1]
-        for entity in board.get_current_area_entities():
-            print(entity.name)
-            if entity.name == entity_name:
+    def parse_search(self, noun):
+        for entity in self.board.current_location.entities:
+            if entity.name == noun:
+                if type(entity) != Enemy:
+                    print(f"\nOnly enemies can be searched, {noun} is not an enemy.\n")
+                    return False
                 if entity.alive:
                     print(f"\n{entity.name.capitalize()} is alive! Only dead creatures can be searched.\n")
-                    return False
-                found_items = entity.search(player)
-                if found_items:
-                    print("\nFound:")
-                    for item in found_items:
-                        print(f"{item.name}")
                 else:
-                    print("\nNo items found.")
-                print("")
+                    searched_items = entity.search(self.player)
+                    if not searched_items:
+                        print("\nNo items found.\n")
+                        return False
+                    print("\nFound:")
+                    for item in searched_items:
+                        print(item.name)
+                    print("")  
                 return False
-            raise GameError(f"\nNo entity called {entity_name} in area.\n") 
+        print (f"\nNo enemy named {noun} in area.\n")
         return False
 
-    def parse_punch(self, command, noun, board, player):
-        entity_name = move[6:]
-        for entity in board.get_current_area_entities():
-            print("real entity name:" + entity.name + ", you entered:" + entity_name)
-            if entity.name == entity_name:
+    def parse_punch(self, noun):
+        for entity in self.board.current_location.entities:
+            if entity.name == noun:
                 damage = -random.randrange(1, 3)
                 entity.affect_health(Effect("you punched it", damage), False)
                 if entity.alive:
                     print(f"\nYou punched {entity.name} dealing {str(abs(damage))} damage.\n")
                 return True
-            raise GameError(f"\nNo entity called {entity_name} in area.\n")  
+        print(f"\nNo entity called {noun} in area.\n")
+        return False     
 
-    def parse_status_of(self, move, board, player):
-        if " of " in move:
-            entity_name = move.split(" of ",1)[1]
-            for entity in board.get_current_area_entities():
-                print(entity.name)
-                if entity.name == entity_name:
-                    entity.print_status()
-                    return False
-            raise GameError(f"\nNo entity called {entity_name} in area.\n")
-        else:
-            player.print_status()
-            return False
+    def parse_status_of(self, noun):
+        for entity in self.board.get_current_area_entities():
+            if entity.name == noun:
+                entity.print_status()
+                return False
+        print(f"\nNo entity called {noun} in area.\n")
+        return False
 
     def parse_use(self, noun, target):
         for item in self.player.inventory:
             if item.name == noun:
                 item.use(self.player, target)
-                return False
+                return True
         print (f"\nNo item named {noun} in inventory.\n")
-        return False
+        return True
 
     def parse_use_on(self, noun, noun_two):
         for entity in self.board.current_location.entities:
             if entity.name == noun_two:
                 return self.parse_use(noun, entity)
         print (f"\nNo creature named {noun_two} in area.\n")
-        return False
+        return True
 
     def parse_describe(self, noun):
         for item in self.player.inventory:

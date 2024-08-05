@@ -18,7 +18,7 @@ def print_help() -> bool:
     """ Prints the game's valid moves. Always returns False. """
     print("\nValid moves:\n"
     "inventory - lists your current inventory\n"
-    "status - outputs your current status\n"
+    "status - outputs your health and score\n"
     "status of (creature name) - outputs the status of a creature\n"
     "look - gives a description of the area\n"
     "punch (creature name) - attacks a creature\n"
@@ -27,10 +27,9 @@ def print_help() -> bool:
     "describe (item name) - gives the description of an inventory item\n"
     "use (item name) - uses an item\n"
     "use (item name) on (target) - uses an item on a target\n"
-    "N - moves North\n"
-    "E - moves East\n"
-    "S - moves South\n"
-    "W - moves West\n"
+    "search (enemy name) - search a defeated enemy for items\n"
+    "go (North/East/South/West) - move on the map\n"
+    "quit - quit the game\n"
     )
     return False
 
