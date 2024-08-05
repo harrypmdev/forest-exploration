@@ -13,10 +13,10 @@ class GameBoard:
         self.board = [[tree for x in range(size)] for y in range(size)]
         self.visited = []
         middle = (math.floor(size/2))
+        self.item_field = self.generate_items()
         self.current_location = Area(middle, middle, self, False)
         self.board[middle][middle] = player
         self.in_battle = False
-        self.item_field = self.generate_items()
     
     def generate_items(self):
         items = {}
@@ -40,7 +40,6 @@ class GameBoard:
               "Welcome to Forest Exploration!\n"
               f"Your game board has {self.size}x{self.size} dimensions.\n"
               f"Your player starts with {player.health} health.\n"
-              "Enter N, E, S or W to travel North, East, South and West.\n"
               "Enter 'tutorial' if it is your first time playing.\n"
               "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══")
 
@@ -118,7 +117,7 @@ class GameBoard:
 
     def look(self, line_break = True):
         line_break = "\n" if line_break else ""
-        print(f"{line_break}{self.current_location.description}")
+        print(f"{line_break}{self.current_location.get_description()}")
         if len(self.current_location.entities) == 0:
             print("There are no living creatures present except you.")
         elif len(self.current_location.entities) == 1:

@@ -17,7 +17,8 @@ class Parser:
         "help", "tutorial", "inventory", 
         "status", "status of", "punch", 
         "use", "use on", "describe", "map",
-        "search", "quit", "go", "look", "flee"
+        "search", "quit", "go", "look", 
+        "flee", "take"
         )
 
     def parse_move(self, move: str) -> bool:
@@ -40,6 +41,7 @@ class Parser:
             "use on": (self.parse_use_on, (noun, noun_two)),
             "describe": (self.parse_describe, (noun, )),
             "search": (self.parse_search, (noun, )),
+            "take": (self.parse_take, (noun, )),
             "go": (self.board.move, (noun, )),
             "map": (self.board.print, ()),
             "look": (self.board.look, ()),
@@ -75,7 +77,7 @@ class Parser:
         else:
             raise GameError(f"\n'{command}' does not work in this way! Enter 'tutorial' for tutorial or 'help' for valid moves list.\n")
 
-    def parse_search(self, noun):
+    def parse_search(self, noun: str) -> bool:
         for entity in self.board.current_location.entities:
             if entity.name == noun:
                 if type(entity) != Enemy:
@@ -95,8 +97,15 @@ class Parser:
                 return False
         print (f"\nNo enemy named {noun} in area.\n")
         return False
+    
+    def parse_take(self, noun:str) -> bool:
+        for index, item in enumerate(self.board.current_location.items):
+            if item.name == noun:
+                self.player.inventory.append(self.board.current_location.items.pop(index))
+                print(f"\nTook {item.name}!\n")
+        return False
 
-    def parse_punch(self, noun):
+    def parse_punch(self, noun: str) -> bool:
         for entity in self.board.current_location.entities:
             if entity.name == noun:
                 damage = -random.randrange(1, 3)
@@ -107,7 +116,7 @@ class Parser:
         print(f"\nNo entity called {noun} in area.\n")
         return False     
 
-    def parse_status_of(self, noun):
+    def parse_status_of(self, noun: str) -> bool:
         for entity in self.board.get_current_area_entities():
             if entity.name == noun:
                 entity.print_status()
@@ -115,7 +124,7 @@ class Parser:
         print(f"\nNo entity called {noun} in area.\n")
         return False
 
-    def parse_use(self, noun, target):
+    def parse_use(self, noun: str, target: Entity) -> bool:
         for item in self.player.inventory:
             if item.name == noun:
                 item.use(self.player, target)
@@ -123,14 +132,14 @@ class Parser:
         print (f"\nNo item named {noun} in inventory.\n")
         return True
 
-    def parse_use_on(self, noun, noun_two):
+    def parse_use_on(self, noun: str, noun_two: str) -> bool:
         for entity in self.board.current_location.entities:
             if entity.name == noun_two:
                 return self.parse_use(noun, entity)
         print (f"\nNo creature named {noun_two} in area.\n")
         return True
 
-    def parse_describe(self, noun):
+    def parse_describe(self, noun) -> bool:
         for item in self.player.inventory:
             if item.name == noun:
                 print(f"\n{item.description}\n")

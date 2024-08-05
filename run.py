@@ -23,6 +23,7 @@ def main():
     player.inventory.append(beginner_sword)
     board.introduce(player)
     player.print_status(False)
+    print("You are in the center of a large forest.")
     board.look(False)
     parser = Parser(player, board)
     while player.alive:

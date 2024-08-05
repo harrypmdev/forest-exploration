@@ -8,6 +8,7 @@ class Area:
         self.y = y
         self.x = x
         self.board = board
+        self.items = self.generate_items()
         self.description = self.generate_description()
         self.entities = []
         animal_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "dog"]
@@ -16,6 +17,14 @@ class Area:
         if hostiles:
             self.generate_entities(0.6, enemy_names, 4, 17, Enemy, )
     
+    def get_description(self) -> str:
+        item_sentence = ""
+        if self.items:
+            item_sentence = "\nOn the floor lies:\n"
+            for item in self.items:
+                item_sentence += f"{item.name}\n"
+        return self.description + item_sentence
+
     def generate_description(self):
         tree_adjectives = ("bushy", "tall", "short", "thin and white", 
         "sick looking", "strange and contorted", "healthy looking")
@@ -24,6 +33,13 @@ class Area:
         tree_sentence = f"The trees in this area are {random.choice(tree_adjectives)}."
         ground_sentence = f"The ground is {random.choice(ground_adjectives)}."
         return tree_sentence + " " + ground_sentence
+    
+    def generate_items(self):
+        items = []
+        for item in self.board.item_field:
+            if random.random() < self.board.item_field[item]:
+                items.append(item)
+        return items
     
     def generate_entities(self, chance, names, health_min, health_max, EntityType):
         attack_names = {
