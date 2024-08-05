@@ -11,7 +11,7 @@ class Area:
         self.description = self.generate_description()
         self.entities = []
         animal_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "wild dog"]
-        enemy_names = ["ogre", "vampire bat", "scorpion", "slime", "wyvern", "goblin"]
+        enemy_names = ["ogre", "vampire", "scorpion", "slime", "wyvern", "goblin"]
         self.generate_entities(0.25, animal_names, 1, 10, Entity)
         if hostiles:
             self.generate_entities(0.4, enemy_names, 4, 17, Enemy, )
@@ -28,7 +28,7 @@ class Area:
     def generate_entities(self, chance, names, health_min, health_max, EntityType):
         attack_names = {
             "ogre": "was clubbed", 
-            "vampire bat": "had their blood sucked", 
+            "vampire": "had their blood sucked", 
             "scorpion": "got stung", 
             "slime": "got slimed", 
             "wyvern": "got burnt", 

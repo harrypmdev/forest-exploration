@@ -20,9 +20,9 @@ class GameBoard:
     
     def generate_items(self):
         items = {}
-        items[HealthItem("health potion", "A potion that heals 10 health.", 10)] = 0.05
+        items[HealthItem("potion", "A potion that heals 10 health.", 10)] = 0.05
         items[HealthItem("berries", "A tasty food. Heals 3 health.", 3)] = 0.05
-        items[HealthItem("throwing star", "A weapon that deals 5 damage.", -7, target_item=True)] = 0.1
+        items[HealthItem("tomahawk", "A one-time use weapon that deals 5 damage.", -7, target_item=True)] = 0.1
         items[HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)] = 0.05
         items[HealthItem("katana", "A super deadly sword that deals 10 damage.", -10, 7, True)] = 0.05
         items[HealthItem("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)] = 0.05
@@ -97,7 +97,8 @@ class GameBoard:
             new_x = self.current_location.x - 1
             travel_string = "\nYou travelled West."
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
-            print("Fled successfully!")
+            if flee:
+                print("Fled successfully!")
             print(travel_string)
             self.add_to_visited(self.current_location)
             if self.check_visited(new_y, new_x):

@@ -16,14 +16,17 @@ class Player(Entity):
         print('═' * 80)
         self.alive = False
     
-    def print_status(self, line_break = True):
+    def print_status(self, line_break: bool = True) -> bool:
+        """ Prints the player's 'status' (health and score). Always returns False. """
         line_break = "\n" if line_break else ""
         print(f"\nYou have {self.health} health. Your score is {self.score}.{line_break}")
+        return False
     
-    def print_inventory(self):
+    def print_inventory(self) -> bool:
+        " Prints the player's inventory. Always returns False."
         if not self.inventory:
             print("\nYour inventory is empty.\n")
-            return
+            return False
         print("\nYour inventory:")
         item_names = []
         for item in self.inventory:
@@ -31,3 +34,4 @@ class Player(Entity):
         for item_name in sorted(item_names):
             print(f"{item_name}")
         print("")
+        return False
