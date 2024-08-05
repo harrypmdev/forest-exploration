@@ -3,6 +3,7 @@ import random
 from utility import *
 from area import Area
 from enemy import Enemy
+from item import Item, HealthItem
 
 class GameBoard:
 
@@ -18,10 +19,13 @@ class GameBoard:
         self.item_field = self.generate_items()
     
     def generate_items(self):
-        items = []
-        items.append(HealthItem("health potion", "A potion that heals 10 health.", 10))
-        items.append(HealthItem("throwing star", "A weapon that deals 5 damage.", -7, target_item=True))
-        items.append(HealthItem("sword", "A sword that will last for a short while.", -4, 5, True))
+        items = {}
+        items[HealthItem("health potion", "A potion that heals 10 health.", 10)] = 0.05
+        items[HealthItem("berries", "A tasty food. Heals 3 health.", 3)] = 0.05
+        items[HealthItem("throwing star", "A weapon that deals 5 damage.", -7, target_item=True)] = 0.1
+        items[HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)] = 0.05
+        items[HealthItem("katana", "A super deadly sword that deals 10 damage.", -10, 7, True)] = 0.05
+        items[HealthItem("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)] = 0.05
         return items
         
 

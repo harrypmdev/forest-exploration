@@ -19,8 +19,8 @@ def main():
     potion = HealthItem("health potion", "A potion that heals 10 health.", 10)
     throwing_star = HealthItem("throwing star", "A weapon that deals 5 damage.", -7, target_item=True)
     beginner_sword = HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)
+    katana = HealthItem("katana", "A strong and sturdy weapon.", -20, 100, True)
     player.inventory.append(potion)
-    player.inventory.append(throwing_star)
     player.inventory.append(beginner_sword)
     board.introduce(player)
     player.print_status(False)
@@ -32,7 +32,7 @@ def main():
                 board.end_turn(player)
         except GameError as e:
             print(str(e))
-        except Exception:
-            print("\nNot a valid move! Try again.\n")
+        #except Exception:
+            #print("\nNot a valid move! Try again.\n")
 
 main()

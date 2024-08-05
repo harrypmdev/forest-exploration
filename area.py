@@ -11,7 +11,7 @@ class Area:
         self.description = self.generate_description()
         self.entities = []
         animal_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "wild dog"]
-        enemy_names = ["ogre", "vampire bat", "giant scorpion", "slime", "dwarf wyvern", "goblin"]
+        enemy_names = ["ogre", "vampire bat", "scorpion", "slime", "wyvern", "goblin"]
         self.generate_entities(0.25, animal_names, 1, 10, Entity)
         if hostiles:
             self.generate_entities(0.4, enemy_names, 4, 17, Enemy, )
@@ -29,9 +29,9 @@ class Area:
         attack_names = {
             "ogre": "was clubbed", 
             "vampire bat": "had their blood sucked", 
-            "giant scorpion": "got stung", 
+            "scorpion": "got stung", 
             "slime": "got slimed", 
-            "dwarf wyvern": "got burnt", 
+            "wyvern": "got burnt", 
             "goblin": "got clawed and scratched"}
         local_names = names[:]
         if random.random() < chance:

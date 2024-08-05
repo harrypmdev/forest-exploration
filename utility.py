@@ -57,12 +57,35 @@ def parse_move(move, board, player):
         return parse_describe_move(move, player)
     elif move in board_moves:
         return board.parse_move(move, player)
+    elif "search" in move:
+        return parse_search_move(move, board, player)
     else:
         raise Exception
+
+def parse_search_move(move, board, player):
+    entity_name = move.split("search ",1)[1]
+    for entity in board.get_current_area_entities():
+        print(entity.name)
+        if entity.name == entity_name:
+            if entity.alive:
+                print(f"\n{entity.name.capitalize()} is alive! Only dead creatures can be searched.\n")
+                return False
+            found_items = entity.search(player)
+            if found_items:
+                print("\nFound:")
+                for item in found_items:
+                    print(f"{item.name}")
+            else:
+                print("\nNo items found.")
+            print("")
+            return False
+        raise GameError(f"\nNo entity called {entity_name} in area.\n") 
+    return False
 
 def parse_punch_move(move, board, player):
     entity_name = move[6:]
     for entity in board.get_current_area_entities():
+        print("real entity name:" + entity.name + ", you entered:" + entity_name)
         if entity.name == entity_name:
             damage = -random.randrange(1, 3)
             entity.affect_health(Effect("you punched it", damage), False)
@@ -75,6 +98,7 @@ def parse_status_move(move, board, player):
     if " of " in move:
         entity_name = move.split(" of ",1)[1]
         for entity in board.get_current_area_entities():
+            print(entity.name)
             if entity.name == entity_name:
                 entity.print_status()
                 return False

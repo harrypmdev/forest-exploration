@@ -25,6 +25,9 @@ class Player(Entity):
             print("\nYour inventory is empty.\n")
             return
         print("\nYour inventory:")
+        item_names = []
         for item in self.inventory:
-            print(f"{item.name}")
+            item_names.append(item.name)
+        for item_name in sorted(item_names):
+            print(f"{item_name}")
         print("")

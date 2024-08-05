@@ -13,7 +13,7 @@ class Enemy(Entity):
         board.in_battle = True
         self.loot = []
         for item in board.item_field:
-            if random.random < 0.2:
+            if random.random() < board.item_field[item]:
                 self.loot.append(item)
     
     def attack(self, target):
