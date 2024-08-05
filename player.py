@@ -1,4 +1,5 @@
 from entity import Entity
+from utility import *
 
 class Player(Entity):
     """
@@ -9,12 +10,17 @@ class Player(Entity):
         super().__init__(health, "player", board)
         self.score = score
         self.inventory = inventory
+        self.won = False
     
+    @border
     def die(self, effect):
-        print('═' * 80)
         print(f'You died! Player {effect.name} causing {abs(effect.value)} damage and ran out of health!\n')
-        print('═' * 80)
         self.alive = False
+
+    @border
+    def win(self):
+        print(f"You win! You finished the game with a score total of {self.score} and {self.health} health.")
+        self.won = True
     
     def print_status(self, line_break: bool = True) -> bool:
         """ Prints the player's 'status' (health and score). Always returns False. """

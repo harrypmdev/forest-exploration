@@ -27,3 +27,15 @@ class HealthItem(Item):
         if target.affect_health(effect):
             user.score += 10
         self.affect_durability(user, -1)
+
+class Amulet(Item):
+
+    def __init__(self, name, description, durability = 1):
+        super().__init__(name, description, durability)
+
+    def use(self, user, target):
+        print(
+            "\nThe amulet glows and shakes as you put it around you neck.\n"
+            "It really is... the amulet of power! You've found it at last!\n"
+        )
+        user.win()

@@ -17,6 +17,7 @@ class GameBoard:
         self.current_location = Area(middle, middle, self, False)
         self.board[middle][middle] = player
         self.in_battle = False
+        self.directions = ("north", "east", "south", "west")
     
     def generate_items(self):
         items = {}
@@ -81,24 +82,23 @@ class GameBoard:
             if area.y == y and area.x == x:
                 return area
     
-    def move(self, direction, flee = False):
-        if self.in_battle and not flee:
+    def move(self, direction, fleeing = False):
+        if direction not in self.directions:
+            raise GameError("\nThe 'go' command must be followed by: North, East, South or West.\n")
+        if self.in_battle and not fleeing:
             print("\nCannot travel whilst in battle! Enter 'flee' to attempt to flee.\n")
             return False
         new_x = self.current_location.x
         new_y = self.current_location.y
         if direction == "north":
             new_y = self.current_location.y - 1
-            travel_string = "\nYou travelled North."
         elif direction == "south":
             new_y = self.current_location.y + 1
-            travel_string = "\nYou travelled South."
         elif direction == "east":
             new_x = self.current_location.x + 1
-            travel_string = "\nYou travelled East."
         elif direction == "west":
             new_x = self.current_location.x - 1
-            travel_string = "\nYou travelled West."
+        travel_string = f"\nYou travelled {direction.capitalize()}"
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
             if flee:
                 print("Fled successfully!")
@@ -110,28 +110,12 @@ class GameBoard:
                 self.current_location = Area(new_y, new_x, self)
             self.board[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
             self.look()
-            if self.currently_in_battle():
-                print("A hostile creature is present! You are now in battle.\n")
         else:
             raise GameError("\nCannot move in this direction.\n")
 
     def look(self, line_break = True):
         line_break = "\n" if line_break else ""
         print(f"{line_break}{self.current_location.get_description()}")
-        if len(self.current_location.entities) == 0:
-            print("There are no living creatures present except you.")
-        elif len(self.current_location.entities) == 1:
-            print(f"There is {self.current_location.entities[0].indefinite_name()}.")
-        else:
-            print("There are multiple creatures present:")
-            for entity in self.current_location.entities:
-                if not entity.alive:
-                    print(f"A dead {entity.name}")
-                else:
-                    sick_string = " (it looks sick and weak)" if entity.sick == True else ""
-                    hostile_string = " (hostile) " if type(entity) == Enemy else ""
-                    print(f"{entity.name.capitalize()}{sick_string}{hostile_string}")
-        print("")
     
     def end_turn(self, player):
         self.in_battle = self.currently_in_battle()
@@ -149,10 +133,9 @@ class GameBoard:
         if not self.in_battle:
             print("\nCannot flee if not in battle! Move using 'go' command.\n")
             return False
-        directions = ("north", "east", "south", "west")
         if random.random() > 0.55:
             try:
-                self.move(random.choice(directions), True)
+                self.move(random.choice(self.directions), True)
             except GameError:
                 self.flee()
         else:
