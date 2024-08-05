@@ -18,6 +18,10 @@ class GameBoard:
         self.board[middle][middle] = player
         self.in_battle = False
         self.directions = ("north", "east", "south", "west")
+        self.records = {
+            "total moves": 0,
+            "kills": 0
+        }
     
     def generate_items(self):
         items = {}
@@ -100,6 +104,7 @@ class GameBoard:
             new_x = self.current_location.x - 1
         travel_string = f"\nYou travelled {direction.capitalize()}"
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
+            self.total_moves += 1
             if flee:
                 print("Fled successfully!")
             print(travel_string)

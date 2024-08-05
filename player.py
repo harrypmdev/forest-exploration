@@ -19,7 +19,10 @@ class Player(Entity):
 
     @border
     def win(self):
+        moves = self.board.records["total moves"]
+        kills = self.board.records["kills"]
         print(f"You win! You finished the game with a score total of {self.score} and {self.health} health.")
+        print(f"You moved a total of {moves} times. You killed {kills} creatures.")
         self.won = True
     
     def print_status(self, line_break: bool = True) -> bool:
