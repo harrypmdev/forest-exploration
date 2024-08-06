@@ -52,6 +52,7 @@ def main():
     if yes_no_query("\nPlay again?: \n"):
         main()
     else:
+        print("\nThanks for playing. Goodbye!")
         exit()
 
 main()

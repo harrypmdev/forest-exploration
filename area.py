@@ -30,7 +30,7 @@ class Area:
         if self.items:
             item_sentence = "On the floor lies:\n"
             for item in self.items:
-                item_sentence += f"{item.name,capitalize()}\n"
+                item_sentence += f"{item.name.capitalize()}\n"
         return self.description + entities_sentence + item_sentence
 
     def generate_description(self):

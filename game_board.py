@@ -6,25 +6,58 @@ from enemy import Enemy
 from item import *
 
 class GameBoard:
+    """
+    A class for the game board.
 
+    Class Attributes:
+    DIRECTIONS: tuple -- A tuple containing the directions the player can move
+
+    Instance Attributes:
+    size: int -- the dimension size of the board
+    map: list -- a two dimensional list that stores the map
+    visited: list -- a list of all visited areas
+    item_field: list -- a list of items that can be spawned in this game
+    current_location: Area -- the current area the player is in
+    amulet_generated: bool -- whether the amulet has been generated yet
+    records: dict -- a record of player achievements
+
+    Public Methods:
+    currently_in_battle -- return True if currently in battle, False if not
+    print -- print the game map
+    introduce -- print a game introductory message
+    move -- move the player on the map
+    look - print a description of the current area
+    end_turn -- end the turn
+    flee -- attempt to 'flee' the player
+    """
+    DIRECTIONS = ("north", "east", "south", "west")
+    
     def __init__(self, size):
+        """
+        Create a GameBoard object.
+    
+        Arguments:
+        size: int -- the dimension size of the board
+        """
         tree, player = get_emojis(":evergreen_tree:", ":diamond_with_a_dot:")
         self.size = size
-        self.board = [[tree for x in range(size)] for y in range(size)]
+        self.map = [[tree for y in range(size)] for x in range(size)]
         self.visited = []
+        self.item_field = self._generate_items()
         middle = (math.floor(size/2))
-        self.item_field = self.generate_items()
         self.current_location = Area(middle, middle, self, False)
-        self.board[middle][middle] = player
-        self.in_battle = False
-        self.directions = ("north", "east", "south", "west")
+        self.map[middle][middle] = player
         self.amulet_generated = False
         self.records = {
             "total moves": 0,
             "kills": 0
         }
     
-    def generate_items(self):
+    def _generate_items(self) -> list:
+        """ 
+        Generate the list of items the can be spawned in this game. 
+        Returns a dictionary of items and their generation probability.
+        """
         items = {}
         items[HealthItem("potion", "A potion that heals 10 health.", 10)] = 0.05
         items[HealthItem("berries", "A tasty food. Heals 3 health.", 3)] = 0.05
@@ -35,9 +68,41 @@ class GameBoard:
         items[Amulet("amulet", "Could it be... the amulet of power? There's only one way to find out.")] = 0
         return items
 
+    def _add_to_visited(self, location: Area):
+        """ Add an area to visited locations and update map. """
+        if not self._check_visited(location.y, location.x):
+            self.visited.append(location)
+        if self.currently_in_battle():
+            self.map[location.y][location.x] = get_emojis(":collision:")[0]  
+        else:
+            self.map[location.y][location.x] = get_emojis(":radio_button:")[0]   
+
+    def _update_amulet_generation_probability(self):
+        """ C """
+        for item in self.item_field:
+            if item.name == "amulet":
+                self.item_field[item] = int(not self.amulet_generated) * (1 / (self.size*self.size))  * len(self.visited)
+    
+    def _check_visited(self, y, x):
+        for area in self.visited:
+            if area.y == y and area.x == x:
+                return True
+        return False
+    
+    def _get_visited_area(self, y, x):
+        for area in self.visited:
+            if area.y == y and area.x == x:
+                return area
+
+    def currently_in_battle(self):
+        for entity in self.current_location.entities:
+            if type(entity) == Enemy and entity.alive:
+                return True
+        return False
+    
     def print(self):
         print("")
-        for row in self.board:
+        for row in self.map:
             print(" ".join(row))
         print("")
     
@@ -49,46 +114,8 @@ class GameBoard:
               "Enter 'tutorial' if it is your first time playing.\n"
               "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══")
 
-    def add_to_visited(self, location):
-        if not self.check_visited(location.y, location.x):
-            self.visited.append(location)
-        if self.in_battle:
-            self.board[location.y][location.x] = get_emojis(":collision:")[0]  
-        else:
-            self.board[location.y][location.x] = get_emojis(":radio_button:")[0]   
-        
-    
-    def add_to_current_area_entities(self, entity):
-        self.current_location.entities.append(entity)
-    
-    def get_current_area_entities(self):
-        return self.current_location.entities
-
-    def parse_move(self, move, player):
-        if move == "map":
-            return self.print()
-        elif move in ("n", "e", "s", "w"):
-            return self.move(move)
-        elif move == "look":
-            return self.look()
-        elif move == "flee":
-            return self.flee()
-        else:
-            return False
-    
-    def check_visited(self, y, x):
-        for area in self.visited:
-            if area.y == y and area.x == x:
-                return True
-        return False
-    
-    def get_visited_area(self, y, x):
-        for area in self.visited:
-            if area.y == y and area.x == x:
-                return area
-    
     def move(self, direction, fleeing = False):
-        if direction not in self.directions:
+        if direction not in self.DIRECTIONS:
             raise GameError("\nThe 'go' command must be followed by: North, East, South or West.\n")
         if self.in_battle and not fleeing:
             print("\nCannot travel whilst in battle! Enter 'flee' to attempt to flee.\n")
@@ -105,17 +132,17 @@ class GameBoard:
             new_x = self.current_location.x - 1
         travel_string = f"\nYou travelled {direction.capitalize()}"
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
-            self.update_amulet_generation_probability()
+            self._update_amulet_generation_probability()
             self.records["total moves"] += 1
             if fleeing:
                 print("Fled successfully!")
             print(travel_string)
-            self.add_to_visited(self.current_location)
-            if self.check_visited(new_y, new_x):
-                self.current_location = self.get_visited_area(new_y, new_x)
+            self._add_to_visited(self.current_location)
+            if self._check_visited(new_y, new_x):
+                self.current_location = self._get_visited_area(new_y, new_x)
             else:
                 self.current_location = Area(new_y, new_x, self)
-            self.board[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
+            self.map[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
             self.look()
         else:
             raise GameError("\nCannot move in this direction.\n")
@@ -131,17 +158,6 @@ class GameBoard:
         for entity in self.current_location.entities:
             if type(entity) == Enemy and entity.alive and player.alive:
                 entity.attack(player)
-
-    def update_amulet_generation_probability(self):
-        for item in self.item_field:
-            if item.name == "amulet":
-                self.item_field[item] = int(not self.amulet_generated) * (1 / (self.size*self.size))  * len(self.visited)
-        
-    def currently_in_battle(self):
-        for entity in self.current_location.entities:
-            if type(entity) == Enemy and entity.alive:
-                return True
-        return False
     
     def flee(self):
         if not self.in_battle:
@@ -149,7 +165,7 @@ class GameBoard:
             return False
         if random.random() > 0.3:
             try:
-                self.move(random.choice(self.directions), True)
+                self.move(random.choice(self.DIRECTIONS), True)
             except GameError:
                 self.flee()
         else:
