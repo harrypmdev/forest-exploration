@@ -1,1 +1,1 @@
-# Your requirements go here
+emoji==2.12.1
