@@ -34,7 +34,6 @@ class GameBoard:
         items[HealthItem("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)] = 0.05
         items[Amulet("amulet", "Could it be... the amulet of power? There's only one way to find out.")] = 0
         return items
-        
 
     def print(self):
         print("")
@@ -106,6 +105,7 @@ class GameBoard:
             new_x = self.current_location.x - 1
         travel_string = f"\nYou travelled {direction.capitalize()}"
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
+            self.update_amulet_generation_probability()
             self.records["total moves"] += 1
             if fleeing:
                 print("Fled successfully!")
@@ -129,9 +129,12 @@ class GameBoard:
         for entity in self.current_location.entities:
             if type(entity) == Enemy and entity.alive and player.alive:
                 entity.attack(player)
+
+    def update_amulet_generation_probability(self):
         for item in self.item_field:
             if item.name == "amulet":
-                self.item_field[item] = int(self.amulet_generated) * (1 / (self.size*self.size))  * len(self.visited)
+                self.item_field[item] = int(not self.amulet_generated) * (1 / (self.size*self.size))  * len(self.visited)
+                print("Amulet probability: " + str(self.item_field[item]))
         
     def currently_in_battle(self):
         for entity in self.current_location.entities:
