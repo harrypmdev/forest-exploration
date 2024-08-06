@@ -3,12 +3,14 @@ class Entity:
     A class for game entities, inherited by Player and Enemy.
     """
 
-    def __init__(self, health, name, board, sick = False):
+    def __init__(self, health, name, board, sick = False, hostile = False):
         self.name = name
         self.health = health
         self.alive = True
         self.board = board
         self.sick = sick
+        self.searched = False
+        self.hostile = hostile
 
     def affect_health(self, effect, output_message = True):
         sickness_changed = ""
@@ -41,10 +43,19 @@ class Entity:
         else:
             print(f"\n{self.name.capitalize()} has {self.health} health.{sick_status}\n")
     
-    def indefinite_name(self):
+    def indefinite(self):
         vowels = ("a", "e", "i", "o", "u")
-        dead_string = "" if self.alive else "dead "
-        if self.name[0] in vowels and self.alive:
-            return f"an {self.name}"
-        else:
-            return f"a {dead_string}{self.name}"
+        if self.name[0] in vowels:
+            return "an"
+        return "a"
+
+    def detailed_name(self, indefinite = False):
+        article = self.indefinite() + " " if indefinite else ""
+        dead_string = f"{article}{self.name}" if self.alive else f"{article}dead {self.name}"
+        sick_string = " (it looks sick and weak) " if self.sick else ""        
+        searched_string = ""
+        if not self.alive and self.hostile:
+            searched_string = " (searched)" if self.searched else " (not searched)"
+        hostile_string = " (hostile)" if self.hostile and self.alive else ""
+        return f"{dead_string}{hostile_string}{sick_string}{searched_string}"
+    

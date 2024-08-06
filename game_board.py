@@ -123,6 +123,8 @@ class GameBoard:
     def look(self, line_break = True):
         line_break = "\n" if line_break else ""
         print(f"{line_break}{self.current_location.get_description()}")
+        if self.currently_in_battle():
+            print("A hostile creature is present! You are in battle.\n")
     
     def end_turn(self, player):
         self.in_battle = self.currently_in_battle()
@@ -134,7 +136,6 @@ class GameBoard:
         for item in self.item_field:
             if item.name == "amulet":
                 self.item_field[item] = int(not self.amulet_generated) * (1 / (self.size*self.size))  * len(self.visited)
-                print("Amulet probability: " + str(self.item_field[item]))
         
     def currently_in_battle(self):
         for entity in self.current_location.entities:

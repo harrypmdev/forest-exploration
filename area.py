@@ -21,25 +21,17 @@ class Area:
     def get_description(self) -> str:
         entities_sentence = "\nThere are no living creatures present except you.\n"
         if len(self.entities) == 1:
-            entities_sentence = f"\nThere is {self.entities[0].indefinite_name()}.\n"
+            entities_sentence = f"\nThere is {self.entities[0].detailed_name(True)}.\n"
         if len(self.entities) > 1:
             entities_sentence = "\nThere are multiple creatures present:\n"
             for entity in self.entities:
-                if not entity.alive:
-                    entities_sentence += "A dead {entity.name}\n"
-                else:
-                    sick_string = " (it looks sick and weak)" if entity.sick == True else ""
-                    hostile_string = " (hostile) " if type(entity) == Enemy else ""
-                    entities_sentence += f"{entity.name.capitalize()}{sick_string}{hostile_string}\n"
+                entities_sentence += f"{entity.detailed_name().capitalize()}\n"
         item_sentence = ""
         if self.items:
             item_sentence = "On the floor lies:\n"
             for item in self.items:
-                item_sentence += f"{item.name}\n"
-        battle_sentence = ""
-        if self.board.currently_in_battle():
-            battle_sentence = "A hostile creature is present! You are now in battle.\n"
-        return self.description + entities_sentence + item_sentence + battle_sentence
+                item_sentence += f"{item.name,capitalize()}\n"
+        return self.description + entities_sentence + item_sentence
 
     def generate_description(self):
         tree_adjectives = ("bushy", "tall", "short", "thin and white", 

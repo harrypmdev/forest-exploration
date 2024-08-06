@@ -47,7 +47,7 @@ def main():
             print(str(e))
         #except Exception:
             #print("\nNot a valid move! Try again.\n")
-    if player.won and yes_no_query("Well done on finishing the game. Save score to leaderboard? (Yes/No): \n"):
+    if player.won and yes_no_query("\nWell done on finishing the game. Save score to leaderboard? (Yes/No): \n"):
         save_game(player)
     if yes_no_query("\nPlay again?: \n"):
         main()
