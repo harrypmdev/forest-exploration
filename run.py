@@ -12,7 +12,7 @@ from utility import *
 
 def get_move():
     print("Enter 'help' for valid move list.")
-    return input("Enter a move: ")
+    return input("Enter a move: \n")
 
 def yes_no_query(question: str) -> bool:
     answer = input(question)
@@ -49,9 +49,9 @@ def main():
             print(str(e))
         #except Exception:
             #print("\nNot a valid move! Try again.\n")
-    if player.won and yes_no_query("Well done on finishing the game. Save score to leaderboard? (Yes/No): "):
+    if player.won and yes_no_query("Well done on finishing the game. Save score to leaderboard? (Yes/No): \n"):
         save_game(player)
-    if yes_no_query("\nPlay again?: "):
+    if yes_no_query("\nPlay again?: \n"):
         main()
     else:
         exit()
