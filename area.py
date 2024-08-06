@@ -1,4 +1,5 @@
 import random
+import copy
 from entity import Entity
 from enemy import Enemy
 
@@ -53,7 +54,10 @@ class Area:
         items = []
         for item in self.board.item_field:
             if random.random() < self.board.item_field[item]:
-                items.append(item)
+                items.append(copy.deepcopy(item))
+                if item.name == "amulet":
+                    self.board.amulet_generated = True
+                    self.board.item_field[item] = 0
         return items
     
     def generate_entities(self, chance, names, health_min, health_max, EntityType):

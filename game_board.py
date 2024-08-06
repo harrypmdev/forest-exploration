@@ -3,7 +3,7 @@ import random
 from utility import *
 from area import Area
 from enemy import Enemy
-from item import Item, HealthItem
+from item import *
 
 class GameBoard:
 
@@ -18,6 +18,7 @@ class GameBoard:
         self.board[middle][middle] = player
         self.in_battle = False
         self.directions = ("north", "east", "south", "west")
+        self.amulet_generated = False
         self.records = {
             "total moves": 0,
             "kills": 0
@@ -31,6 +32,7 @@ class GameBoard:
         items[HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)] = 0.05
         items[HealthItem("katana", "A super deadly sword that deals 10 damage.", -10, 7, True)] = 0.05
         items[HealthItem("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)] = 0.05
+        items[Amulet("amulet", "Could it be... the amulet of power? There's only one way to find out.")] = 0
         return items
         
 
@@ -127,6 +129,9 @@ class GameBoard:
         for entity in self.current_location.entities:
             if type(entity) == Enemy and entity.alive and player.alive:
                 entity.attack(player)
+        for item in self.item_field:
+            if item.name == "amulet":
+                self.item_field[item] = int(self.amulet_generated) * (1 / (self.size*self.size))  * len(self.visited)
         
     def currently_in_battle(self):
         for entity in self.current_location.entities:
@@ -138,7 +143,7 @@ class GameBoard:
         if not self.in_battle:
             print("\nCannot flee if not in battle! Move using 'go' command.\n")
             return False
-        if random.random() > 0.55:
+        if random.random() > 0.3:
             try:
                 self.move(random.choice(self.directions), True)
             except GameError:

@@ -2,6 +2,7 @@ import random
 import math
 from entity import Entity
 from effect import Effect
+from item import Amulet
 
 class Enemy(Entity):
 
@@ -11,10 +12,15 @@ class Enemy(Entity):
         self.accuracy = accuracy
         self.attack_name = attack_name
         board.in_battle = True
-        self.loot = []
-        for item in board.item_field:
-            if random.random() < board.item_field[item]:
-                self.loot.append(item)
+        self.loot = self.generate_loot()
+
+    def generate_loot(self):
+        loot = []
+        for item in self.board.item_field:
+            if random.random() < self.board.item_field[item] and type(item) != Amulet:
+                loot.append(item)
+        return loot
+        
     
     def attack(self, target):
         if random.random() < self.accuracy:
