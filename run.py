@@ -35,7 +35,7 @@ def main():
     player.print_status(False)
     print("You are in the center of a large forest.")
     board.look(False)
-    parser = Parser(player, board)
+    parser = Parser(player)
     while player.alive:
         move = get_move()
         try:
@@ -47,9 +47,10 @@ def main():
             print(str(e))
         #except Exception:
             #print("\nNot a valid move! Try again.\n")
-    if player.won and yes_no_query("\nWell done on finishing the game. Save score to leaderboard? (Yes/No): \n"):
+    if player.won and yes_no_query("Well done on finishing the game. Save score to leaderboard? (Yes/No): \n"):
         save_game(player)
-    if yes_no_query("\nPlay again?: \n"):
+    print("")
+    if yes_no_query("Play again?: \n"):
         main()
     else:
         print("\nThanks for playing. Goodbye!")

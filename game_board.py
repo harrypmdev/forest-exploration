@@ -1,6 +1,4 @@
-"""
-A module for the GameBoard class utilised in Forest Exploration.
-"""
+""" A module for the GameBoard class utilised in Forest Exploration. """
 
 import math
 import random
@@ -20,22 +18,22 @@ class GameBoard:
     on the axis it moves them.
 
     Instance Attributes:
-    size: int -- the dimension size of the board
-    map: list -- a two dimensional list that stores the map
-    visited: list -- a list of all visited areas
-    item_field: list -- a list of items that can be spawned in this game
-    current_location: Area -- the current area the player is in
-    amulet_generated: bool -- whether the amulet has been generated yet
-    records: dict -- a record of player achievements
+    size: int -- the dimension size of the board.
+    map: list -- a two dimensional list that stores the map.
+    visited: list -- a list of all visited areas.
+    item_field: list -- a list of items that can be spawned in this game.
+    current_location: Area -- the current area the player is in.
+    amulet_generated: bool -- whether the amulet has been generated yet.
+    records: dict -- a record of player achievements.
 
     Public Methods:
-    currently_in_battle -- return True if currently in battle, False if not
-    print -- print the game map
-    introduce -- print a game introductory message
-    move -- move the player on the map
-    look - print a description of the current area
-    end_turn -- end the turn
-    flee -- attempt to 'flee' the player
+    currently_in_battle -- return True if currently in battle, False if not.
+    print -- print the game map.
+    introduce -- print a game introductory message.
+    move -- move the player on the map.
+    look - print a description of the current area.
+    end_turn -- end the turn.
+    flee -- attempt to 'flee' the player.
     """
     DIRECTIONS = {
         "north": (0, -1), 
@@ -49,7 +47,7 @@ class GameBoard:
         Create a GameBoard object.
     
         Arguments:
-        size: int -- the dimension size of the board
+        size: int -- the dimension size of the board.
         """
         tree, player = get_emojis(":evergreen_tree:", ":diamond_with_a_dot:")
         self.size = size
@@ -86,7 +84,7 @@ class GameBoard:
         Update map for the visited area.
         
         Arguments:
-        location: Area -- the new area that needs to be on the visited list
+        location: Area -- the new area that needs to be on the visited list.
         """
         if not self._check_visited(location.y, location.x):
             self.visited.append(location)
@@ -106,8 +104,8 @@ class GameBoard:
         Check if the player has visited an area at the given coordinates.
 
         Arguments:
-        y: int -- the y coordinate to check
-        x: int -- the x coordinate to check
+        y: int -- the y coordinate to check.
+        x: int -- the x coordinate to check.
 
         Returns True if it has been visited, False if not.
         """
@@ -166,12 +164,12 @@ class GameBoard:
         Move in a specified direction on the game board's map.
 
         Arguments:
-        direction: str -- the direction the player should move (north, east, south or west)
-        fleeing: bool -- whether the player is currently fleeing (default False)
+        direction: str -- the direction the player should move (north, east, south or west).
+        fleeing: bool -- whether the player is currently fleeing (default False).
 
         Raises GameError if:
-            The provided direction is invalid
-            An attempt to move while in battle is made but the player is not fleeing
+            The provided direction is invalid.
+            An attempt to move while in battle is made but the player is not fleeing.
         
         Returns False
         """
@@ -179,7 +177,7 @@ class GameBoard:
             raise GameError("\nThe 'go' command must be followed by: North, East, South or West.\n")
         if self.currently_in_battle() and not fleeing:
             raise GameError("\nCannot travel whilst in battle! Enter 'flee' to attempt to flee.\n")
-        new_direction = (self.current_location.y, self.current_location.x)
+        new_direction = [self.current_location.y, self.current_location.x]
         new_direction[self.DIRECTIONS[direction][0]] += self.DIRECTIONS[direction][1]
         if not (4 >= new_direction[0] >= 0 and 4 >= new_direction[1] >= 0):
             raise GameError("\nCannot move in this direction.\n")
@@ -219,11 +217,11 @@ class GameBoard:
 
         Returns True.
         """
-        if not self.currently_in_battle:
+        if not self.currently_in_battle():
             raise GameError("\nCannot flee if not in battle! Move using 'go' command.\n")
         if random.random() > 0.3:
             try:
-                self.move(random.choice(self.DIRECTIONS.keys()), True)
+                self.move(random.choice(list(self.DIRECTIONS.keys())), True)
             except GameError:
                 self.flee()
         else:
