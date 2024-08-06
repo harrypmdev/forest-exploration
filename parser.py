@@ -140,14 +140,14 @@ class Parser:
                 item.use(self.player, target)
                 return True
         print (f"\nNo item named {noun} in inventory.\n")
-        return True
+        return False
 
     def parse_use_on(self, noun: str, noun_two: str) -> bool:
         for entity in self.board.current_location.entities:
             if entity.name == noun_two:
                 return self.parse_use(noun, entity)
         print (f"\nNo creature named {noun_two} in area.\n")
-        return True
+        return False
 
     def parse_describe(self, noun) -> bool:
         for item in self.player.inventory:
