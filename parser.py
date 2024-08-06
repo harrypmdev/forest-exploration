@@ -18,7 +18,7 @@ class Parser:
         "status", "status of", "punch", 
         "use", "use on", "describe", "map",
         "search", "quit", "go", "look", 
-        "flee", "take"
+        "flee", "take", "drop"
         )
 
     def parse_move(self, move: str) -> bool:
@@ -42,6 +42,7 @@ class Parser:
             "describe": (self.parse_describe, (noun, )),
             "search": (self.parse_search, (noun, )),
             "take": (self.parse_take, (noun, )),
+            "drop": (self.parse_drop, (noun, )),
             "go": (self.board.move, (noun, )),
             "map": (self.board.print, ()),
             "look": (self.board.look, ()),
@@ -103,6 +104,15 @@ class Parser:
             if item.name == noun:
                 self.player.inventory.append(self.board.current_location.items.pop(index))
                 print(f"\nTook {item.name}!\n")
+        return False
+
+    def parse_drop(self, noun: str) -> bool:
+        for index, item in enumerate(self.player.inventory):
+            if item.name == noun:
+                self.board.current_location.items.append(self.player.inventory.pop(index))
+                print(f"\nDropped {item.name}.\n")
+                return False
+        print (f"\nNo item named {noun} in inventory.\n")
         return False
 
     def parse_punch(self, noun: str) -> bool:

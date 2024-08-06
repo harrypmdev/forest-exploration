@@ -36,6 +36,8 @@ def print_help() -> bool:
         "describe (item name) - gives the description of an inventory item\n"
         "use (item name) - uses an item\n"
         "use (item name) on (target) - uses an item on a target\n"
+        "take (item name) - picks up an item from the ground\n"
+        "drop (item name) - drops an item from the inventory onto the ground\n"
         "search (enemy name) - searches a defeated enemy for items\n"
         "go (North/East/South/West) - moves you on the map\n"
         "quit - quits the game\n"

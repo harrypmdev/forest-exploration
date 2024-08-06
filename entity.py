@@ -31,7 +31,7 @@ class Entity:
     
     def die(self, effect):
         print(f'\nThe {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
-        self.board.kills += 1
+        self.board.records["kills"] += 1
         self.alive = False
     
     def print_status(self):

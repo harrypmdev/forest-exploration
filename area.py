@@ -36,7 +36,7 @@ class Area:
             for item in self.items:
                 item_sentence += f"{item.name}\n"
         battle_sentence = ""
-        if self.board.in_battle:
+        if self.board.currently_in_battle():
             battle_sentence = "A hostile creature is present! You are now in battle.\n"
         return self.description + entities_sentence + item_sentence + battle_sentence
 

@@ -104,8 +104,8 @@ class GameBoard:
             new_x = self.current_location.x - 1
         travel_string = f"\nYou travelled {direction.capitalize()}"
         if 4 >= new_x >= 0 and 4 >= new_y >= 0:
-            self.total_moves += 1
-            if flee:
+            self.records["total moves"] += 1
+            if fleeing:
                 print("Fled successfully!")
             print(travel_string)
             self.add_to_visited(self.current_location)
@@ -125,7 +125,7 @@ class GameBoard:
     def end_turn(self, player):
         self.in_battle = self.currently_in_battle()
         for entity in self.current_location.entities:
-            if type(entity) == Enemy and entity.alive:
+            if type(entity) == Enemy and entity.alive and player.alive:
                 entity.attack(player)
         
     def currently_in_battle(self):

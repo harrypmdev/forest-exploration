@@ -14,12 +14,12 @@ def get_move():
     print("Enter 'help' for valid move list.")
     return input("Enter a move: ")
 
-def save_query():
-    save_answer = input("Well done on finishing the game. Save score to leaderboard? (Yes/No): ")
-    if save_answer.lower() not in ("yes", "no"):
-        print("\nPlease enter 'yes' or 'no'.\n")
-        return save_query()
-    return save_answer.lower() == "yes"
+def yes_no_query(question: str) -> bool:
+    answer = input(question)
+    if answer.lower() not in ("yes", "no"):
+        print("\nPlease enter 'yes' or 'no'.")
+        return yes_no_query(question)
+    return answer.lower() == "yes"
 
 def save_game(player):
     pass
@@ -49,6 +49,11 @@ def main():
             print(str(e))
         #except Exception:
             #print("\nNot a valid move! Try again.\n")
-    if player.won and save_query():
+    if player.won and yes_no_query("Well done on finishing the game. Save score to leaderboard? (Yes/No): "):
         save_game(player)
+    if yes_no_query("\nPlay again?: "):
+        main()
+    else:
+        exit()
+
 main()
