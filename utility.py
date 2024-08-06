@@ -48,11 +48,12 @@ def print_tutorial() -> bool:
     """ Prints the game tutorial. Always returns False. """
     print(
         "\nTutorial:\n"
-        "Travel around the map using the go command (go north, go east etc.) to accumulate\n"
-        "points and find the amulet of power! You get points by defeating enemies, healing\n"
-        "sick animals and finding special items. When you enter an area with a hostile\n"
-        "creature, you enter battle. In battle, you will be attacked every turn until\n"
-        "the enemy is defeated. You can use items on the enemy (sword, poison etc.), attempt to\n"
-        "flee, or simply 'punch' the enemy if you have no items to use. Good luck!\n"
+        "Travel around the map using the go command (go north, go east etc.)\n"
+        "to accumulate points and find the amulet of power! You get points\n"
+        "by defeating enemies, healing sick animals and finding special items.\n"
+        "When you enter an area with a hostile creature, you enter battle. In\n"
+        "battle, you will be attacked every turn until the enemy is defeated.\n"
+        "You can use items on the enemy (sword, poison etc.), attempt to flee,\n"
+        "or simply 'punch' the enemy if you have no items to use. Good luck!\n"
     )
     return False
