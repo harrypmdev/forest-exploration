@@ -40,20 +40,22 @@ def yes_no_query(question: str) -> bool:
 def save_game(player):
     pass
 
-def main():
+def initialize_game():
     item_field = generate_items()
     game_state = GameState()
     board = GameBoard(5, game_state)
     player = Player(30, board, 0, [])
-    potion = HealthItem("potion", "A potion that heals 10 health.", 10)
-    beginner_sword = HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)
-    player.inventory.append(potion)
-    player.inventory.append(beginner_sword)
+    player.inventory.append(HealthItem("potion", "A potion that heals 10 health.", 10))
+    player.inventory.append(HealthItem("sword", "A sword that will last for a short while.", -4, 5, True))
+    return player, board
+
+def main():
+    player, board = initialize_game()
     board.introduce(player)
     player.print_status(False)
     print("You are in the center of a large forest.")
     board.look(False)
-    parser = Parser(player)
+    parser = Parser(player, board)
     while player.alive:
         move = get_move()
         try:

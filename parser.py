@@ -32,7 +32,7 @@ class Parser:
         "flee", "take", "drop"
     )
 
-    def __init__(self, player: Player) -> None:
+    def __init__(self, player: Player, board: GameBoard) -> None:
         """
         Create a Parser object.
     
@@ -40,7 +40,7 @@ class Parser:
         player: Player -- the player for which moves are being parsed.
         """
         self.player = player
-        self.board = player.board
+        self.board = board
 
     def parse_move(self, move: str) -> bool:
         """
