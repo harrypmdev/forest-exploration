@@ -1,9 +1,24 @@
+""" A module for the Entity class utilised in Forest Exploration. """
+
+from __future__ import annotations
+
 class Entity:
     """
-    A class for game entities, inherited by Player and Enemy.
+    A class for the game entities, which includes all living creatures.
+    Inherited by Player and Enemy classes.
+
+    Instance Attributes:
+    health: int -- the health of the entity
+    name: str -- the entity's name
+    board: GameBoard -- the board the entity is on
+    player: Player -- the player for which moves are being parsed.
+    
+
+    Public Methods:
+    parse_move -- parse a raw move from the user
     """
 
-    def __init__(self, health, name, board, sick = False, hostile = False):
+    def __init__(self, health: int, name: str, board: GameBoard, sick: bool = False, hostile: bool = False):
         self.name = name
         self.health = health
         self.alive = True

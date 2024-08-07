@@ -11,7 +11,6 @@ class Enemy(Entity):
         self.max_damage = max_damage
         self.accuracy = accuracy
         self.attack_name = attack_name
-        board.in_battle = True
         self.loot = self.generate_loot()
 
     def generate_loot(self):

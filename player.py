@@ -10,7 +10,6 @@ class Player(Entity):
         super().__init__(health, "player", board)
         self.score = score
         self.inventory = inventory
-        self.won = False
     
     @border
     def die(self, effect):
@@ -23,7 +22,6 @@ class Player(Entity):
         kills = self.board.records["kills"]
         print(f"You win! You finished the game with a score total of {self.score} and {self.health} health.")
         print(f"You moved a total of {moves} times. You killed {kills} creatures.")
-        self.won = True
     
     def print_status(self, line_break: bool = True) -> bool:
         """ Prints the player's 'status' (health and score). Always returns False. """

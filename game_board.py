@@ -6,6 +6,7 @@ from utility import *
 from area import Area
 from enemy import Enemy
 from player import Player
+from game_state import GameState
 from item import *
 
 class GameBoard:
@@ -23,8 +24,7 @@ class GameBoard:
     visited: list -- a list of all visited areas.
     item_field: list -- a list of items that can be spawned in this game.
     current_location: Area -- the current area the player is in.
-    amulet_generated: bool -- whether the amulet has been generated yet.
-    records: dict -- a record of player achievements.
+    game_state: GameState -- the current game state
 
     Public Methods:
     currently_in_battle -- return True if currently in battle, False if not.
@@ -42,7 +42,7 @@ class GameBoard:
         "west": (1, -1)
     }
     
-    def __init__(self, size) -> None:
+    def __init__(self, size: int, game_state: GameState) -> None:
         """
         Create a GameBoard object.
     
@@ -50,6 +50,7 @@ class GameBoard:
         size: int -- the dimension size of the board.
         """
         tree, player = get_emojis(":evergreen_tree:", ":diamond_with_a_dot:")
+        self.game_state = game_state
         self.size = size
         self.map = [[tree for y in range(size)] for x in range(size)]
         self.visited = []
@@ -57,11 +58,6 @@ class GameBoard:
         middle = (math.floor(size/2))
         self.current_location = Area(middle, middle, self, False)
         self.map[middle][middle] = player
-        self.amulet_generated = False
-        self.records = {
-            "total moves": 0,
-            "kills": 0
-        }
     
     def _generate_items(self) -> list:
         """ 

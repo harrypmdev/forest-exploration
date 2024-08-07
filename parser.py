@@ -46,6 +46,9 @@ class Parser:
         """
         Parse raw move from the user.
 
+        Arguments:
+        move: str -- the move string the user inputted
+
         Raises GameError if move is invalid.
 
         Returns True if move passes turn in battle, returns False if not.
