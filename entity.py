@@ -1,6 +1,6 @@
 """ A module for the Entity class utilised in Forest Exploration. """
 
-from __future__ import annotations
+from game_state import GameState
 
 class Entity:
     """
@@ -18,11 +18,11 @@ class Entity:
     parse_move -- parse a raw move from the user
     """
 
-    def __init__(self, health: int, name: str, board: GameBoard, sick: bool = False, hostile: bool = False):
+    def __init__(self, health: int, name: str, game_state: GameState, sick: bool = False, hostile: bool = False):
         self.name = name
         self.health = health
         self.alive = True
-        self.board = board
+        self.game_state = game_state
         self.sick = sick
         self.searched = False
         self.hostile = hostile
@@ -48,7 +48,7 @@ class Entity:
     
     def die(self, effect):
         print(f'\nThe {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
-        self.board.records["kills"] += 1
+        self.game_state.records["kills"] += 1
         self.alive = False
     
     def print_status(self):

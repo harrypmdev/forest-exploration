@@ -42,7 +42,7 @@ class GameBoard:
         "west": (1, -1)
     }
     
-    def __init__(self, size: int, game_state: GameState) -> None:
+    def __init__(self, size: int, game_state: GameState, item_field: dict) -> None:
         """
         Create a GameBoard object.
     
@@ -54,25 +54,10 @@ class GameBoard:
         self.size = size
         self.map = [[tree for y in range(size)] for x in range(size)]
         self.visited = []
-        self.item_field = self._generate_items()
+        self.item_field = item_field
         middle = (math.floor(size/2))
-        self.current_location = Area(middle, middle, self, False)
+        self.current_location = Area(middle, middle, game_state, item_field, False)
         self.map[middle][middle] = player
-    
-    def _generate_items(self) -> list:
-        """ 
-        Generate the list of items the can be spawned in this game. 
-        Returns a dictionary of items and their generation probability.
-        """
-        items = {}
-        items[HealthItem("potion", "A potion that heals 10 health.", 10)] = 0.05
-        items[HealthItem("berries", "A tasty food. Heals 3 health.", 3)] = 0.05
-        items[HealthItem("tomahawk", "A one-time use weapon that deals 7 damage.", -7, target_item=True)] = 0.1
-        items[HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)] = 0.05
-        items[HealthItem("katana", "A super deadly sword that deals 10 damage.", -10, 7, True)] = 0.05
-        items[HealthItem("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)] = 0.05
-        items[Amulet("amulet", "Could it be... the amulet of power? There's only one way to find out.")] = 0
-        return items
 
     def _add_to_visited(self, location: Area) -> None:
         """ 
@@ -186,7 +171,7 @@ class GameBoard:
         if self._check_visited(*new_direction):
             self.current_location = self._get_visited_area(*new_direction)
         else:
-            self.current_location = Area(*new_direction, self)
+            self.current_location = Area(*new_direction, self.game_state, self.item_field, self)
         self.map[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
         self.look()
         return False

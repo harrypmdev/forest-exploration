@@ -5,13 +5,14 @@ from enemy import Enemy
 
 class Area:
 
-    def __init__(self, y, x, board, hostiles = True):
+    def __init__(self, y, x, game_state, item_field: dict, hostiles = True):
         self.y = y
         self.x = x
-        self.board = board
+        self.game_state = game_state
         self.items = self.generate_items()
         self.description = self.generate_description()
         self.entities = []
+        self.item_field = item_field
         animal_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "dog"]
         enemy_names = ["ogre", "vampire", "scorpion", "slime", "wyvern", "goblin"]
         self.generate_entities(0.25, animal_names, 1, 10, Entity)
@@ -44,8 +45,8 @@ class Area:
     
     def generate_items(self):
         items = []
-        for item in self.board.item_field:
-            if random.random() < self.board.item_field[item]:
+        for item in self.item_field:
+            if random.random() < self.item_field[item]:
                 items.append(copy.deepcopy(item))
                 if item.name == "amulet":
                     self.board.amulet_generated = True
@@ -75,7 +76,8 @@ class Area:
                     entity = EntityType(
                         entity_health, 
                         name_choice, 
-                        self.board, 
+                        self.game_state,
+                        self.item_field,
                         max_damage,
                         accuracy,
                         attack_name
@@ -84,7 +86,7 @@ class Area:
                     entity = EntityType(
                         entity_health, 
                         random.choice(local_names), 
-                        self.board, 
+                        self.game_state, 
                         entity_health <= 2,
                     )
                 self.entities.append(entity)

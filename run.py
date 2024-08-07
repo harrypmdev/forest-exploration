@@ -6,9 +6,25 @@ from enemy import Enemy
 from entity import Entity
 from effect import Effect
 from game_error import GameError
+from game_state import GameState
 from parser import Parser
 from item import *
 from utility import *
+
+def generate_items(self) -> dict:
+    """ 
+    Generate the list of items the can be spawned in this game. 
+    Returns a dictionary of items and their generation probability.
+    """
+    items = {}
+    items[HealthItem("potion", "A potion that heals 10 health.", 10)] = 0.05
+    items[HealthItem("berries", "A tasty food. Heals 3 health.", 3)] = 0.05
+    items[HealthItem("tomahawk", "A one-time use weapon that deals 7 damage.", -7, target_item=True)] = 0.1
+    items[HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)] = 0.05
+    items[HealthItem("katana", "A super deadly sword that deals 10 damage.", -10, 7, True)] = 0.05
+    items[HealthItem("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)] = 0.05
+    items[Amulet("amulet", "Could it be... the amulet of power? There's only one way to find out.")] = 0
+    return items
 
 def get_move():
     print("Enter 'help' for valid move list.")
@@ -25,7 +41,9 @@ def save_game(player):
     pass
 
 def main():
-    board = GameBoard(5)
+    item_field = generate_items()
+    game_state = GameState()
+    board = GameBoard(5, game_state)
     player = Player(30, board, 0, [])
     potion = HealthItem("potion", "A potion that heals 10 health.", 10)
     beginner_sword = HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)

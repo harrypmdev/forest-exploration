@@ -6,9 +6,10 @@ from item import Amulet
 
 class Enemy(Entity):
 
-    def __init__(self, health, name, board, max_damage, accuracy, attack_name):
-        super().__init__(health, name, board, hostile=True)
+    def __init__(self, health, name, game_state, item_field, max_damage, accuracy, attack_name):
+        super().__init__(health, name, game_state, hostile=True)
         self.max_damage = max_damage
+        self.item_field = item_field
         self.accuracy = accuracy
         self.attack_name = attack_name
         self.loot = self.generate_loot()
@@ -16,7 +17,7 @@ class Enemy(Entity):
     def generate_loot(self):
         loot = []
         for item in self.board.item_field:
-            if random.random() < self.board.item_field[item] and type(item) != Amulet:
+            if random.random() < self.item_field[item] and type(item) != Amulet:
                 loot.append(item)
         return loot
         

@@ -1,4 +1,5 @@
 from effect import Effect
+from game_state import GameState
 
 class Item:
 
@@ -6,12 +7,13 @@ class Item:
         self.name = name
         self.description = description
         self.durability = durability
+        self.broken = False
         self.break_message = durability > 1
 
-    def affect_durability(self, user, value):
+    def affect_durability(self, value):
         self.durability += value
         if self.durability <= 0:
-            user.inventory.remove(self)
+            self.broken = True
             if self.break_message:
                 print(f"{self.name.capitalize()} broke!")
 
@@ -26,16 +28,16 @@ class HealthItem(Item):
         effect = Effect(f"you used your {self.name}", self.health_effect)
         if target.affect_health(effect):
             user.score += 10
-        self.affect_durability(user, -1)
+        self.affect_durability(-1)
 
 class Amulet(Item):
 
     def __init__(self, name, description, durability = 1):
         super().__init__(name, description, durability)
 
-    def use(self, user, target):
+    def activate(self, game_state):
         print(
             "\nThe amulet glows and shakes as you put it around you neck.\n"
             "It really is... the amulet of power! You've found it at last!\n"
         )
-        user.win()
+        game_state.win()

@@ -15,13 +15,6 @@ class Player(Entity):
     def die(self, effect):
         print(f'You died! Player {effect.name} causing {abs(effect.value)} damage and ran out of health!\n')
         self.alive = False
-
-    @border
-    def win(self):
-        moves = self.board.records["total moves"]
-        kills = self.board.records["kills"]
-        print(f"You win! You finished the game with a score total of {self.score} and {self.health} health.")
-        print(f"You moved a total of {moves} times. You killed {kills} creatures.")
     
     def print_status(self, line_break: bool = True) -> bool:
         """ Prints the player's 'status' (health and score). Always returns False. """
