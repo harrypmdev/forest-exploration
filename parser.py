@@ -102,8 +102,7 @@ class Parser:
         if parts[0] == "use" and parts[2] == "on":
             command="use on"
             return command, parts[1], parts[3]
-        else:
-            raise GameError(f"\n'{command}' does not work in this way! Enter 'tutorial' for tutorial or 'help' for valid moves list.\n")
+        raise GameError(f"\n'{command}' does not work in this way! Enter 'tutorial' for tutorial or 'help' for valid moves list.\n")
 
     def _parse_search(self, noun: str) -> bool:
         """
@@ -113,7 +112,7 @@ class Parser:
         noun: str -- the enemy that should be searched.
 
         Raises GameError if passed an entity name for an entity
-        that does not exist in the area.
+        that does not exist in the area or is alive.
         
         Returns False.
         """
@@ -123,17 +122,16 @@ class Parser:
                     print(f"\nOnly enemies can be searched, {noun} is not an enemy.\n")
                     return False
                 if entity.alive:
-                    print(f"\n{entity.name.capitalize()} is alive! Only dead creatures can be searched.\n")
-                else:
-                    searched_items = entity.search(self.player)
-                    if not searched_items:
-                        print("\nNo items found.\n")
-                        return False
-                    print("\nFound:")
-                    for item in searched_items:
-                        print(item.name)
-                    print("")  
-                return False
+                    raise GameError(f"\n{entity.name.capitalize()} is alive! Only dead creatures can be searched.\n")
+                searched_items = entity.search(self.player)
+                if not searched_items:
+                    print("\nNo items found.\n")
+                    return False
+                print("\nFound:")
+                for item in searched_items:
+                    print(item.name)
+                print("")  
+            return False
         raise GameError(f"\nNo enemy named {noun} in area.\n")
     
     def _parse_take(self, noun:str) -> bool:
