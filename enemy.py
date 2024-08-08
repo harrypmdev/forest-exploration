@@ -16,8 +16,8 @@ class Enemy(Entity):
 
     def generate_loot(self):
         loot = []
-        for item in self.board.item_field:
-            if random.random() < self.item_field[item] and type(item) != Amulet:
+        for item in self.item_field:
+            if random.random() < self.item_field[item] and item.name != "amulet":
                 loot.append(item)
         return loot
         
