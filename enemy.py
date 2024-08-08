@@ -21,7 +21,7 @@ class Enemy(Entity):
                 loot.append(item)
         return loot
         
-    def attack(self, target):
+    def get_attack(self, target) -> Effect:
         if random.random() < self.accuracy:
             damage = math.ceil(self.max_damage * (random.random() * self.accuracy))
             attack = Effect(f"{self.attack_name} by {self.name}", -damage)

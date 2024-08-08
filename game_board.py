@@ -130,15 +130,6 @@ class GameBoard:
         for row in self.map:
             print(" ".join(row))
         print("")
-    
-    def introduce(self, player: Player) -> None:
-        """ Print a game introductory message. """
-        print("═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══\n"
-              "Welcome to Forest Exploration!\n"
-              f"Your game board has {self.size}x{self.size} dimensions.\n"
-              f"Your player starts with {player.health} health.\n"
-              "Enter 'tutorial' if it is your first time playing.\n"
-              "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══")
 
     def move(self, direction: str, fleeing: bool = False) -> bool:
         """
@@ -183,12 +174,6 @@ class GameBoard:
         print(f"{line_break}{self.current_location.get_description()}")
         if self.currently_in_battle():
             print("A hostile creature is present! You are in battle.\n")
-    
-    def end_turn(self, player: Player) -> None:
-        """ Ends the turn, making all living enemies attack the player. """
-        for entity in self.current_location.entities:
-            if type(entity) == Enemy and entity.alive and player.alive:
-                entity.attack(player)
     
     def flee(self) -> bool:
         """ 

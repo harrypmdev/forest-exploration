@@ -80,15 +80,16 @@ class Parser:
         except KeyError:
             raise GameError(f"\n{command} not a valid move! Try again.\n")     
 
-    def _split_move(self, move: str) -> (str, str, str):
+    def _split_move(self, move: str) -> tuple[str, str, str]:
         """
         Take user input and split it into parts.
 
         Raises GameError if move is invalid.
 
-        Returns a tuple with three strings:
-            First string: The command being used (use, look etc.).
-            Second and third string: The 'nouns' (objects) they are being used on (sword, ogre etc.).
+        Returns a tuple with 3 elements:
+            1: str -- The command being used (use, look etc.).
+            2: str -- The first 'noun' (object) the command is being used on (sword, ogre etc.).
+            3: str -- The second 'noun' (object) the command is being used on.
         Returns empty strings if command does not use two nouns.
         """
         parts = move.split(" ")

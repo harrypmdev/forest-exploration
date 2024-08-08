@@ -1,9 +1,6 @@
 from collections.abc import Callable, Awaitable
 import random
 import emoji
-from effect import Effect
-from entity import Entity
-from game_error import GameError
 
 def get_emojis(*args):
     """
