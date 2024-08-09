@@ -115,27 +115,29 @@ class Parser:
         Arguments:
         noun: str -- the enemy that should be searched.
 
-        Raises GameError if passed an entity name for an entity
-        that does not exist in the area or is alive.
+        Raises GameError if:
+            1 -- Passed an entity name for an entity that does not exist.
+            2 -- Passed an entity name for an entity that is alive.
+            3 -- Passed an entity name for an entity that is not hostile.
         
         Returns False.
         """
         for entity in self.board.current_location.entities:
             if entity.name == noun:
-                if type(entity) != Enemy:
-                    print(f"\nOnly enemies can be searched, {noun} is not an enemy.\n")
-                    return False
+                if entity.hostile:
+                    raise GameError(f"\nOnly enemies can be searched, {noun} is not an enemy.\n")
                 if entity.alive:
                     raise GameError(f"\n{entity.name.capitalize()} is alive! Only dead creatures can be searched.\n")
-                searched_items = entity.search(self.player)
-                if not searched_items:
+                found_items = entity.search()
+                self.player.inventory.extend(found_items)
+                if not found_items:
                     print("\nNo items found.\n")
                     return False
                 print("\nFound:")
-                for item in searched_items:
+                for item in found_items:
                     print(item.name)
-                print("")  
-            return False
+                print("")
+                return False
         raise GameError(f"\nNo enemy named {noun} in area.\n")
     
     def _parse_take(self, noun:str) -> bool:

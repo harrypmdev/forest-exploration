@@ -41,7 +41,7 @@ class GameBoard:
         "west": (1, -1)
     }
     
-    def __init__(self, size: int, game_state: GameState, item_field: dict) -> None:
+    def __init__(self, size: int, game_state: GameState) -> None:
         """
         Create a GameBoard object.
     
@@ -53,9 +53,8 @@ class GameBoard:
         self.size = size
         self.map = [[tree for y in range(size)] for x in range(size)]
         self.visited = []
-        self.item_field = item_field
         middle = (math.floor(size/2))
-        self.current_location = Area(middle, middle, game_state, item_field, False)
+        self.current_location = Area(middle, middle, game_state, False)
         self.map[middle][middle] = player
 
     def _add_to_visited(self, location: Area) -> None:
@@ -72,12 +71,6 @@ class GameBoard:
             self.map[location.y][location.x] = get_emojis(":collision:")[0]  
         else:
             self.map[location.y][location.x] = get_emojis(":radio_button:")[0]   
-
-    def _update_amulet_generation_probability(self) -> None:
-        """ Update probability of amulet generating based on amount of areas visited. """
-        for item in self.item_field:
-            if item.name == "amulet":
-                self.item_field[item] = int(not self.amulet_generated) * (1 / (self.size*self.size))  * len(self.visited)
     
     def _check_visited(self, y: int, x: int) -> bool:
         """ 
@@ -154,7 +147,7 @@ class GameBoard:
             raise GameError("\nCannot move in this direction.\n")
         self.records["total moves"] += 1
         self._add_to_visited(self.current_location)
-        self._update_amulet_generation_probability()
+        self.game_state.update_amulet_generation_probability(self.size, len(self.visited))
         if fleeing:
             print("Fled successfully!")
         print(f"\nYou travelled {direction.capitalize()}")

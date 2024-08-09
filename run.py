@@ -1,5 +1,6 @@
 import math
 import os
+import random
 from game_board import GameBoard
 from player import Player
 from enemy import Enemy
@@ -61,8 +62,14 @@ def end_turn(self, player: Player, board: Gameboard) -> None:
     by the initialize game function
     """
     for entity in board.current_location.entities:
-        if type(entity) == Enemy and entity.alive and player.alive:
-            player.affect_health(entity.get_attack())
+        if entity.hostile and entity.alive and player.alive:
+            if random.random() < entity.accuracy:
+                attack = entity.get_attack()
+                player.affect_health(attack)
+                print(f"{entity.name.capitalize()} attacked and it hit!")
+                print(f"Player {attack.name} for {str(abs(attack.value))} damage.\n")
+            else:
+                print(f"{self.name.capitalize()} attacked and it missed!\n")
 
 def initialize_game() -> tuple[Player, GameBoard, GameState]:
     """ Initialize a new game.
@@ -72,9 +79,8 @@ def initialize_game() -> tuple[Player, GameBoard, GameState]:
         2: GameBoard -- the board for this game.
         3: GameState -- the game state for this game.
     """
-    item_field = generate_items()
     game_state = GameState()
-    board = GameBoard(5, game_state, item_field)
+    board = GameBoard(5, game_state)
     player = Player(30, board, 0, [])
     player.inventory.append(HealthItem("potion", "A potion that heals 10 health.", 10))
     player.inventory.append(HealthItem("sword", "A sword that will last for a short while.", -4, 5, True))
