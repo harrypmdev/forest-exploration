@@ -5,7 +5,6 @@ import random
 from utility import *
 from area import Area
 from enemy import Enemy
-from player import Player
 from game_state import GameState
 from item import *
 

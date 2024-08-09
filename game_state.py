@@ -20,6 +20,22 @@ class GameState:
             "final_score": 0,
             "final_health": 0
         }
+        self.item_field = _generate_items()
+
+    def _generate_items(self) -> dict:
+        """ 
+        Generate the list of items the can be spawned in this game. 
+        Returns a dictionary of items and their generation probability.
+        """
+        items = {}
+        items[(HealthItem, ("potion", "A potion that heals 10 health.", 10))] = 0.05
+        items[(HealthItem, ("berries", "A tasty food. Heals 3 health.", 3))] = 0.05
+        items[(HealthItem, ("tomahawk", "A one-time use weapon that deals 7 damage.", -7, 1, True))] = 0.1
+        items[(HealthItem, ("sword", "A sword that will last for a short while.", -4, 5, True))] = 0.05
+        items[(HealthItem, ("katana", "A super deadly sword that deals 10 damage.", -10, 7, True))] = 0.05
+        items[(HealthItem, ("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True))] = 0.05
+        items[(Amulet, ("amulet", "Could it be... the amulet of power? There's only one way to find out."))] = 0
+        return items
 
     @border
     def win(self):
