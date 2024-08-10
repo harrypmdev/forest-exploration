@@ -7,6 +7,7 @@ from area import Area
 from enemy import Enemy
 from game_state import GameState
 from item import *
+from game_error import GameError
 
 class GameBoard:
     """
@@ -145,7 +146,7 @@ class GameBoard:
         new_direction[self.DIRECTIONS[direction][0]] += self.DIRECTIONS[direction][1]
         if not (4 >= new_direction[0] >= 0 and 4 >= new_direction[1] >= 0):
             raise GameError("\nCannot move in this direction.\n")
-        self.records["total moves"] += 1
+        self.game_state.records["total moves"] += 1
         self._add_to_visited(self.current_location)
         self.game_state.update_amulet_generation_probability(self.size, len(self.visited))
         if fleeing:
@@ -154,7 +155,7 @@ class GameBoard:
         if self._check_visited(*new_direction):
             self.current_location = self._get_visited_area(*new_direction)
         else:
-            self.current_location = Area(*new_direction, self.game_state, self.item_field, self)
+            self.current_location = Area(*new_direction, self.game_state)
         self.map[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
         self.look()
         return False

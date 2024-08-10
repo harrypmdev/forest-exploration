@@ -1,6 +1,7 @@
 """ A module for the Entity class utilised in Forest Exploration. """
 
 from game_state import GameState
+from effect import Effect
 
 class Entity:
     """
@@ -27,29 +28,24 @@ class Entity:
         self.searched = False
         self.hostile = hostile
 
-    def affect_health(self, effect, output_message = True):
+    def affect_health(self, effect: Effect) -> str:
         sickness_changed = ""
         if not self.alive:
-            print(f"\nThe {self.name} is dead, so nothing happens.\n")
-            return
+            return f"\nThe {self.name} is dead, so nothing happens.\n"
         self.health = max(0, self.health + effect.value)
         if self.health == 0:
-            self.die(effect)
-            return True
-        elif self.health > 2:
-            sickness_changed = " Its sickness was cured." if self.sick else ""
+            return self._die(effect)
+        elif self.health > 2 and self.sick:
+            sickness_changed = " Its sickness was cured."
             self.sick = False
-        if not output_message:
-            return False
         target_text = "on yourself" if self.name == "player" else f"on {self.name}"
         effect_text = f"restoring {effect.value} health" if effect.value >= 0 else f"dealing {abs(effect.value)} damage"
-        print(f"\n{effect.name.capitalize()} {target_text} {effect_text}!{sickness_changed}\n")
-        return False
+        return f"\n{effect.name.capitalize()} {target_text} {effect_text}!{sickness_changed}\n"
     
-    def die(self, effect):
-        print(f'\nThe {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
+    def _die(self, effect):
         self.game_state.records["kills"] += 1
         self.alive = False
+        return (f'\nThe {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
     
     def print_status(self):
         sick_status = " It looks sick and weak." if self.sick == True else ""

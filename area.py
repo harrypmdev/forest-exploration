@@ -2,6 +2,7 @@ import random
 import copy
 from entity import Entity
 from enemy import Enemy
+from item import HealthItem, Amulet
 
 class Area:
 
@@ -44,12 +45,13 @@ class Area:
     
     def generate_items(self):
         items = []
-        for item in self.game_state.item_field:
-            if random.random() < self.item_field[item]:
-                items.append(copy.deepcopy(item))
-                if item.name == "amulet":
-                    self.board.amulet_generated = True
-                    self.game_state.item_field[item] = 0
+        for item_args in HealthItem.ITEMS:
+            item_name = item_args[0]
+            if random.random() < self.game_state.item_probabilites[item_name]:
+                items.append(HealthItem(*item_args))
+        if random.random() < self.game_state.item_probabilites["amulet"]:
+            items.append(Amulet(self.game_state))
+            self.game_state.amulet_generated = True
         return items
     
     def generate_entities(self, chance, names, health_min, health_max, EntityType):

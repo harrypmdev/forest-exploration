@@ -2,7 +2,7 @@ import random
 import math
 from entity import Entity
 from effect import Effect
-from item import Amulet
+from item import Item, HealthItem, Amulet
 
 class Enemy(Entity):
 
@@ -15,10 +15,10 @@ class Enemy(Entity):
 
     def generate_loot(self):
         loot = []
-        for ItemType, item_args in self.game_state.ITEMS:
-            item_name = item_args[1]
-            if random.random() < self.game_state.item_probabilites[item_name] and item_name != "amulet":
-                loot.append(ItemType(*item_args))
+        for item_args in HealthItem.ITEMS:
+            item_name = item_args[0]
+            if random.random() < self.game_state.item_probabilites[item_name]:
+                loot.append(HealthItem(*item_args))
         return loot
         
     def get_attack(self) -> Effect:

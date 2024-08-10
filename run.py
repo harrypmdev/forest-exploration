@@ -12,7 +12,7 @@ from parser import Parser
 from item import *
 from utility import *
 
-def introduce(self, player: Player, game_board: GameBoard) -> None:
+def introduce(player: Player, game_board: GameBoard) -> None:
     """ Print a game introductory message. 
     
     Arguments:
@@ -25,7 +25,6 @@ def introduce(self, player: Player, game_board: GameBoard) -> None:
             "Welcome to Forest Exploration!\n"
             f"Your game board has {game_board.size}x{game_board.size} dimensions.\n"
             f"Your player starts with {player.health} health.\n"
-            "Enter 'tutorial' if it is your first time playing.\n"
             "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══")
 
 def get_move() -> str:
@@ -52,7 +51,7 @@ def yes_no_query(question: str) -> bool:
 def save_game(game_state: GameState):
     pass
 
-def end_turn(self, player: Player, board: Gameboard) -> None:
+def end_turn(player: Player, board: GameBoard) -> None:
     """ End the turn, making all living enemies attack the player. 
 
     Arguments:
@@ -69,7 +68,7 @@ def end_turn(self, player: Player, board: Gameboard) -> None:
                 print(f"{entity.name.capitalize()} attacked and it hit!")
                 print(f"Player {attack.name} for {str(abs(attack.value))} damage.\n")
             else:
-                print(f"{self.name.capitalize()} attacked and it missed!\n")
+                print(f"{name.capitalize()} attacked and it missed!\n")
 
 def initialize_game() -> tuple[Player, GameBoard, GameState]:
     """ Initialize a new game.
@@ -81,7 +80,7 @@ def initialize_game() -> tuple[Player, GameBoard, GameState]:
     """
     game_state = GameState()
     board = GameBoard(5, game_state)
-    player = Player(30, board, 0, [])
+    player = Player(30, board, game_state, [])
     player.inventory.append(HealthItem("potion", "A potion that heals 10 health.", 10))
     player.inventory.append(HealthItem("sword", "A sword that will last for a short while.", -4, 5, True))
     return player, board, game_state
@@ -112,9 +111,11 @@ def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
 def main():
     """ Run the Forest Exploration game. """
     player, board, game_state = initialize_game()
-    introduce(player, game_board)
-    player.print_status(False)
-    print("You are in the center of a large forest.")
+    if yes_no_query("Is it your first time playing?: \n"):
+        print_tutorial()
+        input("Press any key to continue.\n")
+    introduce(player, board)
+    print("\nYou are in the center of a large forest.")
     board.look(False)
     game_loop(player, board, game_state)
     if game_state.game_won and yes_no_query("Well done on finishing the game. Save score to leaderboard? (Yes/No): \n"):

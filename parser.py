@@ -60,15 +60,15 @@ class Parser:
             "tutorial": (print_tutorial, ()),
             "inventory": (self.player.print_inventory, ()),
             "status": (self.player.print_status, ()),
-            "status of": (self._parse_status_of, (noun, )),
-            "punch": (self._parse_punch, (noun, )),
+            "status of": (self._parse_status_of, (noun,)),
+            "punch": (self._parse_punch, (noun,)),
             "use": (self._parse_use, (noun, self.player)),
             "use on": (self._parse_use_on, (noun, noun_two)),
-            "describe": (self._parse_describe, (noun, )),
-            "search": (self._parse_search, (noun, )),
-            "take": (self._parse_take, (noun, )),
-            "drop": (self._parse_drop, (noun, )),
-            "go": (self.board.move, (noun, )),
+            "describe": (self._parse_describe, (noun,)),
+            "search": (self._parse_search, (noun,)),
+            "take": (self._parse_take, (noun,)),
+            "drop": (self._parse_drop, (noun,)),
+            "go": (self.board.move, (noun,)),
             "map": (self.board.print, ()),
             "look": (self.board.look, ()),
             "flee": (self.board.flee, ()),
@@ -124,7 +124,7 @@ class Parser:
         """
         for entity in self.board.current_location.entities:
             if entity.name == noun:
-                if entity.hostile:
+                if not entity.hostile:
                     raise GameError(f"\nOnly enemies can be searched, {noun} is not an enemy.\n")
                 if entity.alive:
                     raise GameError(f"\n{entity.name.capitalize()} is alive! Only dead creatures can be searched.\n")
@@ -193,9 +193,9 @@ class Parser:
         for entity in self.board.current_location.entities:
             if entity.name == noun:
                 damage = -random.randrange(1, 3)
-                entity.affect_health(Effect("you punched it", damage), False)
-                if entity.alive:
-                    print(f"\nYou punched {entity.name} dealing {str(abs(damage))} damage.\n")
+                punch_attack = Effect("you used punch attack", damage)
+                punch_message = entity.affect_health(punch_attack)
+                print(punch_message)
                 return True
         raise GameError(f"\nNo entity called {noun} in area.\n")  
 
@@ -211,7 +211,7 @@ class Parser:
         
         Returns False.
         """
-        for entity in self.board.get_current_area_entities():
+        for entity in self.board.current_location.entities:
             if entity.name == noun:
                 entity.print_status()
                 return False
@@ -231,8 +231,14 @@ class Parser:
         Returns True.
         """
         for item in self.player.inventory:
-            if item.name == noun:
-                item.use(self.player, target)
+            if item.name == noun and item.name != "amulet":
+                use_message = item.use(target)
+                print(use_message)
+                if target.hostile and not target.alive:
+                    self.game_state.records["score"] += 10
+                return True
+            if item.name == noun and item.name == "amulet":
+                print(item.activate())
                 return True
         raise GameError(f"\nNo item named {noun} in inventory.\n")
 
