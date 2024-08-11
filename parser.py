@@ -9,6 +9,7 @@ from enemy import Enemy
 from utility import *
 from game_board import GameBoard
 from game_error import GameError
+from game_state import GameState
 
 class Parser:
     """
@@ -24,15 +25,18 @@ class Parser:
     Public Methods:
     parse_move -- parse a raw move from the user
     """
-    VALID_MOVES = (
+    _ONE_WORD_MOVES = (
         "help", "tutorial", "inventory", 
-        "status", "status of", "punch", 
-        "use", "use on", "describe", "map",
-        "search", "quit", "go", "look", 
-        "flee", "take", "drop"
+        "status", "quit", "look",
+        "flee", "map"
     )
+    _TWO_WORD_MOVES = (
+        "punch", "use", "describe",
+        "go", "search", "drop", "take"
+    )
+    _MOVES = _ONE_WORD_MOVES + _TWO_WORD_MOVES
 
-    def __init__(self, player: Player, board: GameBoard) -> None:
+    def __init__(self, player: Player, board: GameBoard, game_state: GameState) -> None:
         """
         Create a Parser object.
     
@@ -41,6 +45,7 @@ class Parser:
         """
         self.player = player
         self.board = board
+        self.game_state = game_state
 
     def parse_move(self, move: str) -> bool:
         """
@@ -92,21 +97,23 @@ class Parser:
             3: str -- The second 'noun' (object) the command is being used on.
         Returns empty strings if command does not use two nouns.
         """
-        parts = move.split(" ")
+        parts = move.strip().split(" ")
         command = parts[0].lower()
-        if command not in self.VALID_MOVES:
+        if command not in self._MOVES:
             raise GameError(f"\n{command} is not a valid command! Try again.\n")
-        if len(parts) == 1:
+        if len(parts) == 1 and parts[0] in self._ONE_WORD_MOVES:
             return command, "", ""
-        if len(parts) == 2:
+        elif len(parts) == 2 and parts[0] in self._TWO_WORD_MOVES:
             return command, parts[1], ""
-        if parts[0] == "status" and parts[1] == "of":
+        elif len(parts) == 3 and parts[0] == "status" and parts[1] == "of":
             command="status of"
             return command, parts[2], ""
-        if parts[0] == "use" and parts[2] == "on":
+        elif len(parts) == 4 and parts[0] == "use" and parts[2] == "on":
             command="use on"
             return command, parts[1], parts[3]
-        raise GameError(f"\n'{command}' does not work in this way! Enter 'tutorial' for tutorial or 'help' for valid moves list.\n")
+        raise GameError(f"\n'{command}' does not work in this way!\n"
+                        "Enter 'tutorial' for tutorial or 'help '"
+                        "for valid moves list.\n")
 
     def _parse_search(self, noun: str) -> bool:
         """
@@ -127,7 +134,8 @@ class Parser:
                 if not entity.hostile:
                     raise GameError(f"\nOnly enemies can be searched, {noun} is not an enemy.\n")
                 if entity.alive:
-                    raise GameError(f"\n{entity.name.capitalize()} is alive! Only dead creatures can be searched.\n")
+                    raise GameError(f"\n{entity.name.capitalize()} is alive!\n"
+                                    "Only dead creatures can be searched.\n")
                 found_items = entity.search()
                 self.player.inventory.extend(found_items)
                 if not found_items:

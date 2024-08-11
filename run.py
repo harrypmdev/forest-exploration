@@ -68,7 +68,7 @@ def end_turn(player: Player, board: GameBoard) -> None:
                 print(f"{entity.name.capitalize()} attacked and it hit!")
                 print(f"Player {attack.name} for {str(abs(attack.value))} damage.\n")
             else:
-                print(f"{name.capitalize()} attacked and it missed!\n")
+                print(f"{entity.name.capitalize()} attacked and it missed!\n")
 
 def initialize_game() -> tuple[Player, GameBoard, GameState]:
     """ Initialize a new game.
@@ -97,7 +97,7 @@ def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
     game_state: GameState -- the game state for this game, as
     created by the initialize game function
     """
-    parser = Parser(player, board)
+    parser = Parser(player, board, game_state)
     while player.alive:
         move = get_move()
         try:
