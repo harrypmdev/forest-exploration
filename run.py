@@ -80,9 +80,9 @@ def initialize_game() -> tuple[Player, GameBoard, GameState]:
     """
     game_state = GameState()
     board = GameBoard(5, game_state)
-    player = Player(30, board, game_state, [])
-    player.inventory.append(HealthItem("potion", "A potion that heals 10 health.", 10))
-    player.inventory.append(HealthItem("sword", "A sword that will last for a short while.", -4, 5, True))
+    potion = HealthItem("potion", "A potion that heals 10 health.", 10)
+    sword = HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)
+    player = Player(30, [potion, sword])
     return player, board, game_state
 
 def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:

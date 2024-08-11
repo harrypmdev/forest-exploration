@@ -6,7 +6,7 @@ from utility import *
 from area import Area
 from enemy import Enemy
 from game_state import GameState
-from item import *
+from item import Item, HealthItem, Amulet
 from game_error import GameError
 
 class GameBoard:

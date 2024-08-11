@@ -1,6 +1,5 @@
 """ A module for the Entity class utilised in Forest Exploration. """
 
-from game_state import GameState
 from effect import Effect
 
 class Entity:
@@ -19,11 +18,10 @@ class Entity:
     parse_move -- parse a raw move from the user
     """
 
-    def __init__(self, health: int, name: str, game_state: GameState, sick: bool = False, hostile: bool = False):
+    def __init__(self, health: int, name: str, sick: bool = False, hostile: bool = False):
         self.name = name
         self.health = health
         self.alive = True
-        self.game_state = game_state
         self.sick = sick
         self.cured = False
         self.searched = False
