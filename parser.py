@@ -204,6 +204,8 @@ class Parser:
                 punch_attack = Effect("you used punch attack", damage)
                 punch_message = entity.affect_health(punch_attack)
                 print(punch_message)
+                if entity.hostile and not entity.alive:
+                    self.game_state.update_kill_records()
                 return True
         raise GameError(f"\nNo entity called {noun} in area.\n")  
 
@@ -243,7 +245,7 @@ class Parser:
                 use_message = item.use(target)
                 print(use_message)
                 if target.hostile and not target.alive:
-                    self.game_state.records["score"] += 10
+                    self.game_state.update_kill_records()
                 return True
             if item.name == noun and item.name == "amulet":
                 print(item.activate())

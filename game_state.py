@@ -35,6 +35,11 @@ class GameState:
         percent_visited = (1 / (board_size*board_size)) * num_of_visited
         amulet_probability = (not self.amulet_generated) * percent_visited
         self.item_probabilites["amulet"] = amulet_probability
+    
+    def update_kill_records(self):
+        print("Score +10!")
+        self.game_state.records["score"] += 10
+        self.game_state.records["kills"] += 1
 
     @border
     def win(self):
