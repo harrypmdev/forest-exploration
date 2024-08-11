@@ -256,6 +256,7 @@ class Parser:
                 print("")
                 return True
             if item.name == noun and item.name == "amulet":
+                self.game_state.records["final_health"] = self.player.health
                 item.activate()
                 return False
         raise GameError(f"\nNo item named {noun} in inventory.\n")

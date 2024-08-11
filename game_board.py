@@ -186,4 +186,4 @@ class GameBoard:
                 self.flee()
         else:
             print("\nFlee unsuccessful! You have not moved.\n")
-        return True
+        return False
