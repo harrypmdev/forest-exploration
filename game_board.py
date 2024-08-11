@@ -150,8 +150,9 @@ class GameBoard:
         self._add_to_visited(self.current_location)
         self.game_state.update_amulet_generation_probability(self.size, len(self.visited))
         if fleeing:
-            print("Fled successfully!")
-        print(f"\nYou travelled {direction.capitalize()}")
+            print(f"\nFled successfully! You travelled {direction.capitalize()}.")
+        else:
+            print(f"\nYou travelled {direction.capitalize()}.")
         if self._check_visited(*new_direction):
             self.current_location = self._get_visited_area(*new_direction)
         else:

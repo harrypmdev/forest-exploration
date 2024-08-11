@@ -2,7 +2,7 @@ import random
 import copy
 from entity import Entity
 from enemy import Enemy
-from item import HealthItem, Amulet
+from item import Item, HealthItem, Amulet, GenerateItems
 
 class Area:
 
@@ -44,13 +44,8 @@ class Area:
         return tree_sentence + " " + ground_sentence
     
     def generate_items(self):
-        items = []
-        for item_args in HealthItem.ITEMS:
-            item_name = item_args[0]
-            if random.random() < self.game_state.item_probabilites[item_name]:
-                items.append(HealthItem(*item_args))
-        if random.random() < self.game_state.item_probabilites["amulet"]:
-            items.append(Amulet(self.game_state))
+        items = GenerateItems.generate((HealthItem, Amulet), self.game_state)
+        if any(isinstance(item, Amulet) for item in items):
             self.game_state.amulet_generated = True
         return items
     

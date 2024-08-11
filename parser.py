@@ -165,7 +165,7 @@ class Parser:
                 self.player.inventory.append(self.board.current_location.items.pop(index))
                 print(f"\nTook {item.name}!\n")
                 return False
-        raise GameError(f"No item present called {item.name}.")
+        raise GameError(f"\nNo item present called {noun}.\n")
 
     def _parse_drop(self, noun: str) -> bool:
         """
@@ -203,9 +203,10 @@ class Parser:
                 damage = -random.randrange(1, 3)
                 punch_attack = Effect("you used punch attack", damage)
                 punch_message = entity.affect_health(punch_attack)
-                print(punch_message)
+                print(f"\n{punch_message}")
                 if entity.hostile and not entity.alive:
                     self.game_state.update_kill_records()
+                print("")
                 return True
         raise GameError(f"\nNo entity called {noun} in area.\n")  
 
@@ -243,13 +244,20 @@ class Parser:
         for item in self.player.inventory:
             if item.name == noun and item.name != "amulet":
                 use_message = item.use(target)
-                print(use_message)
+                print(f"\n{use_message}")
                 if target.hostile and not target.alive:
                     self.game_state.update_kill_records()
+                if target.cured:
+                    self.game_state.update_score(10)
+                if item.broken:
+                    self.player.inventory.remove(item)
+                    if not item.one_time_use:
+                        print(f"{item.name.capitalize()} broke!")       
+                print("")
                 return True
             if item.name == noun and item.name == "amulet":
-                print(item.activate())
-                return True
+                item.activate()
+                return False
         raise GameError(f"\nNo item named {noun} in inventory.\n")
 
     def _parse_use_on(self, noun: str, noun_two: str) -> bool:

@@ -1,3 +1,5 @@
+import random
+
 from effect import Effect
 from game_state import GameState
 
@@ -7,19 +9,17 @@ class Item:
         self.name = name
         self.description = description
         self.durability = durability
+        self.one_time_use = durability == 1
         self.broken = False
-        self.break_message = durability > 1
 
     def affect_durability(self, value):
         self.durability += value
         if self.durability <= 0:
             self.broken = True
-            if self.break_message:
-                print(f"{self.name.capitalize()} broke!")
 
 class HealthItem(Item):
     ITEMS = (
-        ("tomahawk", "A one-time use weapon that deals 7 damage.", -7, 1, True),
+        ("tomahawk", "A one-time use weapon that deals 7 damage.", -7),
         ("potion", "A potion that heals 10 health.", 10),
         ("berries", "A tasty food. Heals 3 health.", 3),
         ("sword", "A sword that will last for a short while.", -4, 5, True),
@@ -33,8 +33,8 @@ class HealthItem(Item):
         self.target_item = target_item
 
     def use(self, target):
-        effect = Effect(f"you used your {self.name}", self.health_effect)  
         self.affect_durability(-1)
+        effect = Effect(f"you used your {self.name}", self.health_effect)  
         return target.affect_health(effect)
 
 class Amulet(Item):
@@ -47,8 +47,24 @@ class Amulet(Item):
         self.game_state = game_state
 
     def activate(self):
-        self.game_state.win()
-        return (
+        print(
             "\nThe amulet glows and shakes as you put it around you neck.\n"
             "It really is... the amulet of power! You've found it at last!\n"
         )
+        self.game_state.win()
+
+class GenerateItems:
+
+    @staticmethod
+    def generate(types: tuple[type[Item]], 
+                game_state: GameState = GameState()) -> list[Item]:
+        item_list = []
+        if HealthItem in types:
+            for item_args in HealthItem.ITEMS:
+                item_name = item_args[0]
+                if random.random() < game_state.item_probabilites[item_name]:
+                    item_list.append(HealthItem(*item_args))
+        if Amulet in types:
+            if random.random() < game_state.item_probabilites["amulet"]:
+                item_list.append(Amulet(game_state))
+        return item_list

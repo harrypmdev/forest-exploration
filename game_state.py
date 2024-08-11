@@ -21,11 +21,11 @@ class GameState:
             "final_health": 0,
         }
         self.item_probabilites = {
-            "tomahawk": 0.01,
-            "potion": 0.05,
-            "berries": 0.05,
-            "sword": 0.05,
-            "katana": 0.05,
+            "tomahawk": 0.05,
+            "potion": 0.06,
+            "berries": 0.08,
+            "sword": 0.04,
+            "katana": 0.04,
             "axe": 0.05,
             "amulet": 0
         }
@@ -37,11 +37,15 @@ class GameState:
         self.item_probabilites["amulet"] = amulet_probability
     
     def update_kill_records(self):
-        print("Score +10!")
-        self.game_state.records["score"] += 10
-        self.game_state.records["kills"] += 1
+        self.update_score(10)
+        self.records["kills"] += 1
+
+    def update_score(self, score):
+        print(f"Score +{str(score)}!")
+        self.records["score"] += score
 
     @border
     def win(self):
+        self.game_won = True
         print(f"You win! You finished the game with a score total of {self.records["score"]} and {self.records["final_health"]} health.")
         print(f"You moved a total of {self.records["total moves"]} times. You killed {self.records["kills"]} creatures.")

@@ -98,12 +98,10 @@ def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
     created by the initialize game function
     """
     parser = Parser(player, board, game_state)
-    while player.alive:
+    while player.alive and not game_state.game_won:
         move = get_move()
         try:
             if parser.parse_move(move):
-                if game_state.game_won:
-                    break
                 end_turn(player, board)
         except GameError as e:
             print(str(e))
@@ -111,6 +109,7 @@ def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
 def main():
     """ Run the Forest Exploration game. """
     player, board, game_state = initialize_game()
+    print("\nGreetings player!")
     if yes_no_query("Is it your first time playing?: \n"):
         print_tutorial()
         input("Press any key to continue.\n")

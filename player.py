@@ -9,7 +9,7 @@ class Player(Entity):
     def __init__(self, health, board, game_state, inventory):
         super().__init__(health, "player", board)
         self.inventory = inventory
-        self.score = game_state.records["score"]
+        self.game_state = game_state
     
     @border
     def die(self, effect):
@@ -19,7 +19,7 @@ class Player(Entity):
     def print_status(self) -> bool:
         """ Prints the player's 'status' (health and score). Always returns False. """
         print(f"\nYou have {self.health} health. "
-                f"Your score is {self.score}\n")
+                f"Your score is {self.game_state.records["score"]}\n")
         return False
     
     def print_inventory(self) -> bool:

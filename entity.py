@@ -25,27 +25,29 @@ class Entity:
         self.alive = True
         self.game_state = game_state
         self.sick = sick
+        self.cured = False
         self.searched = False
         self.hostile = hostile
 
     def affect_health(self, effect: Effect) -> str:
         sickness_changed = ""
         if not self.alive:
-            return f"\nThe {self.name} is dead, so nothing happens.\n"
+            return f"The {self.name} is dead, so nothing happens."
         self.health = max(0, self.health + effect.value)
         if self.health == 0:
             return self._die(effect)
         elif self.health > 2 and self.sick:
             sickness_changed = " Its sickness was cured."
             self.sick = False
+            self.cured = True
         target_text = "on yourself" if self.name == "player" else f"on {self.name}"
         effect_text = f"restoring {effect.value} health" if effect.value >= 0 else f"dealing {abs(effect.value)} damage"
-        return f"\n{effect.name.capitalize()} {target_text} {effect_text}!{sickness_changed}\n"
+        return f"{effect.name.capitalize()} {target_text} {effect_text}!{sickness_changed}"
     
     def detailed_name(self, indefinite = False):
         article = self._indefinite() + " " if indefinite else ""
         dead_string = f"{article}{self.name}" if self.alive else f"{article}dead {self.name}"
-        sick_string = " (it looks sick and weak) " if self.sick else ""        
+        sick_string = " (it looks sick and weak)" if self.sick else ""        
         searched_string = ""
         if not self.alive and self.hostile:
             searched_string = " (searched)" if self.searched else " (not searched)"
@@ -61,7 +63,7 @@ class Entity:
     
     def _die(self, effect):
         self.alive = False
-        return (f'\nThe {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!\n')
+        return (f'The {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!')
     
     def _indefinite(self):
         vowels = ("a", "e", "i", "o", "u")
