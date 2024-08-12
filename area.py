@@ -1,8 +1,7 @@
 import random
-import copy
-from entity import Entity
-from enemy import Enemy
-from item import Item, HealthItem, Amulet, GenerateItems
+
+from entity import GenerateEntities
+from item import Amulet, GenerateItems
 
 class Area:
 
@@ -10,31 +9,60 @@ class Area:
         self.y = y
         self.x = x
         self.game_state = game_state
-        self.items = self.generate_items()
-        self.description = self.generate_description()
-        self.entities = []
-        animal_names = ["rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "dog"]
-        enemy_names = ["ogre", "vampire", "scorpion", "slime", "wyvern", "goblin"]
-        self.generate_entities(0.25, animal_names, 1, 10, Entity)
-        if hostiles:
-            self.generate_entities(0.6, enemy_names, 4, 17, Enemy, )
+        self.items = self._generate_items()
+        self._area_description = self._generate_area_description()
+        entity_types = ("animal", "enemy") if hostiles else ("animal",)
+        self.entities = GenerateEntities.generate(entity_types)
+
+    def in_battle(self) -> bool:
+        """ 
+        Check if the player is currently in battle (hostile entities are present).
+        Returns True if in battle, False if not.
+        """
+        for entity in self.entities:
+            if entity.hostile and entity.alive:
+                return True
+        return False
     
     def get_description(self) -> str:
-        entities_sentence = "\nThere are no living creatures present except you.\n"
-        if len(self.entities) == 1:
-            entities_sentence = f"\nThere is {self.entities[0].detailed_name(True)}.\n"
-        if len(self.entities) > 1:
-            entities_sentence = "\nThere are multiple creatures present:\n"
-            for entity in self.entities:
-                entities_sentence += f"{entity.detailed_name().capitalize()}\n"
-        item_sentence = ""
-        if self.items:
-            item_sentence = "On the floor lies:\n"
-            for item in self.items:
-                item_sentence += f"{item.name.capitalize()}\n"
-        return self.description + entities_sentence + item_sentence
+        entities_description = self._generate_entities_description()
+        items_description = self._generate_items_description()
+        battle_description = self._generate_battle_description()
+        return (
+            self._area_description 
+            + entities_description 
+            + items_description
+            + battle_description
+        )
 
-    def generate_description(self):
+    def _generate_battle_description(self):
+        if self.in_battle():
+            return "A hostile creature is present! You are in battle.\n"
+        else:
+            return ""
+
+
+    def _generate_items_description(self):
+        if self.items:
+            items_description = "On the floor lies:\n"
+            for item in self.items:
+                items_description += f"{item.name.capitalize()}\n"
+            return items_description
+        else:
+            return ""
+
+    def _generate_entities_description(self):    
+        if len(self.entities) == 1:
+            return f"\nThere is {self.entities[0].detailed_name(True)}.\n"
+        elif len(self.entities) > 1:
+            entities_description = "\nThere are multiple creatures present:\n"
+            for entity in self.entities:
+                entities_description += f"{entity.detailed_name().capitalize()}\n"
+            return entities_description
+        else:
+            return "\nThere are no living creatures present except you.\n"
+
+    def _generate_area_description(self):
         tree_adjectives = ("bushy", "tall", "short", "thin and white", 
         "sick looking", "strange and contorted", "healthy looking")
         ground_adjectives = ("stony and tough", "made up of course dirt", "scattered with grass patches",
@@ -43,47 +71,8 @@ class Area:
         ground_sentence = f"The ground is {random.choice(ground_adjectives)}."
         return tree_sentence + " " + ground_sentence
     
-    def generate_items(self):
-        items = GenerateItems.generate((HealthItem, Amulet), self.game_state)
+    def _generate_items(self):
+        items = GenerateItems.generate(("HealthItem", "Amulet"), self.game_state)
         if any(isinstance(item, Amulet) for item in items):
             self.game_state.amulet_generated = True
         return items
-    
-    def generate_entities(self, chance, names, health_min, health_max, EntityType):
-        attack_names = {
-            "ogre": "was clubbed", 
-            "vampire": "had their blood sucked", 
-            "scorpion": "got stung", 
-            "slime": "got slimed", 
-            "wyvern": "got burnt", 
-            "goblin": "got clawed and scratched"}
-        local_names = names[:]
-        if random.random() < chance:
-            for entity in self.entities:
-                if entity.name in local_names:
-                    local_names.remove(entity.name)
-            if len(local_names) > 0:
-                entity_health = random.randrange(health_min, health_max)
-                if EntityType == Enemy:
-                    max_damage = random.randrange(3, 12)
-                    accuracy = random.randrange(50, 100) / 100
-                    name_choice = random.choice(local_names)
-                    attack_name = attack_names[name_choice]
-                    entity = EntityType(
-                        entity_health, 
-                        name_choice, 
-                        self.game_state,
-                        max_damage,
-                        accuracy,
-                        attack_name
-                    )
-                else:
-                    entity = EntityType(
-                        entity_health, 
-                        random.choice(local_names), 
-                        self.game_state, 
-                        entity_health <= 2,
-                    )
-                self.entities.append(entity)
-                self.generate_entities(chance*0.3, local_names, health_min, health_max, EntityType)
-    

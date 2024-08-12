@@ -3,7 +3,6 @@ import os
 import random
 from game_board import GameBoard
 from player import Player
-from enemy import Enemy
 from entity import Entity
 from effect import Effect
 from game_error import GameError
@@ -115,7 +114,7 @@ def main():
         input("Press any key to continue.\n")
     introduce(player, board)
     print("\nYou are in the center of a large forest.")
-    board.look(False)
+    print(board.current_location.get_description())
     game_loop(player, board, game_state)
     if game_state.game_won and yes_no_query("Well done on finishing the game. Save score to leaderboard? (Yes/No): \n"):
         save_game(game_state)

@@ -4,7 +4,6 @@ import math
 import random
 from utility import *
 from area import Area
-from enemy import Enemy
 from game_state import GameState
 from item import Item, HealthItem, Amulet
 from game_error import GameError
@@ -68,7 +67,7 @@ class GameBoard:
         """
         if not self._check_visited(location.y, location.x):
             self.visited.append(location)
-        if self.currently_in_battle():
+        if self.current_location.in_battle():
             self.map[location.y][location.x] = get_emojis(":collision:")[0]  
         else:
             self.map[location.y][location.x] = get_emojis(":radio_button:")[0]   
@@ -106,16 +105,6 @@ class GameBoard:
             if area.y == y and area.x == x:
                 return area
         raise ValueError(f"Inappropriate coordinates provided: no area in visited list for coordinates y:{y}, x:{x}.")
-
-    def currently_in_battle(self) -> bool:
-        """ 
-        Check if the player is currently in battle (hostile entities are present).
-        Returns True if in battle, False if not.
-        """
-        for entity in self.current_location.entities:
-            if type(entity) == Enemy and entity.alive:
-                return True
-        return False
     
     def print(self) -> None:
         """ Print the game board's map. """
@@ -140,7 +129,7 @@ class GameBoard:
         """
         if direction not in self.DIRECTIONS.keys():
             raise GameError("\nThe 'go' command must be followed by: North, East, South or West.\n")
-        if self.currently_in_battle() and not fleeing:
+        if self.current_location.in_battle() and not fleeing:
             raise GameError("\nCannot travel whilst in battle! Enter 'flee' to attempt to flee.\n")
         new_direction = [self.current_location.y, self.current_location.x]
         new_direction[self.DIRECTIONS[direction][0]] += self.DIRECTIONS[direction][1]
@@ -158,16 +147,8 @@ class GameBoard:
         else:
             self.current_location = Area(*new_direction, self.game_state)
         self.map[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
-        self.look()
+        print(f"\n{self.current_location.get_description()}")
         return False
-            
-
-    def look(self, line_break: bool = True) -> None:
-        """ Print a description of the current area. """
-        line_break = "\n" if line_break else ""
-        print(f"{line_break}{self.current_location.get_description()}")
-        if self.currently_in_battle():
-            print("A hostile creature is present! You are in battle.\n")
     
     def flee(self) -> bool:
         """ 
@@ -177,7 +158,7 @@ class GameBoard:
 
         Returns True.
         """
-        if not self.currently_in_battle():
+        if not self.current_location.in_battle():
             raise GameError("\nCannot flee if not in battle! Move using 'go' command.\n")
         if random.random() > 0.3:
             try:

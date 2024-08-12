@@ -5,7 +5,6 @@ import emoji
 from effect import Effect
 from entity import Entity
 from player import Player
-from enemy import Enemy
 from utility import *
 from game_board import GameBoard
 from game_error import GameError
@@ -59,12 +58,14 @@ class Parser:
         Returns True if move passes turn in battle, returns False if not.
         """
         command, noun, noun_two = self._split_move(move.lower())
+        score = self.game_state.records["score"]
+        description = f"\n{self.board.current_location.get_description()}"
         # A dictionary of moves and their respective subroutine
         moves = {
             "help": (print_help, ()),
             "tutorial": (print_tutorial, ()),
             "inventory": (self.player.print_inventory, ()),
-            "status": (self.player.print_status, ()),
+            "status": (self.player.print_status, (score,)),
             "status of": (self._parse_status_of, (noun,)),
             "punch": (self._parse_punch, (noun,)),
             "use": (self._parse_use, (noun, self.player)),
@@ -75,8 +76,8 @@ class Parser:
             "drop": (self._parse_drop, (noun,)),
             "go": (self.board.move, (noun,)),
             "map": (self.board.print, ()),
-            "look": (self.board.look, ()),
             "flee": (self.board.flee, ()),
+            "look": (print, (description,)),
             "quit": (exit, ()),
         }
         try:

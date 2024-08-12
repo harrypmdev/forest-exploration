@@ -15,10 +15,10 @@ class Player(Entity):
         print(f'You died! Player {effect.name} causing {abs(effect.value)} damage and ran out of health!\n')
         self.alive = False
     
-    def print_status(self) -> bool:
+    def print_status(self, score: int) -> bool:
         """ Prints the player's 'status' (health and score). Always returns False. """
         print(f"\nYou have {self.health} health. "
-                f"Your score is {self.game_state.records["score"]}\n")
+                f"Your score is {str(score)}\n")
         return False
     
     def print_inventory(self) -> bool:

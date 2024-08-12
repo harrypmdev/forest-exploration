@@ -56,15 +56,16 @@ class Amulet(Item):
 class GenerateItems:
 
     @staticmethod
-    def generate(types: tuple[type[Item]], 
+    def generate(types: tuple[str], 
                 game_state: GameState = GameState()) -> list[Item]:
         item_list = []
-        if HealthItem in types:
+        types = map(str.lower,types)
+        if "healthitem" in types:
             for item_args in HealthItem.ITEMS:
                 item_name = item_args[0]
                 if random.random() < game_state.item_probabilites[item_name]:
                     item_list.append(HealthItem(*item_args))
-        if Amulet in types:
+        if "amulet" in types:
             if random.random() < game_state.item_probabilites["amulet"]:
                 item_list.append(Amulet(game_state))
         return item_list
