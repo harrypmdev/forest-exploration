@@ -48,7 +48,7 @@ class GameBoard:
         Arguments:
         size: int -- the dimension size of the board.
         """
-        tree, player = get_emojis(":evergreen_tree:", ":diamond_with_a_dot:")
+        tree, player = get_emojis("tree", "player")
         self.game_state = game_state
         self.size = size
         self.map = [[tree for y in range(size)] for x in range(size)]
@@ -68,9 +68,9 @@ class GameBoard:
         if not self._check_visited(location.y, location.x):
             self.visited.append(location)
         if self.current_location.in_battle():
-            self.map[location.y][location.x] = get_emojis(":collision:")[0]  
+            self.map[location.y][location.x] = get_emojis("battle")[0]  
         else:
-            self.map[location.y][location.x] = get_emojis(":radio_button:")[0]   
+            self.map[location.y][location.x] = get_emojis("visited")[0]   
     
     def _check_visited(self, y: int, x: int) -> bool:
         """ 
@@ -118,37 +118,56 @@ class GameBoard:
         Move in a specified direction on the game board's map.
 
         Arguments:
-        direction: str -- the direction the player should move (north, east, south or west).
-        fleeing: bool -- whether the player is currently fleeing (default False).
-
-        Raises GameError if:
-            The provided direction is invalid.
-            An attempt to move while in battle is made but the player is not fleeing.
+        direction: str -- the direction the player should move
+                          (north, east, south or west).
+        fleeing: bool -- whether the player is currently fleeing 
+                        (default False).
+    
+        Raises GameError the provided direction is invalid.
         
         Returns False
         """
         if direction not in self.DIRECTIONS.keys():
-            raise GameError("\nThe 'go' command must be followed by: North, East, South or West.\n")
-        if self.current_location.in_battle() and not fleeing:
-            raise GameError("\nCannot travel whilst in battle! Enter 'flee' to attempt to flee.\n")
-        new_direction = [self.current_location.y, self.current_location.x]
-        new_direction[self.DIRECTIONS[direction][0]] += self.DIRECTIONS[direction][1]
-        if not (4 >= new_direction[0] >= 0 and 4 >= new_direction[1] >= 0):
+            raise GameError("\nThe 'go' command must be followed by: "
+                            "North, East, South or West.\n")
+        new_coordinates = self._get_next_area(direction)
+        if not self._move_is_on_map(new_coordinates):
             raise GameError("\nCannot move in this direction.\n")
         self.game_state.records["total moves"] += 1
         self._add_to_visited(self.current_location)
-        self.game_state.update_amulet_generation_probability(self.size, len(self.visited))
+        self.game_state.update_amulet_gen(self.size, len(self.visited))
         if fleeing:
             print(f"\nFled successfully! You travelled {direction.capitalize()}.")
         else:
             print(f"\nYou travelled {direction.capitalize()}.")
-        if self._check_visited(*new_direction):
-            self.current_location = self._get_visited_area(*new_direction)
-        else:
-            self.current_location = Area(*new_direction, self.game_state)
-        self.map[self.current_location.y][self.current_location.x] = get_emojis(":diamond_with_a_dot:")[0]
+        self._update_current_area(new_coordinates)
+        self._update_player_on_map()
         print(f"\n{self.current_location.get_description()}")
         return False
+    
+    def _update_player_on_map(self):
+        player_emoji = get_emojis("player")[0]
+        y, x = self.current_location.y, self.current_location.x
+        self.map[y][x] = player_emoji
+
+    def _update_current_area(self, new_coordinates):
+        if self._check_visited(*new_coordinates):
+            self.current_location = self._get_visited_area(*new_coordinates)
+        else:
+            self.current_location = Area(*new_coordinates, self.game_state)
+
+    def _get_next_area(self, direction):
+        new_coordinates = [self.current_location.y, self.current_location.x]
+        axis = self.DIRECTIONS[direction][0]
+        movement = self.DIRECTIONS[direction][1]
+        new_coordinates[axis] += movement
+        return new_coordinates
+
+    def _move_is_on_map(self, new_coordinates):
+        if 4 >= new_coordinates[0] >= 0 and 4 >= new_coordinates[1] >= 0:
+            return True
+        else:
+            return False
     
     def flee(self) -> bool:
         """ 

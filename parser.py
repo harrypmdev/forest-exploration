@@ -5,7 +5,7 @@ import emoji
 from effect import Effect
 from entity import Entity
 from player import Player
-from utility import *
+from utility import print_help, print_tutorial, print_key
 from game_board import GameBoard
 from game_error import GameError
 from game_state import GameState
@@ -27,7 +27,7 @@ class Parser:
     _ONE_WORD_MOVES = (
         "help", "tutorial", "inventory", 
         "status", "quit", "look",
-        "flee", "map"
+        "flee", "map", "key"
     )
     _TWO_WORD_MOVES = (
         "punch", "use", "describe",
@@ -64,6 +64,7 @@ class Parser:
         moves = {
             "help": (print_help, ()),
             "tutorial": (print_tutorial, ()),
+            "key": (print_key, ()),
             "inventory": (self.player.print_inventory, ()),
             "status": (self.player.print_status, (score,)),
             "status of": (self._parse_status_of, (noun,)),
@@ -74,7 +75,7 @@ class Parser:
             "search": (self._parse_search, (noun,)),
             "take": (self._parse_take, (noun,)),
             "drop": (self._parse_drop, (noun,)),
-            "go": (self.board.move, (noun,)),
+            "go": (self._parse_go, (noun,)),
             "map": (self.board.print, ()),
             "flee": (self.board.flee, ()),
             "look": (print, (description,)),
@@ -115,6 +116,12 @@ class Parser:
         raise GameError(f"\n'{command}' does not work in this way!\n"
                         "Enter 'tutorial' for tutorial or 'help '"
                         "for valid moves list.\n")
+
+    def _parse_go(self, direction: str) -> bool:
+        if self.board.current_location.in_battle():
+            raise GameError("\nCannot travel whilst in battle! "
+                            "Enter 'flee' to attempt to flee.\n")
+        return self.board.move(direction)
 
     def _parse_search(self, noun: str) -> bool:
         """

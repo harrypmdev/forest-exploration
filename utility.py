@@ -2,13 +2,22 @@ from collections.abc import Callable, Awaitable
 import random
 import emoji
 
-def get_emojis(*args):
+def get_emojis(*args: str):
     """
     Returns a list of the emojis from the strings passed to the function
     """
+    key = {
+        "tree": ":evergreen_tree:", 
+        "player": ":diamond_with_a_dot:",
+        "battle": ":collision:",
+        "visited": ":radio_button:"
+    }
     emoji_list = []
     for arg in args:
-        emoji_list.append(emoji.emojize(arg))
+        if arg not in key.keys():
+            raise ValueError("Invalid map item name.")
+        emoji_string = key[arg]
+        emoji_list.append(emoji.emojize(emoji_string))
     return emoji_list
 
 def border(func: Callable) -> Callable:
@@ -52,5 +61,22 @@ def print_tutorial() -> bool:
         "battle, you will be attacked every turn until the enemy is defeated.\n"
         "You can use items on the enemy (sword, poison etc.), attempt to flee,\n"
         "or simply 'punch' the enemy if you have no items to use. Good luck!\n"
+    )
+    return False
+
+def print_key() -> bool:
+    """ Prints the map key. Always returns False. """
+    tree, player, battle, visited = get_emojis(
+        "tree", 
+        "player", 
+        "battle", 
+        "visited"
+    )
+    print(
+        "\nMap Key:\n"
+        f"{tree} -- Unexplored forest.\n"
+        f"{player} -- Your current location.\n"
+        f"{battle} -- An unresolved battle you fled from.\n"
+        f"{visited} -- A visited location with no living hostiles.\n"
     )
     return False

@@ -129,8 +129,10 @@ class GenerateEntities:
     @classmethod
     def _generate_enemies(cls):
         enemy_list = []
+        gen_chance = 0.10
         for name, attack_name in Enemy.ENEMIES.items():
-            if random.random() < 0.10:
+            if random.random() < gen_chance:
+                gen_chance -= 0.02
                 max_damage = random.randrange(3, 12)
                 accuracy = random.randrange(50, 100) / 100
                 health = random.randrange(4, 17)
