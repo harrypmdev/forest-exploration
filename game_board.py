@@ -105,13 +105,8 @@ class GameBoard:
         return False
 
     def _add_to_visited(self, location: Area) -> None:
-        """ 
-        Check if a location is already on the visited list and add it if not.
-        Update map for the visited area.
-        
-        Arguments:
-        location: Area -- the new area that needs to be on the visited list.
-        """
+        # Check if a location is already on the visited list and then
+        # add it if not and update map for the visited area.
         if not self._check_visited(location.y, location.x):
             self.visited.append(location)
         if self.current_location.in_battle():
@@ -120,34 +115,14 @@ class GameBoard:
             self.map[location.y][location.x] = get_emojis("visited")[0]   
     
     def _check_visited(self, y: int, x: int) -> bool:
-        """ 
-        Check if the player has visited an area at the given coordinates.
-
-        Arguments:
-        y: int -- the y coordinate to check.
-        x: int -- the x coordinate to check.
-
-        Returns True if it has been visited, False if not.
-        """
+        # Return True if the player has visited an area at the given coordinates.
         for area in self.visited:
             if area.y == y and area.x == x:
                 return True
         return False
     
     def _get_visited_area(self, y: int, x: int) -> bool:
-        """ 
-        Return the area object for the given coordinates.
-        Coordinates for a valid area that has already been visited
-        must be provided.
-
-        Arguments:
-        y: int -- the y coordinate to retrieve
-        x: int -- the x coordinate to retrieve
-
-        Raises ValueError if passed invalid coordinates.
-
-        Returns Area object for the coordinates in question.
-        """
+        # Return the Area object for the given coordinates.
         for area in self.visited:
             if area.y == y and area.x == x:
                 return area
