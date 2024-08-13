@@ -4,11 +4,21 @@ class GameState:
     """
     A class for the game's key variables.
 
-    Instance Attributes:
+    Public Instance Attributes:
     amulet_generated: bool -- whether the amulet has been generated yet.
     game_won: bool -- whether or not the game has been won
     records: dict -- a record of player achievements.
-
+    item_probabilites: dict -- a dictionary of items and their relative
+                               generation probability
+    
+    Public Methods:
+    update_amulet_gen: None -- Update probability of amulet generating
+                               based on amount of areas visited.
+    update_kill_records: None -- Update record of total kills
+                                 and score in accordance.
+    update_score: None -- Update score and print score message.
+    win: None -- Print the win message and set the game_won attribute
+                 to True.
     """
 
     def __init__(self):
