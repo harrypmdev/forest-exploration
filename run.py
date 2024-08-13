@@ -1,15 +1,12 @@
 import math
-import os
 import random
+
 from game_board import GameBoard
 from player import Player
-from entity import Entity
-from effect import Effect
 from game_error import GameError
 from game_state import GameState
 from parser import Parser
-from item import *
-from utility import *
+from item import HealthItem
 
 def introduce(player: Player, game_board: GameBoard) -> None:
     """ Print a game introductory message. 
@@ -57,7 +54,7 @@ def end_turn(player: Player, board: GameBoard) -> None:
     player: Player -- the player for this game, as created 
     by the initialize_game function
     board: GameBoard -- the board for this game, as created
-    by the initialize game function
+    by the initialize_game function
     """
     for entity in board.current_location.entities:
         if entity.hostile and entity.alive and player.alive:
@@ -92,9 +89,9 @@ def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
     player: Player -- the player for this game, as created 
     by the initialize_game function
     board: GameBoard -- the board for this game, as created
-    by the initialize game function
+    by the initialize_game function
     game_state: GameState -- the game state for this game, as
-    created by the initialize game function
+    created by the initialize_game function
     """
     parser = Parser(player, board, game_state)
     while player.alive and not game_state.game_won:
@@ -116,7 +113,9 @@ def main():
     print("\nYou are in the center of a large forest.")
     print(board.current_location.get_description())
     game_loop(player, board, game_state)
-    if game_state.game_won and yes_no_query("Well done on finishing the game. Save score to leaderboard? (Yes/No): \n"):
+    save_score = yes_no_query("Well done on finishing the game. " 
+                              "Save score to leaderboard? (Yes/No): \n")
+    if game_state.game_won and save_score:
         save_game(game_state)
     print("")
     if yes_no_query("Play again?: \n"):

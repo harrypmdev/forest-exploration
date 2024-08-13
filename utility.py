@@ -1,5 +1,6 @@
-from collections.abc import Callable, Awaitable
 import random
+from collections.abc import Callable, Awaitable
+
 import emoji
 
 def get_emojis(*args: str):

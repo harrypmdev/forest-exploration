@@ -1,5 +1,5 @@
 from entity import Entity
-from utility import *
+from utility import border
 
 class Player(Entity):
     """
