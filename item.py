@@ -1,23 +1,62 @@
 import random
+from abc import ABC, abstractmethod
 
 from effect import Effect
 from game_state import GameState
 
-class Item:
+class Item(ABC):
+    """
+    An abstract class for game items. Inherited by HealthItem and Amulet.
+
+    Public Instance Attributes:
+    name: str -- the name of the item
+    description: str -- a short description of the item
+    one_time_use: bool -- whether the item starts with a durability of 1 or
+                          not, True if it does, False if it doesn't
+    broken: bool -- whether the item is broken (True) or not broken (False)
+
+    Public Methods:
+    use -- use the item (abstract method implemented differently by each child)
+    """
 
     def __init__(self, name, description, durability = 1):
+        """
+        Constructor for Item class.
+
+        Arguments:
+        name: str -- the name of the item
+        description: str -- a short description of the item
+        durability: int -- how many times the item can be used before it
+                           breaks. Default is 1.
+        """
         self.name = name
         self.description = description
         self.one_time_use = durability == 1
         self.broken = False
         self._durability = durability
 
+    @abstractmethod
+    def use(self):
+        pass
+
     def _affect_durability(self, value):
+        # Affect the item's durability and checks if item is broken.
         self._durability += value
         if self._durability <= 0:
             self.broken = True
 
 class HealthItem(Item):
+    """
+    A class for items which affect an entity's health.
+
+    Public Class Attributes:
+    ITEMS: tuple -- a two dimensional tuple that contains the game's items.
+                    Each tuple in ITEMS holds the arguments for its HealthItem.
+
+    Public Instance Attributes:
+    target_item: bool -- Whether the item must be targeted at an entity.
+                         True if must be, False if can be used without target.
+    """
     ITEMS = (
         ("tomahawk", "A one-time use weapon that deals 7 damage.", -7),
         ("potion", "A potion that heals 10 health.", 10),
@@ -29,12 +68,12 @@ class HealthItem(Item):
 
     def __init__(self, name, description, health_effect, durability = 1, target_item = False):
         super().__init__(name, description, durability)
-        self.health_effect = health_effect
         self.target_item = target_item
+        self._health_effect = health_effect
 
     def use(self, target):
         self._affect_durability(-1)
-        effect = Effect(f"you used your {self.name}", self.health_effect)  
+        effect = Effect(f"you used your {self.name}", self._health_effect)  
         return target.affect_health(effect)
 
 class Amulet(Item):
