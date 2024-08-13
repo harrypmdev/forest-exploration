@@ -6,6 +6,7 @@ from effect import Effect
 from entity import Entity
 from player import Player
 from utility import print_help, print_tutorial, print_key
+from item import Item, HealthItem, Amulet
 from game_board import GameBoard
 from game_error import GameError
 from game_state import GameState
@@ -168,26 +169,35 @@ class Parser:
                 return False
         raise GameError(f"\nNo entity called {noun} in area.\n")
 
-    def _parse_use(self, noun: str, target: Entity) -> bool:
+    def _parse_use(self, entered_item: str, target: Entity) -> bool:
         # Parse moves which use the 'use' command.
         for item in self._player.inventory:
-            if item.name == noun:
-                use_message = item.use(target)
-                print(f"\n{use_message}")
-                if item.name == "amulet":
-                    self._game_state.win(self._player.health)
-                    return False
-                if target.hostile and not target.alive:
-                    self._game_state.update_kill_records()
-                if target.cured:
-                    self._game_state.update_score(10)
-                if item.broken:
-                    self._player.inventory.remove(item)
-                    if not item.one_time_use:
-                        print(f"{item.name.capitalize()} broke!")       
-                print("")
+            if item.name == entered_item and type(item) == HealthItem:
+                self._parse_use_health_item(item, target)
                 return True
-        raise GameError(f"\nNo item named {noun} in inventory.\n")
+            elif item.name == entered_item and type(item) == Amulet:
+                self._parse_use_amulet_item()
+                return False
+        raise GameError(f"\nNo item named {entered_item} in inventory.\n")
+    
+    def _parse_use_health_item(self, item: Item, target: Entity):
+        # Parse the 'use' command on HealthItems
+        use_message = target.affect_health(item.get_effect())
+        print(f"\n{use_message}")
+        if target.hostile and not target.alive:
+            self._game_state.update_kill_records()
+        if target.cured:
+            self._game_state.update_score(10)
+        if item.broken:
+            self._player.inventory.remove(item)
+            if not item.one_time_use:
+                print(f"{item.name.capitalize()} broke!")       
+        print("")
+    
+    def _parse_use_amulet_item(self, item: Item):
+        # Parse the 'use' command on Amulets
+        item.activate()
+        self._game_state.win(self._player.health)
 
     def _parse_use_on(self, noun: str, noun_two: str) -> bool:
         # Parse moves which use the 'use on' command.

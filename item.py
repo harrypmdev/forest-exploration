@@ -1,31 +1,28 @@
 import random
-from abc import ABC, abstractmethod
 
 from effect import Effect
 from game_state import GameState
 
-class Item(ABC):
+class Item:
     """
     An abstract class for game items. Inherited by HealthItem and Amulet.
 
     Public Instance Attributes:
-    name: str -- the name of the item
-    description: str -- a short description of the item
+    name: str -- the name of the item.
+    description: str -- a short description of the item.
     one_time_use: bool -- whether the item starts with a durability of 1 or
-                          not, True if it does, False if it doesn't
-    broken: bool -- whether the item is broken (True) or not broken (False)
-
-    Public Methods:
-    use -- use the item (abstract method implemented differently by each child)
+                          not, True if it does, False if it doesn't.
+    broken: bool -- whether the item is broken (True) or not broken (False).
     """
 
-    def __init__(self, name, description, durability = 1):
+    def __init__(self, name: str, description: str,
+                 durability: int = 1) -> None:
         """
         Constructor for Item class.
 
         Arguments:
-        name: str -- the name of the item
-        description: str -- a short description of the item
+        name: str -- the name of the item.
+        description: str -- a short description of the item.
         durability: int -- how many times the item can be used before it
                            breaks. Default is 1.
         """
@@ -35,11 +32,7 @@ class Item(ABC):
         self.broken = False
         self._durability = durability
 
-    @abstractmethod
-    def use(self):
-        pass
-
-    def _affect_durability(self, value):
+    def _affect_durability(self, value: int) -> None:
         # Affect the item's durability and checks if item is broken.
         self._durability += value
         if self._durability <= 0:
@@ -47,7 +40,7 @@ class Item(ABC):
 
 class HealthItem(Item):
     """
-    A class for items which affect an entity's health.
+    A class for items which affect an entity's health. Extends Item.
 
     Public Class Attributes:
     ITEMS: tuple -- a two dimensional tuple that contains the game's items.
@@ -56,6 +49,10 @@ class HealthItem(Item):
     Public Instance Attributes:
     target_item: bool -- Whether the item must be targeted at an entity.
                          True if must be, False if can be used without target.
+
+    Public Methods:
+    get_effect: Effect -- Decrement the item durability and 
+                          return the item's effect.
     """
     ITEMS = (
         ("tomahawk", "A one-time use weapon that deals 7 damage.", -7),
@@ -66,25 +63,55 @@ class HealthItem(Item):
         ("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)
     )
 
-    def __init__(self, name, description, health_effect, durability = 1, target_item = False):
+    def __init__(self, name: str, description: str, health_effect: int, 
+                 durability: int = 1, target_item: bool = False) -> None:
+        """
+        Constructor for HealthItem class.
+
+        Arguments:
+        name: str -- the name of the item.
+        description: str -- a short description of the item.
+        heath_effect: int -- the health this item confers to its target.
+                             HealthItems which deal damage should be passed
+                             a negative value.
+        durability: int -- how many times the item can be used before it
+                           breaks. Default is 1.
+        target_item: bool -- Whether the item must be targeted at an entity.
+                             True if must be, False if can be used without target.
+        """
         super().__init__(name, description, durability)
         self.target_item = target_item
         self._health_effect = health_effect
 
-    def use(self, target):
+    def get_effect(self) -> str:
+        """ Decrement the item durability and return the item's effect. """
         self._affect_durability(-1)
-        effect = Effect(f"you used your {self.name}", self._health_effect)  
-        return target.affect_health(effect)
+        return Effect(f"you used your {self.name}", self._health_effect)  
 
 class Amulet(Item):
+    """
+    A class for the amulet item which . Extends Item.
+
+    Public Class Attributes:
+    ITEMS: tuple -- a two dimensional tuple that contains the game's items.
+                    Each tuple in ITEMS holds the arguments for its HealthItem.
+
+    Public Instance Attributes:
+    target_item: bool -- Whether the item must be targeted at an entity.
+                         True if must be, False if can be used without target.
+
+    Public Methods:
+    use -- apply the item's health effect to a target (an entity).
+    """
 
     def __init__(self):
-        super().__init__(
-            "amulet", 
-            "Could it be... the amulet of power? There's only one way to find out.", 
-            1)
+        description = (
+            "Could it be... the amulet of power? " 
+            "There's only one way to find out."
+        )
+        super().__init__("amulet", description, 1)
 
-    def use(self):
+    def activate(self):
         return(
             "The amulet glows and shakes as you put it around you neck.\n"
             "It really is... the amulet of power! You've found it at last!\n"

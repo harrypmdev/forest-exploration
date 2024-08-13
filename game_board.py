@@ -98,11 +98,12 @@ class GameBoard:
         if random.random() > 0.3:
             try:
                 self.move(random.choice(list(self._DIRECTIONS.keys())), True)
+                return False
             except GameError:
                 self.flee()
         else:
             print("\nFlee unsuccessful! You have not moved.\n")
-        return False
+        return True
 
     def _add_to_visited(self, location: Area) -> None:
         # Check if a location is already on the visited list and then
