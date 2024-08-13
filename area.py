@@ -4,15 +4,28 @@ from entity import GenerateEntities
 from item import Amulet, GenerateItems
 
 class Area:
+    """
+    A class for areas, one of which is created for each map coordinate.
+
+    Public Instance Attributes:
+    y: int -- the y coordinate for this area on the map
+    x: int -- the x coordinate for this area on the map
+    entities: list[Entity] -- a list of entities present in the area
+    items: list:[Item] -- a list of items present in the area
+
+    Public Methods:
+    in_battle: bool -- returns True if the area has any living hostiles
+    get_description: str -- returns a detailed description of the area
+    """
 
     def __init__(self, y, x, game_state, hostiles = True):
         self.y = y
         self.x = x
-        self.game_state = game_state
         self.items = self._generate_items()
-        self._area_description = self._generate_area_description()
         entity_types = ("animal", "enemy") if hostiles else ("animal",)
         self.entities = GenerateEntities.generate(entity_types)
+        self._game_state = game_state
+        self._area_description = self._generate_area_description()
 
     def in_battle(self) -> bool:
         """ 
@@ -72,7 +85,7 @@ class Area:
         return tree_sentence + " " + ground_sentence
     
     def _generate_items(self):
-        items = GenerateItems.generate(("HealthItem", "Amulet"), self.game_state)
+        items = GenerateItems.generate(("HealthItem", "Amulet"), self._game_state)
         if any(isinstance(item, Amulet) for item in items):
-            self.game_state.amulet_generated = True
+            self._game_state.amulet_generated = True
         return items

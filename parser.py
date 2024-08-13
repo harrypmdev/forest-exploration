@@ -15,7 +15,7 @@ class Parser:
     A class for the parser, which interprets the players input during the game.
 
     Public Methods:
-    parse_move -- parse a raw move from the user
+    parse_move: bool -- parse a raw move from the user
     """
     _ONE_WORD_MOVES = (
         "help", "tutorial", "inventory", 

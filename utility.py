@@ -40,6 +40,7 @@ def print_help() -> bool:
         "punch (creature name) - performs a weak attack on a creature\n"
         "flee - run from battle in a random direction\n"
         "map - outputs the map\n"
+        "key - outputs the map key\n"
         "describe (item name) - gives the description of an inventory item\n"
         "use (item name) - uses an item\n"
         "use (item name) on (target) - uses an item on a target\n"

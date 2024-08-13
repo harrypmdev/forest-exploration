@@ -36,9 +36,12 @@ def yes_no_query(question: str) -> bool:
     """ Ask the user a yes or no question and validate input.
     Repeats question until valid answer is entered.
 
+    Arguments:
+    question: str -- The question that should be asked.
+
     Returns a bool - True if yes, False if no.
     """
-    answer = input(question)
+    answer = input(f"{question} (Yes/No): \n")
     if answer.lower() not in ("yes", "no"):
         print("\nPlease enter 'yes' or 'no'.")
         return yes_no_query(question)
@@ -106,7 +109,7 @@ def main():
     """ Run the Forest Exploration game. """
     player, board, game_state = initialize_game()
     print("\nGreetings player!")
-    if yes_no_query("Is it your first time playing?: \n"):
+    if yes_no_query("Is it your first time playing?"):
         print_tutorial()
         input("Press any key to continue.\n")
     introduce(player, board)
@@ -114,11 +117,11 @@ def main():
     print(board.current_location.get_description())
     game_loop(player, board, game_state)
     save_score = yes_no_query("Well done on finishing the game. " 
-                              "Save score to leaderboard? (Yes/No): \n")
+                              "Save score to leaderboard?")
     if game_state.game_won and save_score:
         save_game(game_state)
     print("")
-    if yes_no_query("Play again?: \n"):
+    if yes_no_query("Play again?"):
         main()
     else:
         print("\nThanks for playing. Goodbye!")
