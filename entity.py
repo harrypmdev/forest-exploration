@@ -3,7 +3,7 @@ import random
 import math
 
 from effect import Effect
-from item import Item, HealthItem, Amulet, GenerateItems
+from item import Item, HealthItem, Amulet, generate_items
 
 class Entity:
     """
@@ -90,7 +90,7 @@ class Enemy(Entity):
         self.max_damage = max_damage
         self.accuracy = accuracy
         self.attack_name = attack_name
-        self.loot = GenerateItems.generate("HealthItem")
+        self.loot = generate_items("HealthItem")
 
     def get_attack(self) -> Effect:
         damage = math.ceil(self.max_damage * (random.random() * self.accuracy))
@@ -101,47 +101,42 @@ class Enemy(Entity):
         self.searched = True
         return self.loot
 
-class GenerateEntities:
+def generate_entities(*args: str):
+    entity_list = []
+    types = [arg.lower() for arg in args]
+    if "animal" in types:
+        entity_list.extend(_generate_animals())
+    if "enemy" in types:
+        entity_list.extend(_generate_enemies())
+    return entity_list
 
-    @classmethod
-    def generate(cls, *args: str):
-        entity_list = []
-        types = map(str.lower, args)
-        if "animal" in types:
-            entity_list.extend(cls._generate_animals())
-        if "enemy" in types:
-            entity_list.extend(cls._generate_enemies())
-        return entity_list
+def _generate_animals():
+    animal_list = []
+    for name in Entity.ANIMAL_NAMES:
+        if random.random() < 0.10:
+            health = random.randrange(1, 7)
+            animal = Entity(
+                    health, 
+                    name
+            )
+            animal_list.append(animal)
+    return animal_list
 
-    @classmethod
-    def _generate_animals(cls):
-        animal_list = []
-        for name in Entity.ANIMAL_NAMES:
-            if random.random() < 0.10:
-                health = random.randrange(1, 7)
-                animal = Entity(
-                        health, 
-                        name
-                )
-                animal_list.append(animal)
-        return animal_list
-
-    @classmethod
-    def _generate_enemies(cls):
-        enemy_list = []
-        gen_chance = 0.10
-        for name, attack_name in Enemy.ENEMIES.items():
-            if random.random() < gen_chance:
-                gen_chance -= 0.02
-                max_damage = random.randrange(3, 12)
-                accuracy = random.randrange(50, 100) / 100
-                health = random.randrange(4, 17)
-                enemy = Enemy(
-                        health, 
-                        name, 
-                        attack_name,
-                        max_damage,
-                        accuracy,
-                )
-                enemy_list.append(enemy)
-        return enemy_list
+def _generate_enemies():
+    enemy_list = []
+    gen_chance = 0.10
+    for name, attack_name in Enemy.ENEMIES.items():
+        if random.random() < gen_chance:
+            gen_chance -= 0.02
+            max_damage = random.randrange(3, 12)
+            accuracy = random.randrange(50, 100) / 100
+            health = random.randrange(4, 17)
+            enemy = Enemy(
+                    health, 
+                    name, 
+                    attack_name,
+                    max_damage,
+                    accuracy,
+            )
+            enemy_list.append(enemy)
+    return enemy_list

@@ -51,32 +51,29 @@ class Amulet(Item):
             "It really is... the amulet of power! You've found it at last!\n"
         )
 
-class GenerateItems:
-    _ITEM_PROBABILITY = {
-            "tomahawk": 0.05,
-            "potion": 0.06,
-            "berries": 0.08,
-            "sword": 0.04,
-            "katana": 0.04,
-            "axe": 0.05,
-        }
+_ITEM_PROBABILITY = {
+        "tomahawk": 0.05,
+        "potion": 0.06,
+        "berries": 0.08,
+        "sword": 0.04,
+        "katana": 0.04,
+        "axe": 0.05,
+    }
 
-    @classmethod
-    def generate(cls, *args: str, amulet_probability = 0) -> list[Item]:
-        item_list = []
-        types = map(str.lower, args)
-        if "healthitem" in types:
-            item_list.extend(cls._generate_health_items())
-        if "amulet" in types:
-            if random.random() < item_probabilites["amulet"]:
-                item_list.append(Amulet())
-        return item_list
-    
-    @classmethod
-    def _generate_health_items(cls):
-        item_list = []
-        for item_args in HealthItem.ITEMS:
-            item_name = item_args[0]
-            if random.random() < cls._ITEM_PROBABILITY[item_name]:
-                item_list.append(HealthItem(*item_args))
-        return item_list
+def generate_items(*args: str, amulet_probability = 0) -> list[Item]:
+    item_list = []
+    types = map(str.lower, args)
+    if "healthitem" in types:
+        item_list.extend(_generate_health_items())
+    if "amulet" in types:
+        if random.random() < amulet_probability:
+            item_list.append(Amulet())
+    return item_list
+
+def _generate_health_items():
+    item_list = []
+    for item_args in HealthItem.ITEMS:
+        item_name = item_args[0]
+        if random.random() < _ITEM_PROBABILITY[item_name]:
+            item_list.append(HealthItem(*item_args))
+    return item_list

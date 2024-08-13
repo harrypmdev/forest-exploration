@@ -1,7 +1,7 @@
 import random
 
-from entity import GenerateEntities
-from item import Amulet, GenerateItems
+from entity import generate_entities
+from item import generate_items
 
 class Area:
     """
@@ -10,8 +10,8 @@ class Area:
     Public Instance Attributes:
     y: int -- the y coordinate for this area on the map
     x: int -- the x coordinate for this area on the map
-    entities: list[Entity] -- a list of entities present in the area
     items: list:[Item] -- a list of items present in the area
+    entities: list[Entity] -- a list of entities present in the area
 
     Public Methods:
     in_battle: bool -- returns True if the area has any living hostiles
@@ -21,9 +21,9 @@ class Area:
     def __init__(self, y, x, game_state, hostiles = True):
         self.y = y
         self.x = x
-        self.items = self._generate_items()
+        self.items = self._generate_area_items()
         entity_types = ("animal", "enemy") if hostiles else ("animal",)
-        self.entities = GenerateEntities.generate(entity_types)
+        self.entities = generate_entities(*entity_types)
         self._game_state = game_state
         self._area_description = self._generate_area_description()
 
@@ -83,12 +83,8 @@ class Area:
         ground_sentence = f"The ground is {random.choice(ground_adjectives)}."
         return tree_sentence + " " + ground_sentence
     
-    def _generate_items(self):
-        items = GenerateItems.generate(
-            "HealthItem", 
-            "Amulet",
-            game_state=self._game_state
-        )
-        if any(isinstance(item, Amulet) for item in items):
+    def _generate_area_items(self):
+        items = generate_items("HealthItem", "Amulet")
+        if any(item.name == "amulet" for item in items):
             self._game_state.amulet_generated = True
         return items

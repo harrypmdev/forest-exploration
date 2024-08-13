@@ -34,8 +34,7 @@ class GameState:
     def update_amulet_gen(self, board_size: int, num_of_visited: int) -> None:
         """ Update probability of amulet generating based on amount of areas visited. """
         percent_visited = (1 / (board_size*board_size)) * num_of_visited
-        amulet_probability = (not self.amulet_generated) * percent_visited
-        self.item_probabilites["amulet"] = amulet_probability
+        self.amulet_probability = (not self.amulet_generated) * percent_visited
     
     def update_kill_records(self):
         self.update_score(10)
