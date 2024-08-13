@@ -28,17 +28,8 @@ class GameState:
             "total moves": 0,
             "kills": 0,
             "score": 0,
-            "final_health": 0,
         }
-        self.item_probabilites = {
-            "tomahawk": 0.05,
-            "potion": 0.06,
-            "berries": 0.08,
-            "sword": 0.04,
-            "katana": 0.04,
-            "axe": 0.05,
-            "amulet": 0
-        }
+        amulet_probability = 0
 
     def update_amulet_gen(self, board_size: int, num_of_visited: int) -> None:
         """ Update probability of amulet generating based on amount of areas visited. """
@@ -55,7 +46,7 @@ class GameState:
         self.records["score"] += score
 
     @border
-    def win(self):
+    def win(self, final_heath):
         self.game_won = True
-        print(f"You win! You finished the game with a score total of {self.records["score"]} and {self.records["final_health"]} health.")
+        print(f"You win! You finished the game with a score total of {self.records["score"]} and {final_health} health.")
         print(f"You moved a total of {self.records["total moves"]} times. You killed {self.records["kills"]} creatures.")

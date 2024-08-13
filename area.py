@@ -54,7 +54,6 @@ class Area:
         else:
             return ""
 
-
     def _generate_items_description(self):
         if self.items:
             items_description = "On the floor lies:\n"
@@ -85,7 +84,11 @@ class Area:
         return tree_sentence + " " + ground_sentence
     
     def _generate_items(self):
-        items = GenerateItems.generate(("HealthItem", "Amulet"), self._game_state)
+        items = GenerateItems.generate(
+            "HealthItem", 
+            "Amulet",
+            game_state=self._game_state
+        )
         if any(isinstance(item, Amulet) for item in items):
             self._game_state.amulet_generated = True
         return items

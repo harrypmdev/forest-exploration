@@ -171,9 +171,12 @@ class Parser:
     def _parse_use(self, noun: str, target: Entity) -> bool:
         # Parse moves which use the 'use' command.
         for item in self._player.inventory:
-            if item.name == noun and item.name != "amulet":
+            if item.name == noun:
                 use_message = item.use(target)
                 print(f"\n{use_message}")
+                if item.name == "amulet":
+                    self._game_state.win(self._player.health)
+                    return False
                 if target.hostile and not target.alive:
                     self._game_state.update_kill_records()
                 if target.cured:
@@ -184,10 +187,6 @@ class Parser:
                         print(f"{item.name.capitalize()} broke!")       
                 print("")
                 return True
-            if item.name == noun and item.name == "amulet":
-                self._game_state.records["final_health"] = self._player.health
-                item.activate()
-                return False
         raise GameError(f"\nNo item named {noun} in inventory.\n")
 
     def _parse_use_on(self, noun: str, noun_two: str) -> bool:

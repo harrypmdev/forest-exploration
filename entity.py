@@ -90,7 +90,7 @@ class Enemy(Entity):
         self.max_damage = max_damage
         self.accuracy = accuracy
         self.attack_name = attack_name
-        self.loot = GenerateItems.generate(("HealthItem",))
+        self.loot = GenerateItems.generate("HealthItem")
 
     def get_attack(self) -> Effect:
         damage = math.ceil(self.max_damage * (random.random() * self.accuracy))
@@ -104,9 +104,9 @@ class Enemy(Entity):
 class GenerateEntities:
 
     @classmethod
-    def generate(cls, types: tuple[str]):
+    def generate(cls, *args: str):
         entity_list = []
-        types = map(str.lower,types)
+        types = map(str.lower, args)
         if "animal" in types:
             entity_list.extend(cls._generate_animals())
         if "enemy" in types:

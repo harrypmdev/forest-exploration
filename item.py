@@ -8,13 +8,13 @@ class Item:
     def __init__(self, name, description, durability = 1):
         self.name = name
         self.description = description
-        self.durability = durability
         self.one_time_use = durability == 1
         self.broken = False
+        self._durability = durability
 
-    def affect_durability(self, value):
-        self.durability += value
-        if self.durability <= 0:
+    def _affect_durability(self, value):
+        self._durability += value
+        if self._durability <= 0:
             self.broken = True
 
 class HealthItem(Item):
@@ -33,39 +33,50 @@ class HealthItem(Item):
         self.target_item = target_item
 
     def use(self, target):
-        self.affect_durability(-1)
+        self._affect_durability(-1)
         effect = Effect(f"you used your {self.name}", self.health_effect)  
         return target.affect_health(effect)
 
 class Amulet(Item):
 
-    def __init__(self, game_state):
+    def __init__(self):
         super().__init__(
             "amulet", 
             "Could it be... the amulet of power? There's only one way to find out.", 
             1)
-        self.game_state = game_state
 
-    def activate(self):
-        print(
-            "\nThe amulet glows and shakes as you put it around you neck.\n"
+    def use(self):
+        return(
+            "The amulet glows and shakes as you put it around you neck.\n"
             "It really is... the amulet of power! You've found it at last!\n"
         )
-        self.game_state.win()
 
 class GenerateItems:
+    _ITEM_PROBABILITY = {
+            "tomahawk": 0.05,
+            "potion": 0.06,
+            "berries": 0.08,
+            "sword": 0.04,
+            "katana": 0.04,
+            "axe": 0.05,
+        }
 
-    @staticmethod
-    def generate(types: tuple[str], 
-                game_state: GameState = GameState()) -> list[Item]:
+    @classmethod
+    def generate(cls, *args: str, amulet_probability = 0) -> list[Item]:
         item_list = []
-        types = map(str.lower,types)
+        types = map(str.lower, args)
         if "healthitem" in types:
-            for item_args in HealthItem.ITEMS:
-                item_name = item_args[0]
-                if random.random() < game_state.item_probabilites[item_name]:
-                    item_list.append(HealthItem(*item_args))
+            item_list.extend(cls._generate_health_items())
         if "amulet" in types:
-            if random.random() < game_state.item_probabilites["amulet"]:
-                item_list.append(Amulet(game_state))
+            if random.random() < item_probabilites["amulet"]:
+                item_list.append(Amulet())
+        return item_list
+    
+    @classmethod
+    def _generate_health_items(cls):
+        item_list = []
+        for item_args in HealthItem.ITEMS:
+            item_name = item_args[0]
+            if random.random() < cls._ITEM_PROBABILITY[item_name]:
+                item_list.append(HealthItem(*item_args))
         return item_list
