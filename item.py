@@ -125,8 +125,8 @@ def generate_items(*args: str, amulet_probability = 0) -> list[Item]:
     Randomly generate game items.
 
     Arguments:
-    *args: str -- variable number of string arguments which denote the types
-                  that should be generated, e.g "healthitem", "amulet".
+    *args: str -- variable number of string arguments which denote the item
+                  types that should be generated, e.g "healthitem", "amulet".
     amulet_probability: float -- the probability of an amulet generating, from
                                  0 (not at all) to 1 (definitely). Default 0.
     

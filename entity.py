@@ -1,4 +1,14 @@
-""" A module for the Entity class utilised in Forest Exploration. """
+""" 
+A module for the Entity and Enemy classes utilised in the Forest exploration
+game and the generate_entities function.
+
+Classes:
+Entity -A class for the game entities, which includes all living creatures.
+Enemy
+
+Functions:
+generate_entities
+"""
 import random
 import math
 
@@ -144,6 +154,15 @@ class Enemy(Entity):
         return self.loot
 
 def generate_entities(*args: str):
+    """
+    Randomly generate game entities.
+
+    Arguments:
+    *args: str -- variable number of string arguments which denote the entity
+                  types that should be generated, e.g "animal", "enemy".
+    
+    Returns a list of Entity objects.
+    """
     entity_list = []
     types = [arg.lower() for arg in args]
     if "animal" in types:
@@ -153,6 +172,7 @@ def generate_entities(*args: str):
     return entity_list
 
 def _generate_animals():
+    # Return a list of randomly generated animals
     animal_list = []
     for name in Entity.ANIMAL_NAMES:
         if random.random() < 0.10:
@@ -165,6 +185,7 @@ def _generate_animals():
     return animal_list
 
 def _generate_enemies():
+    # Return a list of randomly generated enemies
     enemy_list = []
     gen_chance = 0.10
     for name, attack_name in Enemy.ENEMIES.items():
