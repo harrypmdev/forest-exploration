@@ -63,7 +63,7 @@ class HealthItem(Item):
         ("axe", "A weak but durable weapon. Deals 3 damage.", -3, 15, True)
     )
 
-    def __init__(self, name: str, description: str, health_effect: int, 
+    def __init__(self, name: str, description: str, health_effect_value: int, 
                  durability: int = 1, target_item: bool = False) -> None:
         """
         Constructor for HealthItem class.
@@ -81,30 +81,23 @@ class HealthItem(Item):
         """
         super().__init__(name, description, durability)
         self.target_item = target_item
-        self._health_effect = health_effect
+        self._health_effect_value = health_effect_value
 
     def get_effect(self) -> str:
         """ Decrement the item durability and return the item's effect. """
         self._affect_durability(-1)
-        return Effect(f"you used your {self.name}", self._health_effect)  
+        return Effect(f"you used your {self.name}", self._health_effect_value)  
 
 class Amulet(Item):
     """
-    A class for the amulet item which . Extends Item.
-
-    Public Class Attributes:
-    ITEMS: tuple -- a two dimensional tuple that contains the game's items.
-                    Each tuple in ITEMS holds the arguments for its HealthItem.
-
-    Public Instance Attributes:
-    target_item: bool -- Whether the item must be targeted at an entity.
-                         True if must be, False if can be used without target.
+    A class for the amulet item which ends the game. Extends Item.
 
     Public Methods:
-    use -- apply the item's health effect to a target (an entity).
+    activate -- return the amulet activation message.
     """
 
     def __init__(self):
+        """ Constructor for Amulet class. """
         description = (
             "Could it be... the amulet of power? " 
             "There's only one way to find out."
@@ -112,12 +105,13 @@ class Amulet(Item):
         super().__init__("amulet", description, 1)
 
     def activate(self):
+        """ Return the amulet activation message. """
         return(
             "The amulet glows and shakes as you put it around you neck.\n"
             "It really is... the amulet of power! You've found it at last!\n"
         )
 
-_ITEM_PROBABILITY = {
+_ITEM_GEN_PROBABILITY = {
         "tomahawk": 0.05,
         "potion": 0.06,
         "berries": 0.08,
@@ -127,6 +121,17 @@ _ITEM_PROBABILITY = {
     }
 
 def generate_items(*args: str, amulet_probability = 0) -> list[Item]:
+    """
+    Randomly generate game items.
+
+    Arguments:
+    *args: str -- variable number of string arguments which denote the types
+                  that should be generated, e.g "healthitem", "amulet".
+    amulet_probability: float -- the probability of an amulet generating, from
+                                 0 (not at all) to 1 (definitely). Default 0.
+    
+    Returns a list of Item objects.
+    """
     item_list = []
     types = map(str.lower, args)
     if "healthitem" in types:
@@ -137,9 +142,10 @@ def generate_items(*args: str, amulet_probability = 0) -> list[Item]:
     return item_list
 
 def _generate_health_items():
+    # Return a randomly generated list of health items
     item_list = []
     for item_args in HealthItem.ITEMS:
         item_name = item_args[0]
-        if random.random() < _ITEM_PROBABILITY[item_name]:
+        if random.random() < _ITEM_GEN_PROBABILITY[item_name]:
             item_list.append(HealthItem(*item_args))
     return item_list

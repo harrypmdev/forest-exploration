@@ -10,28 +10,36 @@ class Entity:
     A class for the game entities, which includes all living creatures.
     Inherited by Player and Enemy classes.
 
-    Instance Attributes:
-    health: int -- the health of the entity
-    name: str -- the entity's name
-    board: GameBoard -- the board the entity is on
-    player: Player -- the player for which moves are being parsed.
-    
+    Public Class Attributes:
+    ANIMAL_NAMES: tuple[str] -- a tuple of animals that can be used when
+                                generating entities.
+
+    Public Instance Attributes:
+    health: int -- the health of the entity.
+    name: str -- the entity's name.
+    hostile: bool - whether the entity will attack the player when the turn
+                    ends (True if so, False if not). Default False.
+    alive: bool -- whether the entity is alive or not (True if alive, False
+                   if not). Constructor always sets to True.
 
     Public Methods:
-    parse_move -- parse a raw move from the user
+    apply_health_effect -- apply an effect to the entity and return a
+                           string description of the action.
+    detailed_name -- return a detailed version of the entity's name.
+    print_status -- print the entity's status.
     """
     ANIMAL_NAMES = ("rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "dog")
         
     def __init__(self, health: int, name: str, hostile: bool = False):
-        self.name = name
         self.health = health
-        self.alive = True
-        self.sick = health <= 2
-        self.cured = False
-        self.searched = False
+        self.name = name
         self.hostile = hostile
+        self.alive = True
+        self._searched = False
+        self._sick = health <= 2
+        self._cured = False
 
-    def affect_health(self, effect: Effect) -> str:
+    def apply_health_effect(self, effect: Effect) -> str:
         if not self.alive:
             return f"The {self.name} is dead, so nothing happens."
         self.health = max(0, self.health + effect.value)
@@ -60,16 +68,20 @@ class Entity:
             print(f"\n{self.name.capitalize()} has {self.health} health.{sick_status}\n")
 
     def _update_sickness(self):
+        # Update sick and cured attributes based on entity health.
         if self.health > 2 and self.sick:
             self.sick = False
             self.cured = True
             return True
     
     def _die(self, effect):
+        # Change alive attribute to false and return string describing death.
         self.alive = False
-        return (f'The {self.name} died! It ran out of health when {effect.name} causing {abs(effect.value)} damage!')
+        return (f"The {self.name} died! It ran out of health "
+                 "when {effect.name} causing {abs(effect.value)} damage!")
     
     def _indefinite(self):
+        # Return the indefinite article for the entity
         vowels = ("a", "e", "i", "o", "u")
         if self.name[0] in vowels:
             return "an"
@@ -98,7 +110,7 @@ class Enemy(Entity):
         return attack
         
     def search(self) -> list[Item]:
-        self.searched = True
+        self._searched = True
         return self.loot
 
 def generate_entities(*args: str):

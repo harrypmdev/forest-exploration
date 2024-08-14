@@ -153,7 +153,7 @@ class Parser:
             if entity.name == noun:
                 damage = -random.randrange(1, 3)
                 punch_attack = Effect("you used punch attack", damage)
-                punch_message = entity.affect_health(punch_attack)
+                punch_message = entity.apply_health_effect(punch_attack)
                 print(f"\n{punch_message}")
                 if entity.hostile and not entity.alive:
                     self._game_state.update_kill_records()
@@ -182,7 +182,9 @@ class Parser:
     
     def _parse_use_health_item(self, item: Item, target: Entity):
         # Parse the 'use' command on HealthItems
-        use_message = target.affect_health(item.get_effect())
+        if item.target_item and target.name == "player":
+            raise GameError("\nThis item must be targeted at a creature.\n")
+        use_message = target.apply_health_effect(item.get_effect())
         print(f"\n{use_message}")
         if target.hostile and not target.alive:
             self._game_state.update_kill_records()
