@@ -3,7 +3,7 @@
 import math
 import random
 
-from utility import get_emojis
+from utility import get_emojis, print_tutorial
 from area import Area
 from game_state import GameState
 from game_error import GameError
