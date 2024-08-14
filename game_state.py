@@ -49,8 +49,8 @@ class GameState:
         self.update_score(10)
         self.records["kills"] += 1
 
-    def update_score(self, score) -> None:
-        print(f"Score +{str(score)}!")
+    def update_score(self, score: int) -> None:
+        print(f"Score +{score}!")
         self.records["score"] += score
 
     @border

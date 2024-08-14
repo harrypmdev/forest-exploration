@@ -13,11 +13,12 @@ generate_items -- Randomly generate items.
 """
 
 import random
+from abc import ABC
 
 from effect import Effect
 
 
-class Item:
+class Item(ABC):
     """
     An abstract class for game items. Inherited by HealthItem and Amulet.
 

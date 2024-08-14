@@ -5,6 +5,7 @@ from game_state import GameState
 from parser import Parser
 from item import HealthItem
 from utility import print_tutorial
+from effect import Effect
 
 
 def introduce(player: Player, game_board: GameBoard) -> None:
@@ -67,7 +68,7 @@ def end_turn(player: Player, board: GameBoard) -> None:
     for entity in board.current_location.entities:
         if entity.hostile and entity.alive and player.alive:
             if entity.attack_chance():
-                attack = entity.get_attack()
+                attack: Effect = entity.get_attack()
                 player.apply_effect(attack)
                 if not player.alive:
                     break
@@ -91,7 +92,7 @@ def initialize_game() -> tuple[Player, GameBoard, GameState]:
     sword = HealthItem(
         "sword", "A sword that will last for a short while.", -4, 5, True
     )
-    player = Player(30, [potion, sword])
+    player: Player = Player(30, [potion, sword])
     return player, board, game_state
 
 

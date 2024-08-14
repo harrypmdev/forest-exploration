@@ -96,11 +96,9 @@ class Parser:
         elif len(parts) == 2 and parts[0] in self._TWO_WORD_MOVES:
             return command, parts[1], ""
         elif len(parts) == 3 and parts[0] == "status" and parts[1] == "of":
-            command = "status of"
-            return command, parts[2], ""
+            return "status of", parts[2], ""
         elif len(parts) == 4 and parts[0] == "use" and parts[2] == "on":
-            command = "use on"
-            return command, parts[1], parts[3]
+            return "use on", parts[1], parts[3]
         raise GameError(
             f"\n'{command}' does not work in this way!\n"
             "Enter 'tutorial' for tutorial or 'help '"
