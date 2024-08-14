@@ -1,17 +1,17 @@
-import random
-from collections.abc import Callable, Awaitable
+from collections.abc import Callable
 
 import emoji
+
 
 def get_emojis(*args: str):
     """
     Returns a list of the emojis from the strings passed to the function
     """
     key = {
-        "tree": ":evergreen_tree:", 
+        "tree": ":evergreen_tree:",
         "player": ":diamond_with_a_dot:",
         "battle": ":collision:",
-        "visited": ":radio_button:"
+        "visited": ":radio_button:",
     }
     emoji_list = []
     for arg in args:
@@ -21,16 +21,19 @@ def get_emojis(*args: str):
         emoji_list.append(emoji.emojize(emoji_string))
     return emoji_list
 
+
 def border(func: Callable) -> Callable:
     def wrapper(*args):
-        print('═' * 80)
+        print("═" * 80)
         return_val = func(*args)
-        print('═' * 80 + "\n")
+        print("═" * 80 + "\n")
         return return_val
-    return wrapper 
+
+    return wrapper
+
 
 def print_help() -> bool:
-    """ Prints the game's valid moves. Always returns False. """
+    """Prints the game's valid moves. Always returns False."""
     print(
         "\nValid moves:\n"
         "inventory - lists your current inventory\n"
@@ -52,8 +55,9 @@ def print_help() -> bool:
     )
     return False
 
+
 def print_tutorial() -> bool:
-    """ Prints the game tutorial. Always returns False. """
+    """Prints the game tutorial. Always returns False."""
     print(
         "\nTutorial:\n"
         "Travel around the map using the go command (go north, go east etc.)\n"
@@ -66,14 +70,10 @@ def print_tutorial() -> bool:
     )
     return False
 
+
 def print_key() -> bool:
-    """ Prints the map key. Always returns False. """
-    tree, player, battle, visited = get_emojis(
-        "tree", 
-        "player", 
-        "battle", 
-        "visited"
-    )
+    """Prints the map key. Always returns False."""
+    tree, player, battle, visited = get_emojis("tree", "player", "battle", "visited")
     print(
         "\nMap Key:\n"
         f"{tree} -- Unexplored forest.\n"

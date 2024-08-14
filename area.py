@@ -1,11 +1,10 @@
-"""
-A module for the Area class utilised in the Forest Exploration game.
-"""
+"""A module for the Area class utilised in the Forest Exploration game."""
 
 import random
 
 from entity import generate_entities
 from item import generate_items
+
 
 class Area:
     """
@@ -22,8 +21,9 @@ class Area:
     get_description: str -- returns a detailed description of the area
     """
 
-    def __init__(self, y: int, x: int, 
-                 amulet_probability: float = 0, hostiles = True) -> None:
+    def __init__(
+        self, y: int, x: int, amulet_probability: float = 0, hostiles=True
+    ) -> None:
         """
         Constructor for Area class.
 
@@ -38,29 +38,27 @@ class Area:
         self.y = y
         self.x = x
         self.items = generate_items(
-            "HealthItem", 
-            "Amulet",
-            amulet_probability = amulet_probability
+            "HealthItem", "Amulet", amulet_probability=amulet_probability
         )
         entity_types = ("animal", "enemy") if hostiles else ("animal",)
         self.entities = generate_entities(*entity_types)
         self._area_description = self._generate_area_description()
 
     def in_battle(self) -> bool:
-        """ Return True if the player is currently in battle, False if not. """
+        """Return True if the player is currently in battle, False if not."""
         for entity in self.entities:
             if entity.hostile and entity.alive:
                 return True
         return False
-    
+
     def get_description(self) -> str:
-        """ Return a string of a detailed description of the area. """
+        """Return a string of a detailed description of the area."""
         entities_description = self._generate_entities_description()
         items_description = self._generate_items_description()
         battle_description = self._generate_battle_description()
         return (
-            self._area_description 
-            + entities_description 
+            self._area_description
+            + entities_description
             + items_description
             + battle_description
         )
@@ -83,7 +81,7 @@ class Area:
         else:
             return ""
 
-    def _generate_entities_description(self) -> str:    
+    def _generate_entities_description(self) -> str:
         # Return a description of any entities in the area
         if len(self.entities) == 1:
             return f"\nThere is {self.entities[0].detailed_name(True)}.\n"
@@ -97,10 +95,24 @@ class Area:
 
     def _generate_area_description(self) -> str:
         # Return a randomly produced area description
-        tree_adjectives = ("bushy", "tall", "short", "thin and white", 
-        "sick looking", "strange and contorted", "healthy looking")
-        ground_adjectives = ("stony and tough", "made up of course dirt", "scattered with grass patches",
-        "thick with tall grass", "steep and uneven", "flat and dry", "damp and strange")
+        tree_adjectives = (
+            "bushy",
+            "tall",
+            "short",
+            "thin and white",
+            "sick looking",
+            "strange and contorted",
+            "healthy looking",
+        )
+        ground_adjectives = (
+            "stony and tough",
+            "made up of course dirt",
+            "scattered with grass patches",
+            "thick with tall grass",
+            "steep and uneven",
+            "flat and dry",
+            "damp and strange",
+        )
         tree_sentence = f"The trees in this area are {random.choice(tree_adjectives)}."
         ground_sentence = f"The ground is {random.choice(ground_adjectives)}."
         return tree_sentence + " " + ground_sentence

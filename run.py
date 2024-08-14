@@ -1,30 +1,32 @@
-import math
-import random
-
 from game_board import GameBoard
 from player import Player
 from game_error import GameError
 from game_state import GameState
 from parser import Parser
 from item import HealthItem
+from utility import print_tutorial
+
 
 def introduce(player: Player, game_board: GameBoard) -> None:
-    """ Print a game introductory message. 
-    
+    """Print a game introductory message.
+
     Arguments:
-    player: Player -- the player for which the message should 
+    player: Player -- the player for which the message should
     be printed, as created by the initialize_game function
-    board: GameBoard -- the board for which the message should 
+    board: GameBoard -- the board for which the message should
     be printed, as created by the initialize_game function
     """
-    print("═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══\n"
-            "Welcome to Forest Exploration!\n"
-            f"Your game board has {game_board.size}x{game_board.size} dimensions.\n"
-            f"Your player starts with {player.health} health.\n"
-            "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══")
+    print(
+        "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══\n"
+        "Welcome to Forest Exploration!\n"
+        f"Your game board has {game_board.size}x{game_board.size} dimensions.\n"
+        f"Your player starts with {player.health} health.\n"
+        "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══"
+    )
+
 
 def get_move() -> str:
-    """ Receive the user's raw input for their game move.
+    """Receive the user's raw input for their game move.
     Prints a message reminding them of the 'help' command before each input.
 
     Returns a string, the user's input.
@@ -32,8 +34,9 @@ def get_move() -> str:
     print("Enter 'help' for valid move list.")
     return input("Enter a move: \n")
 
+
 def yes_no_query(question: str) -> bool:
-    """ Ask the user a yes or no question and validate input.
+    """Ask the user a yes or no question and validate input.
     Repeats question until valid answer is entered.
 
     Arguments:
@@ -47,14 +50,16 @@ def yes_no_query(question: str) -> bool:
         return yes_no_query(question)
     return answer.lower() == "yes"
 
+
 def save_game(game_state: GameState):
     pass
 
+
 def end_turn(player: Player, board: GameBoard) -> None:
-    """ End the turn, making all living enemies attack the player. 
+    """End the turn, making all living enemies attack the player.
 
     Arguments:
-    player: Player -- the player for this game, as created 
+    player: Player -- the player for this game, as created
     by the initialize_game function
     board: GameBoard -- the board for this game, as created
     by the initialize_game function
@@ -71,8 +76,9 @@ def end_turn(player: Player, board: GameBoard) -> None:
             else:
                 print(f"{entity.name.capitalize()} attacked and it missed!\n")
 
+
 def initialize_game() -> tuple[Player, GameBoard, GameState]:
-    """ Initialize a new game.
+    """Initialize a new game.
 
     Returns a tuple with 3 elements:
         1: Player -- the player for this game.
@@ -82,16 +88,19 @@ def initialize_game() -> tuple[Player, GameBoard, GameState]:
     game_state = GameState()
     board = GameBoard(5, game_state)
     potion = HealthItem("potion", "A potion that heals 10 health.", 10)
-    sword = HealthItem("sword", "A sword that will last for a short while.", -4, 5, True)
+    sword = HealthItem(
+        "sword", "A sword that will last for a short while.", -4, 5, True
+    )
     player = Player(30, [potion, sword])
     return player, board, game_state
 
+
 def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
-    """ Run the game loop, asking the player for 
+    """Run the game loop, asking the player for
     their move for as long as the game continues.
 
     Arguments:
-    player: Player -- the player for this game, as created 
+    player: Player -- the player for this game, as created
     by the initialize_game function
     board: GameBoard -- the board for this game, as created
     by the initialize_game function
@@ -107,8 +116,9 @@ def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
         except GameError as e:
             print(str(e))
 
+
 def main():
-    """ Run the Forest Exploration game. """
+    """Run the Forest Exploration game."""
     player, board, game_state = initialize_game()
     print("\nGreetings player!")
     if yes_no_query("Is it your first time playing?"):
@@ -119,8 +129,9 @@ def main():
     print(board.current_location.get_description())
     game_loop(player, board, game_state)
     if game_state.game_won:
-        save_score = yes_no_query("Well done on finishing the game. " 
-                              "Save score to leaderboard?")
+        save_score = yes_no_query(
+            "Well done on finishing the game. " "Save score to leaderboard?"
+        )
         if save_score:
             save_game(game_state)
     if yes_no_query("Play again?"):
@@ -128,5 +139,6 @@ def main():
     else:
         print("\nThanks for playing. Goodbye!")
         exit()
+
 
 main()

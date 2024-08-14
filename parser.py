@@ -1,4 +1,4 @@
-""" A module for the Parser class utilised in Forest Exploration. """
+"""A module for the Parser class utilised in Forest Exploration."""
 
 import random
 
@@ -11,6 +11,7 @@ from game_board import GameBoard
 from game_error import GameError
 from game_state import GameState
 
+
 class Parser:
     """
     A class for the parser, which interprets the players input during the game.
@@ -18,21 +19,25 @@ class Parser:
     Public Methods:
     parse_move: bool -- parse a raw move from the user
     """
+
     _ONE_WORD_MOVES = (
-        "help", "tutorial", "inventory", 
-        "status", "quit", "look",
-        "flee", "map", "key"
+        "help",
+        "tutorial",
+        "inventory",
+        "status",
+        "quit",
+        "look",
+        "flee",
+        "map",
+        "key",
     )
-    _TWO_WORD_MOVES = (
-        "punch", "use", "describe",
-        "go", "search", "drop", "take"
-    )
+    _TWO_WORD_MOVES = ("punch", "use", "describe", "go", "search", "drop", "take")
     _MOVES = _ONE_WORD_MOVES + _TWO_WORD_MOVES
 
     def __init__(self, player: Player, board: GameBoard, game_state: GameState) -> None:
         """
         Create a Parser object.
-    
+
         Arguments:
         player: Player -- the player for which moves are being parsed.
         """
@@ -91,20 +96,24 @@ class Parser:
         elif len(parts) == 2 and parts[0] in self._TWO_WORD_MOVES:
             return command, parts[1], ""
         elif len(parts) == 3 and parts[0] == "status" and parts[1] == "of":
-            command="status of"
+            command = "status of"
             return command, parts[2], ""
         elif len(parts) == 4 and parts[0] == "use" and parts[2] == "on":
-            command="use on"
+            command = "use on"
             return command, parts[1], parts[3]
-        raise GameError(f"\n'{command}' does not work in this way!\n"
-                        "Enter 'tutorial' for tutorial or 'help '"
-                        "for valid moves list.\n")
+        raise GameError(
+            f"\n'{command}' does not work in this way!\n"
+            "Enter 'tutorial' for tutorial or 'help '"
+            "for valid moves list.\n"
+        )
 
     def _parse_go(self, direction: str) -> bool:
         # Parse moves which use the 'go' command
         if self._board.current_location.in_battle():
-            raise GameError("\nCannot travel whilst in battle! "
-                            "Enter 'flee' to attempt to flee.\n")
+            raise GameError(
+                "\nCannot travel whilst in battle! "
+                "Enter 'flee' to attempt to flee.\n"
+            )
         return self._board.move(direction)
 
     def _parse_search(self, noun: str) -> bool:
@@ -112,10 +121,14 @@ class Parser:
         for entity in self._board.current_location.entities:
             if entity.name == noun:
                 if not entity.hostile:
-                    raise GameError(f"\nOnly enemies can be searched, {noun} is not an enemy.\n")
+                    raise GameError(
+                        f"\nOnly enemies can be searched, {noun} is not an enemy.\n"
+                    )
                 if entity.alive:
-                    raise GameError(f"\n{entity.name.capitalize()} is alive!\n"
-                                    "Only dead creatures can be searched.\n")
+                    raise GameError(
+                        f"\n{entity.name.capitalize()} is alive!\n"
+                        "Only dead creatures can be searched.\n"
+                    )
                 found_items = entity.search()
                 self._player.inventory.extend(found_items)
                 if not found_items:
@@ -127,12 +140,14 @@ class Parser:
                 print("")
                 return False
         raise GameError(f"\nNo enemy named {noun} in area.\n")
-    
-    def _parse_take(self, noun:str) -> bool:
+
+    def _parse_take(self, noun: str) -> bool:
         # Parse moves which use the 'take' command.
         for index, item in enumerate(self._board.current_location.items):
             if item.name == noun:
-                self._player.inventory.append(self._board.current_location.items.pop(index))
+                self._player.inventory.append(
+                    self._board.current_location.items.pop(index)
+                )
                 print(f"\nTook {item.name}!\n")
                 return False
         raise GameError(f"\nNo item present called {noun}.\n")
@@ -141,7 +156,9 @@ class Parser:
         # Parse moves which use the 'drop' command.
         for index, item in enumerate(self._player.inventory):
             if item.name == noun:
-                self._board.current_location.items.append(self._player.inventory.pop(index))
+                self._board.current_location.items.append(
+                    self._player.inventory.pop(index)
+                )
                 print(f"\nDropped {item.name}.\n")
                 return False
         raise GameError(f"\nNo item named {noun} in inventory.\n")
@@ -158,7 +175,7 @@ class Parser:
                     self._game_state.update_kill_records()
                 print("")
                 return True
-        raise GameError(f"\nNo entity called {noun} in area.\n")  
+        raise GameError(f"\nNo entity called {noun} in area.\n")
 
     def _parse_status_of(self, noun: str) -> bool:
         # Parse moves which use the 'status of' command.
@@ -171,14 +188,14 @@ class Parser:
     def _parse_use(self, entered_item: str, target: Entity) -> bool:
         # Parse moves which use the 'use' command.
         for item in self._player.inventory:
-            if item.name == entered_item and type(item) == HealthItem:
+            if item.name == entered_item and type(item) is HealthItem:
                 self._parse_use_health_item(item, target)
                 return True
-            elif item.name == entered_item and type(item) == Amulet:
+            elif item.name == entered_item and type(item) is Amulet:
                 self._parse_use_amulet_item(item)
                 return False
         raise GameError(f"\nNo item named {entered_item} in inventory.\n")
-    
+
     def _parse_use_health_item(self, item: Item, target: Entity):
         # Parse the 'use' command on HealthItems
         if item.target_item and target.name == "player":
@@ -192,9 +209,9 @@ class Parser:
         if item.broken:
             self._player.inventory.remove(item)
             if not item.one_time_use:
-                print(f"{item.name.capitalize()} broke!")       
+                print(f"{item.name.capitalize()} broke!")
         print("")
-    
+
     def _parse_use_amulet_item(self, item: Item):
         # Parse the 'use' command on Amulets
         item.activate()
