@@ -175,7 +175,6 @@ class Enemy(Entity):
         self._accuracy = accuracy
         self._attack_name = attack_name
         self._loot = generate_items("HealthItem")
-        print("Enemy loot:" + str(self._loot))
 
     def get_attack(self) -> Effect:
         """ Return the enemy's attack as an Effect. """
