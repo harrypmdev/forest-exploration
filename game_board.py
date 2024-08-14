@@ -42,7 +42,7 @@ class GameBoard:
         self.map = [[tree for y in range(size)] for x in range(size)]
         self.visited = []
         middle = (math.floor(size/2))
-        self.current_location = Area(middle, middle, False)
+        self.current_location = Area(middle, middle, hostiles=False)
         self.map[middle][middle] = player
         self._game_state = game_state
 
