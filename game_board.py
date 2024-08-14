@@ -42,7 +42,7 @@ class GameBoard:
         self.map = [[tree for y in range(size)] for x in range(size)]
         self.visited = []
         middle = (math.floor(size/2))
-        self.current_location = Area(middle, middle, game_state, False)
+        self.current_location = Area(middle, middle, False)
         self.map[middle][middle] = player
         self._game_state = game_state
 
@@ -74,14 +74,12 @@ class GameBoard:
         if not self._move_is_on_map(new_coordinates):
             raise GameError("\nCannot move in this direction.\n")
         self._game_state.records["total moves"] += 1
-        self._add_to_visited(self.current_location)
+        self._update_map(new_coordinates)
         self._game_state.update_amulet_gen(self.size, len(self.visited))
         if fleeing:
             print(f"\nFled successfully! You travelled {direction.capitalize()}.")
         else:
             print(f"\nYou travelled {direction.capitalize()}.")
-        self._update_current_area(new_coordinates)
-        self._update_player_on_map()
         print(f"\n{self.current_location.get_description()}")
         return False
 
@@ -105,15 +103,18 @@ class GameBoard:
             print("\nFlee unsuccessful! You have not moved.\n")
         return True
 
+    def _update_map(self, new_coordinates: Area) -> None:
+        # Update the map emojis and ensure old location is in visited list
+        self._add_to_visited(self.current_location)
+        self._update_visited_on_map(self.current_location)
+        self._update_current_location(new_coordinates)
+        self._update_player_on_map()
+
     def _add_to_visited(self, location: Area) -> None:
         # Check if a location is already on the visited list and then
-        # add it if not and update map for the visited area.
+        # add if it isn't and update map for the visited area.
         if not self._check_visited(location.y, location.x):
             self.visited.append(location)
-        if self.current_location.in_battle():
-            self.map[location.y][location.x] = get_emojis("battle")[0]  
-        else:
-            self.map[location.y][location.x] = get_emojis("visited")[0]   
     
     def _check_visited(self, y: int, x: int) -> bool:
         # Return True if the player has visited an area at the given coordinates.
@@ -129,18 +130,36 @@ class GameBoard:
                 return area
         raise ValueError(f"Inappropriate coordinates provided: no area in visited list for coordinates y:{y}, x:{x}.")
     
+    def _update_visited_on_map(self, location: Area) -> None:
+        # Update the previous location on map with visited or battle emoji
+        if location.in_battle():
+            self.map[location.y][location.x] = get_emojis("battle")[0]  
+        else:
+            self.map[location.y][location.x] = get_emojis("visited")[0]   
+
     def _update_player_on_map(self):
+        # Update map current location with player emoji
         player_emoji = get_emojis("player")[0]
         y, x = self.current_location.y, self.current_location.x
         self.map[y][x] = player_emoji
 
-    def _update_current_area(self, new_coordinates):
+    def _update_current_location(self, new_coordinates):
+        # Update the current location to either its previously generated Area
+        # or create a new Area for newly visited locations.
         if self._check_visited(*new_coordinates):
             self.current_location = self._get_visited_area(*new_coordinates)
         else:
-            self.current_location = Area(*new_coordinates, self._game_state)
+            probability = self._game_state.amulet_probability
+            self.current_location = Area(*new_coordinates, probability)
+            self._check_for_amulet(self.current_location)
+    
+    def _check_for_amulet(self, area: Area):
+        # Check an area for the amulet and update the game state if found
+        if any(item.name == "amulet" for item in area.items):
+            self._game_state.amulet_generated = True
 
     def _get_next_area(self, direction):
+        # Finds the area the player is moving into for a given direction.
         new_coordinates = [self.current_location.y, self.current_location.x]
         axis = self._DIRECTIONS[direction][0]
         movement = self._DIRECTIONS[direction][1]
@@ -148,6 +167,7 @@ class GameBoard:
         return new_coordinates
 
     def _move_is_on_map(self, new_coordinates):
+        # Return True if coordinates are on map, False if not.
         if 4 >= new_coordinates[0] >= 0 and 4 >= new_coordinates[1] >= 0:
             return True
         else:

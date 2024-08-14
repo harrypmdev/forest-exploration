@@ -54,8 +54,8 @@ class Parser:
         command, noun, noun_two = self._split_move(move.lower())
         score = self._game_state.records["score"]
         description = f"\n{self._board.current_location.get_description()}"
-        # A dictionary of moves and their respective subroutine
-        moves = {
+        # Dictionary of commands and their relevant subroutines and arguments
+        MOVE_SUBROUTINES = {
             "help": (print_help, ()),
             "tutorial": (print_tutorial, ()),
             "key": (print_key, ()),
@@ -75,14 +75,13 @@ class Parser:
             "look": (print, (description,)),
             "quit": (exit, ()),
         }
-        try:
-            command_func, args = moves[command]
-            return command_func(*args)
-        except KeyError:
-            raise GameError(f"\n{command} not a valid move! Try again.\n")     
+        command_func, args = MOVE_SUBROUTINES[command]
+        return command_func(*args)
 
     def _split_move(self, move: str) -> tuple[str, str, str]:
         # Take user input and split it into parts.
+        if move == "":
+            raise GameError("Please enter a command.\n")
         parts = move.strip().split(" ")
         command = parts[0].lower()
         if command not in self._MOVES:
@@ -153,7 +152,7 @@ class Parser:
             if entity.name == noun:
                 damage = -random.randrange(1, 3)
                 punch_attack = Effect("you used punch attack", damage)
-                punch_message = entity.apply_health_effect(punch_attack)
+                punch_message = entity.apply_effect(punch_attack)
                 print(f"\n{punch_message}")
                 if entity.hostile and not entity.alive:
                     self._game_state.update_kill_records()
@@ -176,7 +175,7 @@ class Parser:
                 self._parse_use_health_item(item, target)
                 return True
             elif item.name == entered_item and type(item) == Amulet:
-                self._parse_use_amulet_item()
+                self._parse_use_amulet_item(item)
                 return False
         raise GameError(f"\nNo item named {entered_item} in inventory.\n")
     
@@ -184,7 +183,7 @@ class Parser:
         # Parse the 'use' command on HealthItems
         if item.target_item and target.name == "player":
             raise GameError("\nThis item must be targeted at a creature.\n")
-        use_message = target.apply_health_effect(item.get_effect())
+        use_message = target.apply_effect(item.get_effect())
         print(f"\n{use_message}")
         if target.hostile and not target.alive:
             self._game_state.update_kill_records()

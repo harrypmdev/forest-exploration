@@ -1,3 +1,7 @@
+"""
+A module for the Area class utilised in the Forest Exploration game.
+"""
+
 import random
 
 from entity import generate_entities
@@ -18,26 +22,39 @@ class Area:
     get_description: str -- returns a detailed description of the area
     """
 
-    def __init__(self, y, x, game_state, hostiles = True):
+    def __init__(self, y: int, x: int, 
+                 amulet_probability: float = 0, hostiles = True) -> None:
+        """
+        Constructor for Area class.
+
+        Arguments:
+        y: int -- the y coordinate this area is located at.
+        x: int -- the x coordinate this area is locatied at.
+        amulet_probability: float -- the chance of an amulet being generated in
+                                     this area (0 is none, 1 is definite).
+        hostiles: bool -- whether this area should generate hostile entities
+                          (True) or only non-hostiles (False). Default is True.
+        """
         self.y = y
         self.x = x
-        self.items = self._generate_area_items()
+        self.items = generate_items(
+            "HealthItem", 
+            "Amulet",
+            amulet_probability = amulet_probability
+        )
         entity_types = ("animal", "enemy") if hostiles else ("animal",)
         self.entities = generate_entities(*entity_types)
-        self._game_state = game_state
         self._area_description = self._generate_area_description()
 
     def in_battle(self) -> bool:
-        """ 
-        Check if the player is currently in battle (hostile entities are present).
-        Returns True if in battle, False if not.
-        """
+        """ Return True if the player is currently in battle, False if not. """
         for entity in self.entities:
             if entity.hostile and entity.alive:
                 return True
         return False
     
     def get_description(self) -> str:
+        """ Return a string of a detailed description of the area. """
         entities_description = self._generate_entities_description()
         items_description = self._generate_items_description()
         battle_description = self._generate_battle_description()
@@ -48,13 +65,16 @@ class Area:
             + battle_description
         )
 
-    def _generate_battle_description(self):
+    def _generate_battle_description(self) -> str:
+        # Return a string alerting the user they are in battle if hostiles are
+        # present, return an empty string if not.
         if self.in_battle():
             return "A hostile creature is present! You are in battle.\n"
         else:
             return ""
 
-    def _generate_items_description(self):
+    def _generate_items_description(self) -> str:
+        # Return a description of any items in the area
         if self.items:
             items_description = "On the floor lies:\n"
             for item in self.items:
@@ -63,7 +83,8 @@ class Area:
         else:
             return ""
 
-    def _generate_entities_description(self):    
+    def _generate_entities_description(self) -> str:    
+        # Return a description of any entities in the area
         if len(self.entities) == 1:
             return f"\nThere is {self.entities[0].detailed_name(True)}.\n"
         elif len(self.entities) > 1:
@@ -74,7 +95,8 @@ class Area:
         else:
             return "\nThere are no living creatures present except you.\n"
 
-    def _generate_area_description(self):
+    def _generate_area_description(self) -> str:
+        # Return a randomly produced area description
         tree_adjectives = ("bushy", "tall", "short", "thin and white", 
         "sick looking", "strange and contorted", "healthy looking")
         ground_adjectives = ("stony and tough", "made up of course dirt", "scattered with grass patches",
@@ -82,9 +104,3 @@ class Area:
         tree_sentence = f"The trees in this area are {random.choice(tree_adjectives)}."
         ground_sentence = f"The ground is {random.choice(ground_adjectives)}."
         return tree_sentence + " " + ground_sentence
-    
-    def _generate_area_items(self):
-        items = generate_items("HealthItem", "Amulet")
-        if any(item.name == "amulet" for item in items):
-            self._game_state.amulet_generated = True
-        return items

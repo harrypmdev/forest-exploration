@@ -1,7 +1,6 @@
 import random
 
 from effect import Effect
-from game_state import GameState
 
 class Item:
     """
@@ -112,7 +111,7 @@ class Amulet(Item):
         )
 
 _ITEM_GEN_PROBABILITY = {
-        "tomahawk": 0.05,
+        "tomahawk": 0.07,
         "potion": 0.06,
         "berries": 0.08,
         "sword": 0.04,

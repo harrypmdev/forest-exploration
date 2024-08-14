@@ -10,6 +10,9 @@ class GameState:
     records: dict -- a record of player achievements.
     item_probabilites: dict -- a dictionary of items and their relative
                                generation probability
+    amulet_probability: float -- keeps track of the probability of amulet
+                                 generation throughout a game (0 is never,
+                                 1 is definitely).
     
     Public Methods:
     update_amulet_gen: None -- Update probability of amulet generating
@@ -29,7 +32,7 @@ class GameState:
             "kills": 0,
             "score": 0,
         }
-        amulet_probability = 0
+        self.amulet_probability = 0
 
     def update_amulet_gen(self, board_size: int, num_of_visited: int) -> None:
         """ Update probability of amulet generating based on amount of areas visited. """

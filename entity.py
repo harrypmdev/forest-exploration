@@ -3,11 +3,11 @@ A module for the Entity and Enemy classes utilised in the Forest exploration
 game and the generate_entities function.
 
 Classes:
-Entity -A class for the game entities, which includes all living creatures.
-Enemy
+Entity -- A class for the game entities, which includes all living creatures.
+Enemy -- A class for the game enemies, creatures that attack the player.
 
 Functions:
-generate_entities
+generate_entities -- Randomly generate game entities.
 """
 import random
 import math
@@ -31,6 +31,8 @@ class Entity:
                     ends (True if so, False if not). Default False.
     alive: bool -- whether the entity is alive or not (True if alive, False
                    if not). Constructor always sets to True.
+    cured: bool -- whether entity has been cured of sickness of not (True
+                   if cured, False if not). Constructor always sets to False.
 
     Public Methods:
     apply_health_effect -- apply an effect to the entity and return a
@@ -54,11 +56,11 @@ class Entity:
         self.name = name
         self.hostile = hostile
         self.alive = True
+        self.cured = False
         self._searched = False
         self._sick = health <= 2
-        self._cured = False
 
-    def apply_health_effect(self, effect: Effect) -> str:
+    def apply_effect(self, effect: Effect) -> str:
         """ 
         Apply an Effect object to the entity.
         Potentially alters entity's health and alive attributes.
@@ -90,18 +92,19 @@ class Entity:
         
         Returns a string.
         """
-        article = self._indefinite() + " " if indefinite else ""
-        dead_string = f"{article}{self.name}" if self.alive else f"{article}dead {self.name}"
-        sick_string = " (it looks sick and weak)" if self.sick else ""        
+        dead_string = f"{self.name}" if self.alive else f"dead {self.name}"
+        article = self._indefinite(dead_string) + " " if indefinite else ""
+        sick_string = " (it looks sick and weak)" if self._sick else ""        
         searched_string = ""
         if not self.alive and self.hostile:
-            searched_string = " (searched)" if self.searched else " (not searched)"
+            searched_string = " (searched)" if self._searched else " (not searched)"
         hostile_string = " (hostile)" if self.hostile and self.alive else ""
-        return f"{dead_string}{hostile_string}{sick_string}{searched_string}"
+        return (f"{article}{dead_string}{hostile_string}"
+                f"{sick_string}{searched_string}")
 
     def print_status(self):
         # Print the entity's status (health, sickness, living state).
-        sick_status = " It looks sick and weak." if self.sick == True else ""
+        sick_status = " It looks sick and weak." if self._sick == True else ""
         if self.health == 0:
             print(f"\n{self.name.capitalize()} is dead.\n")
         else:
@@ -109,8 +112,8 @@ class Entity:
 
     def _update_sickness(self):
         # Update sick and cured attributes based on entity health.
-        if self.health > 2 and self.sick:
-            self.sick = False
+        if self.health > 2 and self._sick:
+            self._sick = False
             self.cured = True
             return True
     
@@ -118,16 +121,32 @@ class Entity:
         # Change alive attribute to false and return string describing death.
         self.alive = False
         return (f"The {self.name} died! It ran out of health "
-                 "when {effect.name} causing {abs(effect.value)} damage!")
+                 f"when {effect.name} causing {abs(effect.value)} damage!")
     
-    def _indefinite(self):
-        # Return the indefinite article for the entity
+    def _indefinite(self, name: str):
+        # Return the indefinite article for the given name string.
         vowels = ("a", "e", "i", "o", "u")
-        if self.name[0] in vowels:
+        if name[0] in vowels:
             return "an"
         return "a"
 
 class Enemy(Entity):
+    """
+    A class for the game enemies, creatures that attack the player at the
+    end of each turn. Extends Entity.
+
+    Public Class Attributes:
+    ENEMIES: dict -- a dictionary of enemy names (keys) and their respective
+                     attack names (values) for use in generating enemies.
+
+    Public Methods:
+    get_attack -- return the enemy's attack as an Effect.
+    search -- return the enemy loot as a list of Item objects,
+              set _searched attribute to True.
+    attack_chance -- randomly return either True if an attack hits,
+                     or False if it misses according to the enemy's
+                     hit accuracy.
+    """
     ENEMIES = {
         "ogre": "was clubbed", 
         "vampire": "had their blood sucked", 
@@ -137,21 +156,52 @@ class Enemy(Entity):
         "goblin": "got clawed and scratched"
     }
 
-    def __init__(self, health, name, attack_name, max_damage, accuracy):
+    def __init__(self, health: int, name: str, attack_name: str,
+                 max_damage: int, accuracy: float):
+        """
+        Constructor for Enemy class.
+
+        Arguments:
+        health: int -- the health of the entity.
+        name: str -- the entity's name.
+        attack_name: str -- the name of the enemy's attack e.g 'got stung'
+        max_damage: int -- the maximum attack damage this enemy can produce
+                           when generating an attack in get_attack method
+        accuracy: float -- the probability of an attack hitting its target,
+                           from 0 (not at all) to 1 (definitely).
+        """
         super().__init__(health, name, hostile=True)
-        self.max_damage = max_damage
-        self.accuracy = accuracy
-        self.attack_name = attack_name
-        self.loot = generate_items("HealthItem")
+        self._max_damage = max_damage
+        self._accuracy = accuracy
+        self._attack_name = attack_name
+        self._loot = generate_items("HealthItem")
+        print("Enemy loot:" + str(self._loot))
 
     def get_attack(self) -> Effect:
-        damage = math.ceil(self.max_damage * (random.random() * self.accuracy))
-        attack = Effect(f"{self.attack_name} by {self.name}", -damage)
+        """ Return the enemy's attack as an Effect. """
+        damage = math.ceil(self._max_damage * (random.random() * self._accuracy))
+        attack = Effect(f"{self._attack_name} by {self.name}", -damage)
         return attack
         
     def search(self) -> list[Item]:
-        self._searched = True
-        return self.loot
+        """ 
+        Search the enemy for loot, returning a list of items.
+        Sets private bool attribute _searched to True so only returns
+        the enemy's loot once, otherwise returns an empty list.
+        """
+        if self._searched:
+            return []
+        else:
+            self._searched = True
+            return self._loot   
+
+    def attack_chance(self) -> bool:
+        """ 
+        Randomly return either True if an attack hits, 
+        or False if it misses according to the enemy's hit accuracy.
+        """
+        return True if random.random() < self._accuracy else False
+            
 
 def generate_entities(*args: str):
     """

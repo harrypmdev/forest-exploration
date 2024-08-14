@@ -11,8 +11,9 @@ class Player(Entity):
         self.inventory = inventory
     
     @border
-    def die(self, effect):
-        print(f'You died! Player {effect.name} causing {abs(effect.value)} damage and ran out of health!\n')
+    def _die(self, effect):
+        print(f"You died! Player {effect.name} causing"
+        f"\n{abs(effect.value)} damage and ran out of health!")
         self.alive = False
     
     def print_status(self, score: int) -> bool:

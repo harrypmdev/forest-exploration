@@ -61,9 +61,11 @@ def end_turn(player: Player, board: GameBoard) -> None:
     """
     for entity in board.current_location.entities:
         if entity.hostile and entity.alive and player.alive:
-            if random.random() < entity.accuracy:
+            if entity.attack_chance():
                 attack = entity.get_attack()
-                player.affect_health(attack)
+                player.apply_effect(attack)
+                if not player.alive:
+                    break
                 print(f"{entity.name.capitalize()} attacked and it hit!")
                 print(f"Player {attack.name} for {str(abs(attack.value))} damage.\n")
             else:
@@ -116,11 +118,11 @@ def main():
     print("\nYou are in the center of a large forest.")
     print(board.current_location.get_description())
     game_loop(player, board, game_state)
-    save_score = yes_no_query("Well done on finishing the game. " 
+    if game_state.game_won:
+        save_score = yes_no_query("Well done on finishing the game. " 
                               "Save score to leaderboard?")
-    if game_state.game_won and save_score:
-        save_game(game_state)
-    print("")
+        if save_score:
+            save_game(game_state)
     if yes_no_query("Play again?"):
         main()
     else:
