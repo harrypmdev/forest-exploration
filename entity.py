@@ -30,7 +30,16 @@ class Entity:
     """
     ANIMAL_NAMES = ("rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "dog")
         
-    def __init__(self, health: int, name: str, hostile: bool = False):
+    def __init__(self, health: int, name: str, hostile: bool = False) -> None:
+        """
+        Constructor for Entity class.
+
+        Arguments:
+        health: int -- the health of the entity.
+        name: str -- the entity's name.
+        hostile: bool - whether the entity will attack the player when the turn
+                        ends (True if so, False if not). Default False.
+        """
         self.health = health
         self.name = name
         self.hostile = hostile
@@ -40,6 +49,15 @@ class Entity:
         self._cured = False
 
     def apply_health_effect(self, effect: Effect) -> str:
+        """ 
+        Apply an Effect object to the entity.
+        Potentially alters entity's health and alive attributes.
+
+        Arguments:
+        effect: Effect -- the effect that should be applied to the entity.
+
+        Returns a string describing the outcome.
+        """
         if not self.alive:
             return f"The {self.name} is dead, so nothing happens."
         self.health = max(0, self.health + effect.value)
@@ -50,7 +68,18 @@ class Entity:
         effect_text = f"restoring {effect.value} health" if effect.value >= 0 else f"dealing {abs(effect.value)} damage"
         return f"{effect.name.capitalize()} {target_text} {effect_text}!{sickness_changed}"
     
-    def detailed_name(self, indefinite = False):
+    def detailed_name(self, indefinite = False) -> str:
+        """
+        Return the 'detailed name' of the entity.
+        This includes whether the entity is dead, hostile, sick or searched.
+
+        Arguments:
+        indefinite: bool -- Whether the indefinite article should be added to
+                            the return string. True if yes, False if not.
+                            Default False.
+        
+        Returns a string.
+        """
         article = self._indefinite() + " " if indefinite else ""
         dead_string = f"{article}{self.name}" if self.alive else f"{article}dead {self.name}"
         sick_string = " (it looks sick and weak)" if self.sick else ""        
@@ -61,6 +90,7 @@ class Entity:
         return f"{dead_string}{hostile_string}{sick_string}{searched_string}"
 
     def print_status(self):
+        # Print the entity's status (health, sickness, living state).
         sick_status = " It looks sick and weak." if self.sick == True else ""
         if self.health == 0:
             print(f"\n{self.name.capitalize()} is dead.\n")
