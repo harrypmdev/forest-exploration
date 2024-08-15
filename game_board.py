@@ -25,7 +25,7 @@ class GameBoard:
     Public Methods:
     print -- print the game map.
     move -- move the player on the map.
-    flee -- attempt to 'flee' the player.
+    flee -- attempt to 'flee' the player to a different location on the map.
     """
 
     _DIRECTIONS = {"north": (0, -1), "east": (1, 1), "south": (0, 1), "west": (1, -1)}
