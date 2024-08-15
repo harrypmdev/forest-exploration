@@ -1,10 +1,10 @@
 """
-A module containing functions to manipulate game scores from the Google sheets
-file associated with the Forest Exploration game.
+A module containing functions to manipulate game scores from the leaderboard
+Google sheets file associated with the Forest Exploration game.
 
 Functions:
 save_game -- save a game to the leaderboard.
-print_leadeboard -- print the leaderboard.
+print_leaderboard -- print the leaderboard.
 """
 
 from collections import OrderedDict

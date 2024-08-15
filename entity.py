@@ -120,7 +120,7 @@ class Entity:
         if not self.alive and self.hostile and self._searched:
             searched_string = " (searched)"
         if not self.alive and self.hostile and not self._searched:
-            self._searched = " (not searched)"
+            searched_string = " (not searched)"
         hostile_string = " (hostile)" if self.hostile and self.alive else ""
         return (
             f"{article}{dead_string}{hostile_string}" f"{sick_string}{searched_string}"
@@ -205,7 +205,7 @@ class Enemy(Entity):
         self._max_damage = max_damage
         self._accuracy = accuracy
         self._attack_name = attack_name
-        self._loot = generate_items("HealthItem")
+        self._loot = generate_items("HealthItem", multiplier=2.55)
 
     def get_attack(self) -> Effect:
         """Return the enemy's attack as an Effect."""

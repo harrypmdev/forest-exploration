@@ -171,7 +171,8 @@ class Parser:
                 punch_attack = Effect("you used punch attack", damage)
                 punch_message = entity.apply_effect(punch_attack)
                 print(f"\n{punch_message}")
-                if entity.hostile and not entity.alive:
+                killed_before = "nothing happens" in punch_message
+                if entity.hostile and not entity.alive and not killed_before:
                     self._game_state.update_kill_records()
                 print("")
                 return True
@@ -202,7 +203,8 @@ class Parser:
             raise GameError("\nThis item must be targeted at a creature.\n")
         use_message = target.apply_effect(item.get_effect())
         print(f"\n{use_message}")
-        if target.hostile and not target.alive:
+        killed_before = "nothing happens" in use_message
+        if target.hostile and not target.alive and not killed_before:
             self._game_state.update_kill_records()
         if target.cured:
             self._game_state.update_score(10)

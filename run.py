@@ -113,6 +113,9 @@ def main():
             all_records = game_state.records
             all_records["health"] = player.health
             save_game(all_records)
+    else:
+        print("Only winners get to save their score to the leaderboard.\n"
+              "Find and use the amulet to save your score!")
     print_leaderboard()
     if yes_no_query("Play again?"):
         main()

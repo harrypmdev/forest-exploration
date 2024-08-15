@@ -144,7 +144,7 @@ _ITEM_GEN_PROBABILITY = {
 }
 
 
-def generate_items(*args: str, amulet_probability=0) -> list[Item]:
+def generate_items(*args: str, amulet_probability=0, multiplier=1.0) -> list[Item]:
     """
     Randomly generate game items.
 
@@ -153,24 +153,26 @@ def generate_items(*args: str, amulet_probability=0) -> list[Item]:
                   types that should be generated, e.g "healthitem", "amulet".
     amulet_probability: float -- the probability of an amulet generating, from
                                  0 (not at all) to 1 (definitely). Default 0.
+    multiplier: float -- how much more likely than the default items are to
+                         generate. Default is 1.
 
     Returns a list of Item objects.
     """
     item_list = []
-    types = map(str.lower, args)
+    types = [arg.lower() for arg in args]
     if "healthitem" in types:
-        item_list.extend(_generate_health_items())
+        item_list.extend(_generate_health_items(multiplier))
     if "amulet" in types:
         if random.random() < amulet_probability:
             item_list.append(Amulet())
     return item_list
 
 
-def _generate_health_items():
+def _generate_health_items(probability=1.0):
     # Return a randomly generated list of health items
     item_list = []
     for item_args in HealthItem.ITEMS:
         item_name = item_args[0]
-        if random.random() < _ITEM_GEN_PROBABILITY[item_name]:
+        if random.random() < _ITEM_GEN_PROBABILITY[item_name] * probability:
             item_list.append(HealthItem(*item_args))
     return item_list
