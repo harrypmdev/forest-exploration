@@ -32,7 +32,7 @@ class GameBoard:
 
     def __init__(self, size: int, game_state: GameState) -> None:
         """
-        Create a GameBoard object.
+        Constructor for GameBoard class.
 
         Arguments:
         size: int -- the dimension size of the board.

@@ -2,6 +2,7 @@
 
 from entity import Entity
 from utility import border
+from item import Item
 
 
 class Player(Entity):
@@ -16,7 +17,15 @@ class Player(Entity):
     print_inventory -- Print the player's inventory
     """
 
-    def __init__(self, health, inventory):
+    def __init__(self, health: int, inventory: list[Item] = []) -> None:
+        """
+        Constructor for Player class.
+
+        Arguments:
+        health: int -- the player's starting health.
+        inventory: list[Item] -- the player's starting items. Default
+                                 is empty list.
+        """
         super().__init__(health, "player")
         self.inventory = inventory
 

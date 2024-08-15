@@ -36,7 +36,7 @@ class Parser:
 
     def __init__(self, player: Player, board: GameBoard, game_state: GameState) -> None:
         """
-        Create a Parser object.
+        Constructor for Parser class.
 
         Arguments:
         player: Player -- the player for which moves are being parsed.

@@ -25,7 +25,8 @@ class GameState:
     win -- Print the win message and set the game_won attribute to True.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Constructor for GameState class."""
         self.game_won = False
         self.records = {
             "score": 0,

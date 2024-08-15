@@ -15,7 +15,7 @@ class Effect:
 
     def __init__(self, name: str, value: int) -> None:
         """
-        Constructor for the Effect class.
+        Constructor for Effect class.
 
         Arguments:
         name: str -- the effect name e.g 'was punched', 'got burnt'.
