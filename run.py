@@ -1,7 +1,7 @@
 """A script to trigger and run the Forest Exploration game."""
 
 from utility import print_tutorial, get_move, yes_no_query
-from leaderboard import save_game
+from leaderboard import Save, save_game
 from game_board import GameBoard
 from player import Player
 from game_error import GameError
@@ -109,7 +109,9 @@ def main():
             "Well done on finishing the game. " "Save score to leaderboard?"
         )
         if save_score:
-            save_game(game_state)
+            all_records = game_state.records
+            all_records["health"] = player.health
+            save_game(all_records)
     if yes_no_query("Play again?"):
         main()
     else:

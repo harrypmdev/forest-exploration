@@ -28,9 +28,9 @@ class GameState:
     def __init__(self):
         self.game_won = False
         self.records = {
+            "score": 0,
             "total moves": 0,
             "kills": 0,
-            "score": 0,
         }
         self.amulet_generated = False
         self.amulet_probability = 0
