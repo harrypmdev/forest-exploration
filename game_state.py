@@ -11,33 +11,28 @@ class GameState:
     A class for the game's key variables.
 
     Public Instance Attributes:
-    amulet_generated: bool -- whether the amulet has been generated yet.
     game_won: bool -- whether or not the game has been won
     records: dict -- a record of player achievements.
-    item_probabilites: dict -- a dictionary of items and their relative
-                               generation probability
-    amulet_probability: float -- keeps track of the probability of amulet
-                                 generation throughout a game (0 is never,
-                                 1 is definitely).
+    amulet_generated: bool -- whether the amulet has been generated yet.
+    amulet_probability: float -- the probability of amulet generation throughout
+                                a game (0 is never, 1 is definitely).
 
     Public Methods:
-    update_amulet_gen: None -- Update probability of amulet generating
-                               based on amount of areas visited.
-    update_kill_records: None -- Update record of total kills
-                                 and score in accordance.
-    update_score: None -- Update score and print score message.
-    win: None -- Print the win message and set the game_won attribute
-                 to True.
+    update_amulet_gen -- Update probability of amulet generating based on
+                         amount of areas visited.
+    update_kill_records -- Update record of total kills and score in accordance.
+    update_score -- Update score and print score message.
+    win -- Print the win message and set the game_won attribute to True.
     """
 
     def __init__(self):
-        self.amulet_generated = False
         self.game_won = False
         self.records = {
             "total moves": 0,
             "kills": 0,
             "score": 0,
         }
+        self.amulet_generated = False
         self.amulet_probability = 0
 
     def update_amulet_gen(self, board_size: int, num_of_visited: int) -> None:

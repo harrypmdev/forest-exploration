@@ -78,9 +78,9 @@ class Entity:
         self.health = max(0, self.health + effect.value)
         if self.health == 0:
             return self._die(effect)
-        sickness_changed = ""    
+        sickness_changed = ""
         if self._update_sickness():
-            sickness_changed = " Its sickness was cured."      
+            sickness_changed = " Its sickness was cured."
         sickness_changed = " Its sickness was cured." if self._update_sickness() else ""
         target_text = "on yourself" if self.name == "player" else f"on {self.name}"
         effect_text = (
@@ -104,12 +104,23 @@ class Entity:
 
         Returns a string.
         """
-        dead_string = f"{self.name}" if self.alive else f"dead {self.name}"
-        article = self._indefinite(dead_string) + " " if indefinite else ""
-        sick_string = " (it looks sick and weak)" if self._sick else ""
+        sick_string = ""
         searched_string = ""
-        if not self.alive and self.hostile:
-            searched_string = " (searched)" if self._searched else " (not searched)"
+        hostile_string = ""
+        article = ""
+        dead_string = f"dead {self.name}"
+        if self.hostile:
+            hostile_string = " (hostile)"
+        if self.alive:
+            dead_string = f"{self.name}"
+        if indefinite:
+            article = self._indefinite(dead_string) + " "
+        if self._sick:
+            sick_string = " (it looks sick and weak)"
+        if not self.alive and self.hostile and self._searched:
+            searched_string = " (searched)"
+        if not self.alive and self.hostile and not self._searched:
+            self._searched = " (not searched)"
         hostile_string = " (hostile)" if self.hostile and self.alive else ""
         return (
             f"{article}{dead_string}{hostile_string}" f"{sick_string}{searched_string}"

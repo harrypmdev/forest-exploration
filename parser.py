@@ -40,6 +40,8 @@ class Parser:
 
         Arguments:
         player: Player -- the player for which moves are being parsed.
+        board: GameBoard -- the board for which the moves are being parsed.
+        game_state: GameState -- the game state for which the moves are being parsed.
         """
         self._player = player
         self._board = board
@@ -50,7 +52,7 @@ class Parser:
         Parse raw move from the user.
 
         Arguments:
-        move: str -- the move string the user inputted
+        move: str -- the move string the user inputted.
 
         Raises GameError if move is invalid.
 
@@ -59,7 +61,7 @@ class Parser:
         command, noun, noun_two = self._split_move(move.lower())
         score = self._game_state.records["score"]
         description = f"\n{self._board.current_location.get_description()}"
-        # Dictionary of commands and their relevant subroutines and arguments
+        # Dictionary of commands and their relevant callables and arguments
         MOVE_SUBROUTINES = {
             "help": (print_help, ()),
             "tutorial": (print_tutorial, ()),

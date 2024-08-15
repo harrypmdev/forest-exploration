@@ -1,55 +1,34 @@
+"""A script to trigger and run the Forest Exploration game."""
+
+from utility import print_tutorial, get_move, yes_no_query
 from game_board import GameBoard
 from player import Player
 from game_error import GameError
 from game_state import GameState
 from parser import Parser
 from item import HealthItem
-from utility import print_tutorial
 from effect import Effect
 
 
-def introduce(player: Player, game_board: GameBoard) -> None:
-    """Print a game introductory message.
+def get_introduction(player: Player, game_board: GameBoard) -> str:
+    """
+    Return a game introductory message.
 
     Arguments:
     player: Player -- the player for which the message should
-    be printed, as created by the initialize_game function
+    be written, as created by the initialize_game function.
     board: GameBoard -- the board for which the message should
-    be printed, as created by the initialize_game function
+    be written, as created by the initialize_game function.
+
+    Returns a string.
     """
-    print(
+    return (
         "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══\n"
         "Welcome to Forest Exploration!\n"
         f"Your game board has {game_board.size}x{game_board.size} dimensions.\n"
         f"Your player starts with {player.health} health.\n"
         "═══━━━━━━━━━────────────────── • ──────────────────━━━━━━━━━═══"
     )
-
-
-def get_move() -> str:
-    """Receive the user's raw input for their game move.
-    Prints a message reminding them of the 'help' command before each input.
-
-    Returns a string, the user's input.
-    """
-    print("Enter 'help' for valid move list.")
-    return input("Enter a move: \n")
-
-
-def yes_no_query(question: str) -> bool:
-    """Ask the user a yes or no question and validate input.
-    Repeats question until valid answer is entered.
-
-    Arguments:
-    question: str -- The question that should be asked.
-
-    Returns a bool - True if yes, False if no.
-    """
-    answer = input(f"{question} (Yes/No): \n")
-    if answer.lower() not in ("yes", "no"):
-        print("\nPlease enter 'yes' or 'no'.")
-        return yes_no_query(question)
-    return answer.lower() == "yes"
 
 
 def save_game(game_state: GameState):
@@ -125,7 +104,7 @@ def main():
     if yes_no_query("Is it your first time playing?"):
         print_tutorial()
         input("Press any key to continue.\n")
-    introduce(player, board)
+    print(get_introduction(player, board))
     print("\nYou are in the center of a large forest.")
     print(board.current_location.get_description())
     game_loop(player, board, game_state)

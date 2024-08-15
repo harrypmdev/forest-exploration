@@ -17,8 +17,8 @@ class Area:
     entities: list[Entity] -- a list of entities present in the area
 
     Public Methods:
-    in_battle: bool -- returns True if the area has any living hostiles
-    get_description: str -- returns a detailed description of the area
+    in_battle -- returns True if the area has any living hostiles
+    get_description -- returns a detailed description of the area
     """
 
     def __init__(
@@ -29,7 +29,7 @@ class Area:
 
         Arguments:
         y: int -- the y coordinate this area is located at.
-        x: int -- the x coordinate this area is locatied at.
+        x: int -- the x coordinate this area is located at.
         amulet_probability: float -- the chance of an amulet being generated in
                                      this area (0 is none, 1 is definite).
         hostiles: bool -- whether this area should generate hostile entities
@@ -46,10 +46,7 @@ class Area:
 
     def in_battle(self) -> bool:
         """Return True if the player is currently in battle, False if not."""
-        for entity in self.entities:
-            if entity.hostile and entity.alive:
-                return True
-        return False
+        return any(entity.hostile and entity.alive for entity in self.entities)
 
     def get_description(self) -> str:
         """Return a string of a detailed description of the area."""
