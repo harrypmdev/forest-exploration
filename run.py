@@ -111,7 +111,7 @@ def get_size() -> int:
         if size.lower() not in ("small", "medium", "large"):
             print("\nSize must be 'small', 'medium', or 'large'.")
     sizes = {"small": 3, "medium": 5, "large": 9}
-    return sizes[size]
+    return sizes[size.lower()]
 
 
 def end_game(won: bool, records: dict) -> None:
