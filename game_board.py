@@ -176,6 +176,5 @@ class GameBoard:
     def _move_is_on_map(self, new_coordinates: list[int, int]) -> bool:
         # Return True if coordinates are on map, False if not.
         return (
-            self.size > new_coordinates[0] >= 0
-            and self.size > new_coordinates[1] >= 0
+            self.size > new_coordinates[0] >= 0 and self.size > new_coordinates[1] >= 0
         )
