@@ -6,8 +6,7 @@ searches for an amulet. The player wins by using the amulet and can then save th
 
 ![Responsive Mockup](/readme_images//responsive.webp)
 
-## Features 
-
+## Game Introduction Features
 
 **Tutorial Choice**
 
@@ -34,25 +33,28 @@ is always one of three tested choices and the board size is never too large or t
 - The user's input is validated and the game does not move on until the user enters a valid option.
 
 <details>
-<summary> Tutorial Choice Screenshot </summary>
+<summary> Board Choice Screenshot </summary>
 
-![Tutorial Choice Screenshot](/readme_images/tutorial_choice_screenshot.webp)
+![Board Choice Screenshot](/readme_images/board_choice_screenshot.webp)
 
 </details>
 <hr>
 
-**What do we help with section**
+**Introduction Information**
 
-- The 'what do we help with' section includes six links to pest information. This information can be found in full on the services page. The buttons name six common pests so that users who have come to the site with a specific pest in mind are quickly shown that they are in the right place for these pests and presented with a link to more information.
-- The section separates the hero image and reviews background image to maintain a professional appearance, using the website colours from the navbar and footer to make sure the theme is maintained.
+- The game starts with introduction information being printed to the user. The first area description is printed
+along with an extra line giving the context of the forest location of the game.
+- This starts the user off with some information to respond to rather than leaving them to find the look 
+command themselves.
 
 <details>
-<summary>'What do we help with' screenshot</summary>
+<summary> Introduction Information Screenshot </summary>
 
-![What do we help with](/assets/documentation/what-do-we-help-with.png)
+![Introduction Information Screenshot](/readme_images/introduction_screenshot.webp)
 
 </details>
-<hr>
+
+## Command Features
 
 **Reviews**
 

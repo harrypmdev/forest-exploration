@@ -147,7 +147,7 @@ class Entity:
         # Change alive attribute to false and return string describing death.
         self.alive = False
         return (
-            f"The {self.name} died! It ran out of health "
+            f"The {self.name} died!\n It ran out of health "
             f"when {effect.name} causing {abs(effect.value)} damage!"
         )
 
