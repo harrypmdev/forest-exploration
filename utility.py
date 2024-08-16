@@ -11,6 +11,7 @@ border -- decorate a callable with a two line border above and
 print_help -- print the game's valid moves.
 print_tutorial -- print the game tutorial.
 print_key -- print the map key.
+quit_game -- print a message to indicate the game is closing and exit the program.
 """
 
 from collections.abc import Callable
@@ -144,3 +145,9 @@ def print_key() -> bool:
         f"{visited} -- A visited location with no living hostiles.\n"
     )
     return False
+
+
+def quit_game() -> None:
+    """Print a message to indicate the game is closing and exit the program."""
+    print("\nThanks for playing. Goodbye!")
+    exit()

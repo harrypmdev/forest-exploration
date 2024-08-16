@@ -1,6 +1,6 @@
 """A script to trigger and run the Forest Exploration game."""
 
-from utility import print_tutorial, get_move, yes_no_query
+from utility import print_tutorial, get_move, yes_no_query, quit_game
 from leaderboard import save_game, print_leaderboard
 from game_board import GameBoard
 from player import Player
@@ -141,8 +141,7 @@ def end_game(won: bool, records: dict) -> None:
     if yes_no_query("Play again?"):
         main()
     else:
-        print("\nThanks for playing. Goodbye!")
-        exit()
+        quit_game()
 
 
 def main() -> None:

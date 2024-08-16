@@ -5,7 +5,7 @@ import random
 from effect import Effect
 from entity import Entity
 from player import Player
-from utility import print_help, print_tutorial, print_key
+from utility import print_help, print_tutorial, print_key, quit_game
 from item import Item, HealthItem, Amulet
 from game_board import GameBoard
 from game_error import GameError
@@ -80,7 +80,7 @@ class Parser:
             "map": (self._board.print, ()),
             "flee": (self._board.flee, ()),
             "look": (print, (description,)),
-            "quit": (exit, ()),
+            "quit": (quit_game, ()),
         }
         command_func, args = MOVE_SUBROUTINES[command]
         return command_func(*args)
