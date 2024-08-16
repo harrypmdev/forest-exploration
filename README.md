@@ -165,7 +165,7 @@ creating a better UX.
 
 </details>
 <details>
-<summary> Flee Unsuccessful Command Screenshot </summary>
+<summary> Flee (Unsuccessful) Command Screenshot </summary>
 
 ![Flee Unsuccessful Command](/readme_images/flee_unsuccessful_screenshot.webp)
 
@@ -275,7 +275,6 @@ creating a better UX.
 ![Take Command](/readme_images/take_command_screenshot.webp)
 
 </details>
-<hr>
 <details>
 <summary> Take (Invalid) Command Screenshot </summary>
 
@@ -297,7 +296,6 @@ creating a better UX.
 ![Drop Command](/readme_images/drop_command_screenshot.webp)
 
 </details>
-<hr>
 <details>
 <summary> Drop (Invalid) Command Screenshot </summary>
 
@@ -319,7 +317,6 @@ creating a better UX.
 ![Search Command](/readme_images/search_command_screenshot.webp)
 
 </details>
-<hr>
 <details>
 <summary> Search (Invalid) Command Screenshot </summary>
 
@@ -366,6 +363,38 @@ creating a better UX.
 <summary> Quit Command Screenshot </summary>
 
 ![Quit Command](/readme_images/quit_command_screenshot.webp)
+
+</details>
+<hr>
+
+## Leaderboard Features
+
+**Save Game**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Save Game Screenshot </summary>
+
+![Save Game](/readme_images/save_game_screenshot.webp)
+
+</details>
+<hr>
+
+**Print Leaderboard**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Print Leaderboard Screenshot </summary>
+
+![Print Leaderboard](/readme_images/leaderboard_screenshot.webp)
 
 </details>
 <hr>
@@ -578,47 +607,20 @@ The site was tested with Lighthouse and received the following results:
 
 ## Deployment
 
-- The site was deployed to GitHub pages using the following steps: 
-  - In the GitHub repository, navigate to the Settings tab 
-  - From the source section drop-down menu, select the Master Branch
-  - Once the master branch has been selected, the page will be automatically refreshed with a detailed ribbon display to indicate the successful deployment. 
+- The site was deployed to Heroku using the following steps: 
+  - ADD STEPS
 
-The live link can be found here - <a target="_blank" href="https://harrypmdev.github.io/help-me-pest-control-website/">https://harrypmdev.github.io/help-me-pest-control-website/</a>
+The live link can be found here - <a target="_blank" href="https://forest-exploration-d70fdb263fd5.herokuapp.com/">https://forest-exploration-d70fdb263fd5.herokuapp.com/</a>
 
 
 ## Credits 
 
 All content apart from where stated below is my own work.
 
-### Content 
+- emoji library by <a target="_blank" href="https://pypi.org/project/emoji/2.12.1/">Taehoon Kim</a>.
+- gspread library by <a target="_blank" href="https://pypi.org/project/gspread/">Anton Burnashev</a>.
+- google.oauth2.service_account module by <a target="_blank" href="https://google-auth.readthedocs.io/en/master/reference/google.oauth2.service_account.html">Google</a>.
+- Leaderboard spreadsheet made with Google Sheets and hosted by Google.
+- Page structure to accomodate Python console from Code Institute.
+- Syntax validation and PEP8 style format checks from <a target="_blank" href="https://docs.astral.sh/ruff/">Ruff linter</a>.
 
-- All social media pages and branding belongs to **Help Me Pest Control Limited** for whom the website was built with the consent of the company owner.
-- All font awesome icons including bug-favicon.svg from <a href="https://fontawesome.com/v4/license/">Font Awesome by Dave Gandy.</a>
-- Reviews section links to reviews hosted publicly by Google. Google fonts also from Google are imported on style.css line 1. Map is embedded link provided by Google Maps.
-- Services section pest videos are public Youtube videos hosted by Youtube and utilised with embedded links provided by Youtube.
-- All six Youtube videos are public videos produced by the British Pest Control Association.
-- Web accessibility evaluation provided by <a target="_blank" href="https://wave.webaim.org/">WAVE</a> for help in improving accessibility.
-- HTML and CSS validation provided by <a target="_blank" href="https://validator.w3.org/">W3</a>
-- Tutorials and explanations of CSS properties provided by <a target="_blank" href="https://www.w3schools.com/">W3</a>
-- README.md deployment section edited from Code Institute demonstration README.md page as process is the same.
-
-
-### Media
-
-The following images are under a free license:
-- bookshelves.webp image from <a target="_blank" href="https://www.freepik.com/free-photo/person-disinfecting-dangerous-area-while-wearing-protective-suit_12354032.htm#query=pest%20control&position=9&from_view=keyword&track=ais_user&uuid=74b5962d-b2ae-414e-9ccf-92a90d5b4e91">Freepik.</a>
-- wall-custom-cropped-lossy.webp from <a target="_blank" href="https://www.freepik.com/free-photo/people-disinfecting-together-dangerous-area_12354142.htm#page=2&position=44&from_view=collections&uuid=da580347-fa2d-42d1-a86d-b786c9ae3b06">Freepik.</a>
-- pest-paper.webp image from <a target="_blank" href="https://www.freepik.com/free-photo/nurse-wears-protective-suit-mask-covid19-outbreak_10167009.htm#position=2">Freepik.</a>
-- pier-sussex.webp image from <a target="_blank" href="https://www.freepik.com/free-photo/scenic-wooden-bridge-stretching-duxbury-bay_19441916.htm#fromView=search&page=1&position=38&uuid=fa6587fe-a7aa-4c96-b383-1cad86fb04a0">Freepik.</a>
-- bedbug.webp image from <a target="_blank" href="https://phil.cdc.gov/Details.aspx?pid=5460">Public Health Image Library.</a>
-- rat.webp image from <a target="_blank" href="https://phil.cdc.gov/Details.aspx?pid=14282">Public Health Image Library.</a>
-- flea.webp image from <a target="_blank" href="https://phil.cdc.gov/details.aspx?pid=11436">Public Health Image Library.</a>
-
-The following image is licensed under the Creative Commons Attribution-Share Alike 2.5 Generic license:
-
-- wasp.webp image from <a target="_blank" href="https://commons.wikimedia.org/wiki/File:Vespula_germanica_Richard_Bartz.jpg">Richard Bartz, Munich aka Makro Freak.</a>
-
-The following images are icensed under the Creative Commons Attribution-Share Alike Attribution-Share Alike 4.0 International, 3.0 Unported, 2.5 Generic, 2.0 Generic and 1.0 Generic license:
-
-- weevil.webp image from <a target="_blank" href="https://en.wikipedia.org/wiki/File:Weevil_September_2008-1.jpg">Alvesgaspar.</a>
-- moth.webp image from <a target="_blank" href="https://en.wikipedia.org/wiki/File:Moth_September_2008-3.jpg">Alvesgaspar.</a>
