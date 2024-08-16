@@ -9,32 +9,29 @@ searches for an amulet. The player wins by using the amulet and can then save th
 ## Features 
 
 
-**Navbar**
+**Tutorial Choice**
 
-- The navbar is at the top of all pages and contains a link respective to each page.
-- It allows for easy navigation of the website without reliance on browser features such as the 'back' or 'forwards' buttons.
-- The navbar is condensed into a burger for mobile screen sizes.
-
-<details>
-<summary> Navbar screenshot (mobile)</summary>
-
-![Nav Bar Mobile](/assets/documentation/mobile-navbar.png)
-
-</details>
+- The game starts with a console prompt to the user to answer whether it is their first time playing. 
+If so, a tutorial is printed. This ensures the user knows the goal of the game and is able to play properly.
+- The console then prompts the user to press any key to continue. This ensures that only the tutorial is on screen
+at this time and ensures a postive UX by not overloading the user with information.
+- The tutorial can also be printed at any time throughout the game if the user enters the command 'tutorial'.
 
 <details>
-<summary>Navbar screenshot (desktop)</summary>
+<summary> Tutorial Choice Screenshot </summary>
 
-![Nav Bar](/assets/documentation/navbar.png)
+![Tutorial Choice Screenshot](/readme_images/tutorial_choice_screenshot.webp)
 
 </details>
 
 <hr>
 
-**Hero image**
+**Board Choice**
 
-- The hero image is the first thing seen on the landing page underneath the navbar. It includes an overlay with a one-line summary of the site's purpose and button with a call to action.
-- The section makes a strong visual impression without overwhelming the user, and directs them to contact the company through a phone call for mobile users or by directing them to the 'contact us' page for tablet screens and wider.
+- After the tutorial choice prompt, the user is prompted to enter a board size they wish to play on.
+- The user is presented with three abstracted choices: small, medium or large. They ensures the chosen board size
+is always one of three tested choices and the board size is never too large or too small.
+- The user's input is validated and the game does not move on until the user enters a valid option.
 
 <details>
 <summary>Hero image screenshot</summary>
