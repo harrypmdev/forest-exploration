@@ -34,9 +34,9 @@ is always one of three tested choices and the board size is never too large or t
 - The user's input is validated and the game does not move on until the user enters a valid option.
 
 <details>
-<summary>Hero image screenshot</summary>
+<summary> Tutorial Choice Screenshot </summary>
 
-![Hero image](/assets/documentation/hero.png)
+![Tutorial Choice Screenshot](/readme_images/tutorial_choice_screenshot.webp)
 
 </details>
 <hr>
