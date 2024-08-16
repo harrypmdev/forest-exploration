@@ -8,7 +8,7 @@ from player import Player
 from utility import print_help, print_tutorial, print_key, quit_game
 from item import Item, HealthItem, Amulet
 from game_board import GameBoard
-from game_error import GameError
+from errors import GameError
 from game_state import GameState
 
 

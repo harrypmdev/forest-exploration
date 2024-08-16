@@ -9,7 +9,7 @@ import math
 from utility import get_emojis
 from area import Area
 from game_state import GameState
-from game_error import GameError
+from errors import GameError
 
 
 class GameBoard:

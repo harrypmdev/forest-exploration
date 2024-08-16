@@ -12,6 +12,8 @@ from collections import OrderedDict
 import gspread
 from google.oauth2.service_account import Credentials
 
+from errors import LeaderboardError
+
 
 _SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -59,7 +61,12 @@ class _Save:
 
     def add_to_leaderboard(self) -> None:
         """Add this save to the leaderboard spreadsheet."""
-        _leaderboard.append_row(list(self.records.values()))
+        try:
+            _leaderboard.append_row(list(self.records.values()))
+        except Exception as exc:
+            raise LeaderboardError(
+                "\nError using Google API attempting to save to Google sheet."
+            ) from exc
 
     def print(self, position: int = 1) -> None:
         """
@@ -144,7 +151,12 @@ def _get_name() -> str:
 
 def _get_leaderboard_saves() -> list[_Save]:
     # Get all leaderboard information in the form of a list of _Saves.
-    rows = _leaderboard.get_all_values()[1:]
+    try:
+        rows = _leaderboard.get_all_values()[1:]
+    except Exception as exc:
+        raise LeaderboardError(
+            "\nError using Google API to retrieve leaderboard data from Google sheet."
+        ) from exc
     saves = []
     for row in rows:
         try:
