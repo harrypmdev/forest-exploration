@@ -56,79 +56,316 @@ command themselves.
 
 ## Command Features
 
-**Reviews**
+The command features are inputs the user can enter throughout the game to interact with items, entities and the environment.
 
-- The section includes three reviews of the company to bolster confidence in the reliability of the service, as well as a box of information advertising the free survey policy.
-- The review boxes darken in opacity upon hovering and link to their relevant google reviews in a new tab so that users can be assured the reviews are from real customers.
+**Help Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
 
 <details>
-<summary>Reviews screenshot</summary>
+<summary> Help Command Screenshot </summary>
 
-![Reviews](/assets/documentation/reviews.png)
+![Help Command](/readme_images/help_command_screenshot.webp)
 
 </details>
 <hr>
 
-**Map**
+**Inventory Command**
 
-- The map section includes an embedded google maps page with the location of the company shown.
-- Users can see in an interactive format where the company is, and if they are likely to be in range of the service.
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
 
 <details>
-<summary>Map screenshot</summary>
+<summary> Inventory Command Screenshot </summary>
 
-![Map](/assets/documentation/map.png)
+![Inventory Command](/readme_images/inventory_command_screenshot.webp)
 
 </details>
 <hr>
 
-**Footer**
+**Status Command**
 
-- The footer is shown at the bottom of all pages like the navbar is at the top, lending the site aesthetic cohesion and design consitency.
-- Four social media icons are shown which link to their relevant pages and give the user more ways to view the company in action and make contact.
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
 
 <details>
-<summary>Footer screenshot</summary>
+<summary> Status Command Screenshot </summary>
 
-![Footer](/assets/documentation/footer.png)
+![Status Command](/readme_images/status_command_screenshot.webp)
+
+</details>
+<details>
+<summary> Status Of Command Screenshot </summary>
+
+![Status Of Command](/readme_images/status_of_command_screenshot.webp)
+
+</details>
+<details>
+<summary> Status Of (Invalid) Command Screenshot </summary>
+
+![Invalid Status Command](/readme_images/status_invalid_screenshot.webp)
 
 </details>
 <hr>
 
-**Services**
+**Look Command**
 
-- The services section lists all of the pest control services that **Help Me Pest Control** provides. It shows an image, basic information, and a video to help users understand the nature of these pest concerns.
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
 
 <details>
-<summary>Services screenshot</summary>
+<summary> Look Command Screenshot </summary>
 
-![Services](/assets/documentation/services.png)
+![Look Command](/readme_images/look_command_screenshot.webp)
 
 </details>
 <hr>
 
-**Submit email query section**
+**Punch Command**
 
-- The section to submit an email query is a form to take a name, contact email and query from the user. At least the user's email and query are required so they can be contacted back about their issue.
-- This provides another contact method to those for whom a phone call is less convenient.
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
 
 <details>
-<summary>Email query screenshot</summary>
+<summary> Punch Command Screenshot </summary>
 
-![Query](/assets/documentation/query.png)
+![Punch Command](/readme_images/punch_command_screenshot.webp)
+
+</details>
+<details>
+<summary> Punch (Invalid) Command Screenshot </summary>
+
+![Punch Command](/readme_images/punch_invalid_screenshot.webp)
 
 </details>
 <hr>
 
-**Contact information**
+**Flee Command**
 
-- This information box lists the company email and phone number for any users who do not wish to use the website's own call button or email query section.
-- The hero image section does not provide a call option for non-mobile sized screens, so the inclusion of the company contact number here is essential.
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
 
 <details>
-<summary>Contact information screenshot</summary>
+<summary> Flee Command Screenshot </summary>
 
-![Contact information](/assets/documentation/contact-information.png)
+![Flee Command](/readme_images/flee_successful_screenshot.webp)
+
+</details>
+<details>
+<summary> Flee Unsuccessful Command Screenshot </summary>
+
+![Flee Unsuccessful Command](/readme_images/flee_unsuccessful_screenshot.webp)
+
+</details>
+<details>
+<summary> Flee (Invalid) Command Screenshot </summary>
+
+![Flee Invalid Command](/readme_images/flee_invalid_screenshot.webp)
+
+</details>
+<hr>
+
+**Map Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Map Command Screenshot </summary>
+
+![Map Command](/readme_images/map_command_screenshot.webp)
+
+</details>
+<hr>
+
+**Key Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Key Command Screenshot </summary>
+
+![Key Command](/readme_images/key_command_screenshot.webp)
+
+</details>
+<hr>
+
+**Describe Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Describe Command Screenshot </summary>
+
+![Describe Command](/readme_images/describe_command_screenshot.webp)
+
+</details>
+<details>
+<summary> Describe (Invalid) Command Screenshot </summary>
+
+![Describe Invalid Command](/readme_images/describe_invalid_screenshot.webp)
+
+</details>
+<hr>
+
+**Use Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Use Command Screenshot </summary>
+
+![Use Command](/readme_images/use_single_command_screenshot.webp)
+
+</details>
+<details>
+<summary> Use (Invalid) Command Screenshot </summary>
+
+![Use Command](/readme_images/use_single_invalid_screenshot.webp)
+
+</details>
+<details>
+<summary> Use On Command Screenshot </summary>
+
+![Use Command](/readme_images/use_command_screenshot.webp)
+
+</details>
+<details>
+<summary> Use On (Invalid) Command Screenshot </summary>
+
+![Use Command](/readme_images/use_invalid_screenshot.webp)
+
+</details>
+<hr>
+
+**Take Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Take Command Screenshot </summary>
+
+![Take Command](/readme_images/take_command_screenshot.webp)
+
+</details>
+<hr>
+<details>
+<summary> Take (Invalid) Command Screenshot </summary>
+
+![Take Invalid Command](/readme_images/take_invalid_screenshot.webp)
+
+</details>
+<hr>
+
+**Drop Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Drop Command Screenshot </summary>
+
+![Drop Command](/readme_images/drop_command_screenshot.webp)
+
+</details>
+<hr>
+<details>
+<summary> Drop (Invalid) Command Screenshot </summary>
+
+![Drop Invalid Command](/readme_images/drop_invalid_screenshot.webp)
+
+</details>
+<hr>
+
+**Search Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Search Command Screenshot </summary>
+
+![Search Command](/readme_images/search_command_screenshot.webp)
+
+</details>
+<hr>
+<details>
+<summary> Search (Invalid) Command Screenshot </summary>
+
+![Search Invalid Command](/readme_images/search_invalid_screenshot.webp)
+
+</details>
+<hr>
+
+**Go Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Go Command Screenshot </summary>
+
+![Go Command](/readme_images/go_command_screenshot.webp)
+
+</details>
+<details>
+<summary> Go (Unsuccessful) Command Screenshot </summary>
+
+![Go Unsuccessful Command](/readme_images/go_unsuccessful_screenshot.webp)
+
+</details>
+<details>
+<summary> Go (Invalid) Command Screenshot </summary>
+
+![Go Invalid Command](/readme_images/go_invalid_screenshot.webp)
+
+</details>
+<hr>
+
+**Quit Command**
+
+- The user can input the 'help' command to print a list of all valid commands used in the game.
+- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
+- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
+creating a better UX.
+
+<details>
+<summary> Quit Command Screenshot </summary>
+
+![Quit Command](/readme_images/quit_command_screenshot.webp)
 
 </details>
 <hr>
