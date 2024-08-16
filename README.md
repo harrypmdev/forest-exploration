@@ -1,8 +1,6 @@
 # Forest Exploration
 
-
-Forest Exploration is text-based game in which the player explores a randomly generated forest, accumulates points and 
-searches for an amulet. The player wins by using the amulet and can then save their score and stats to the game leaderboard.
+Forest Exploration is text-based game in which the player explores a randomly generated forest, accumulates points and searches for an amulet. The player wins by using the amulet and can then save their score and stats to the game leaderboard.
 
 ![Responsive Mockup](/readme_images//responsive.webp)
 
@@ -401,7 +399,7 @@ creating a better UX.
 
 ## Features Yet to be Implemented
 
-Help Me Pest Control is a functional and complete website. There are however some features that can be implented in future to improve user experience.
+Forest Exploration is a finished and functional online text adventure. However, certain features could be implemented to improve the product in the future.
 
 1. **Automated email queries:**
     - Include a button inside each pest division of the services section that links to the contact us page and automatically fills the email query text area with a request for help that matches the pest in question.
@@ -520,11 +518,9 @@ The site was tested with Lighthouse and received the following results:
 
 ## Validator Testing 
 
-#### HTML
-- No errors returned using <a href="https://validator.w3.org/" target="_blank">W3C validator</a>
+#### Python
+- No syntax issues or PEP8 style issues returned using <a target="_blank" href="https://docs.astral.sh/ruff/">Ruff linter</a>.
 
-#### CSS
-- No errors returned using <a target="_blank" href="https://jigsaw.w3.org/css-validator/)">Jigsaw validator</a>
 
 
 ## Bugs
