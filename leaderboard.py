@@ -66,6 +66,7 @@ class _Save:
         except Exception as exc:
             raise LeaderboardError(
                 "\nError using Google API attempting to save to Google sheet."
+                "\nTry again after finishing different game."
             ) from exc
 
     def print(self, position: int = 1) -> None:
@@ -156,6 +157,7 @@ def _get_leaderboard_saves() -> list[_Save]:
     except Exception as exc:
         raise LeaderboardError(
             "\nError using Google API to retrieve leaderboard data from Google sheet."
+            "\nTry again later."
         ) from exc
     saves = []
     for row in rows:
