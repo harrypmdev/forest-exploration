@@ -3,6 +3,7 @@
 from entity import Entity
 from utility import border
 from item import Item
+from effect import Effect
 
 
 class Player(Entity):
@@ -49,7 +50,7 @@ class Player(Entity):
         return False
 
     @border
-    def _die(self, effect):
+    def _die(self, effect: Effect) -> None:
         print(
             f"You died! Player {effect.name} causing"
             f"\n{abs(effect.value)} damage and ran out of health!"

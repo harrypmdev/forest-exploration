@@ -119,14 +119,14 @@ class Amulet(Item):
     activate -- return the amulet activation message.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Constructor for Amulet class."""
         description = (
             "Could it be... the amulet of power? " "There's only one way to find out."
         )
         super().__init__("amulet", description, 1)
 
-    def activate(self):
+    def activate(self) -> None:
         """Return the amulet activation message."""
         return (
             "The amulet glows and shakes as you put it around you neck.\n"
@@ -144,7 +144,9 @@ _ITEM_GEN_PROBABILITY = {
 }
 
 
-def generate_items(*args: str, amulet_probability=0, multiplier=1.0) -> list[Item]:
+def generate_items(
+    *args: str, amulet_probability: float = 0, multiplier: float = 1.0
+) -> list[Item]:
     """
     Randomly generate game items.
 
@@ -168,7 +170,7 @@ def generate_items(*args: str, amulet_probability=0, multiplier=1.0) -> list[Ite
     return item_list
 
 
-def _generate_health_items(probability=1.0):
+def _generate_health_items(probability: float = 1.0) -> list[HealthItem]:
     # Return a randomly generated list of health items
     item_list = []
     for item_args in HealthItem.ITEMS:

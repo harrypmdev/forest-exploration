@@ -54,8 +54,11 @@ def end_turn(player: Player, board: GameBoard) -> None:
                 print(f"{entity.name.capitalize()} attacked and it missed!\n")
 
 
-def initialize_game() -> tuple[Player, GameBoard, GameState]:
+def initialize_game(board_size: int) -> tuple[Player, GameBoard, GameState]:
     """Initialize a new game.
+
+    Arguments:
+    board_size: int -- the dimension size of the board (3 is a 3x3 board.)
 
     Returns a tuple with 3 elements:
         1: Player -- the player for this game.
@@ -63,7 +66,7 @@ def initialize_game() -> tuple[Player, GameBoard, GameState]:
         3: GameState -- the game state for this game.
     """
     game_state = GameState()
-    board = GameBoard(5, game_state)
+    board = GameBoard(board_size, game_state)
     potion = HealthItem("potion", "A potion that heals 10 health.", 10)
     sword = HealthItem(
         "sword", "A sword that will last for a short while.", -4, 5, True
@@ -94,34 +97,70 @@ def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
             print(str(e))
 
 
-def main():
-    """Run the Forest Exploration game."""
-    player, board, game_state = initialize_game()
-    print("\nGreetings player!")
-    if yes_no_query("Is it your first time playing?"):
-        print_tutorial()
-        input("Press any key to continue.\n")
-    print(get_introduction(player, board))
-    print("\nYou are in the center of a large forest.")
-    print(board.current_location.get_description())
-    game_loop(player, board, game_state)
-    if game_state.game_won:
-        save_score = yes_no_query(
-            "Well done on finishing the game. " "Save score to leaderboard?"
+def get_size() -> int:
+    """
+    Ask the user for the board size they wish to play on and validate input.
+    Returns int of 3, 5 or 9 for small, medium and large inputs respectively.
+    """
+    size = ""
+    while size.lower() not in ("small", "medium", "large"):
+        size = input(
+            "\n(small/medium/large)"
+            "\nPlease enter the board size you would like to play:\n"
         )
+        if size.lower() not in ("small", "medium", "large"):
+            print("\nSize must be 'small', 'medium', or 'large'.")
+    sizes = {"small": 3, "medium": 5, "large": 9}
+    return sizes[size]
+
+
+def end_game(won: bool, records: dict) -> None:
+    """
+    Peform end of game procedures. Offer to save game to leaderboard if player
+    won the game. If did not win, print advisory message.
+    Print the leaderboard.
+    Ask the user if they wish to play again. If yes, restart game, otherwise
+    print exit message and exit program.
+
+    Arguments:
+    won: bool -- whether or not the user won the game (True if so, False if not).
+    records: dict -- A dictionary of information about a game. Must include
+                        keys: 'size', 'score', 'total moves', 'kills', 'health'.
+    """
+    if won:
+        query = "Well done on finishing the game. Save score to leaderboard?"
+        save_score = yes_no_query(query)
         if save_score:
-            all_records = game_state.records
-            all_records["health"] = player.health
-            save_game(all_records)
+            save_game(records)
     else:
-        print("Only winners get to save their score to the leaderboard.\n"
-              "Find and use the amulet to save your score!")
+        print(
+            "Only winners get to save their score to the leaderboard.\n"
+            "Find and use the amulet to save your score!"
+        )
     print_leaderboard()
     if yes_no_query("Play again?"):
         main()
     else:
         print("\nThanks for playing. Goodbye!")
         exit()
+
+
+def main() -> None:
+    """Run the Forest Exploration game."""
+    print("\nGreetings player!")
+    if yes_no_query("Is it your first time playing?"):
+        print_tutorial()
+        input("Press any key to continue.")
+    board_size = get_size()
+    player, board, game_state = initialize_game(board_size)
+    print(get_introduction(player, board))
+    print("\nYou are in the center of a large forest.")
+    print(board.current_location.get_description())
+    game_loop(player, board, game_state)
+    all_records = game_state.records
+    all_records["health"] = player.health
+    all_records["size"] = board_size
+    end_game(game_state.game_won, all_records)
 
 
 main()

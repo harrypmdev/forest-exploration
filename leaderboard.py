@@ -31,8 +31,8 @@ class _Save:
 
     Public Attributes:
     records: OrderedDict -- an ordered dictionary of the information relevant
-                            to the save. Holds (in this order): 'name', 'score'
-                            'total moves', 'kills', 'health'.
+                            to the save. Holds (in this order): 'size', 'name',
+                            'score', 'total moves', 'kills', 'health'.
 
     Public Methods:
     add_to_leaderboard -- add this save to the leaderboard spreadsheet.
@@ -47,9 +47,10 @@ class _Save:
         name: str -- the name underwhich these records are saved to the
                      leaderboard.
         records: dict -- A dictionary of information about a game. Must include
-                         keys: 'score', 'total moves', 'kills', 'health'.
+                         keys: 'size', 'score', 'total moves', 'kills', 'health'.
         """
         self.records = OrderedDict()
+        self.records["size"] = records["size"]
         self.records["name"] = name
         self.records["score"] = records["score"]
         self.records["total moves"] = records["total moves"]
@@ -68,13 +69,13 @@ class _Save:
         postion: int -- the position in the leaderboard this save should be
                         printed as being at. Default is 1.
         """
-        name = list(self.records.values())[0]
+        size, name = list(self.records.values())[:2]
+        size = f"{size}x{size}"
         pos_gap = self._get_whitespace(str(position), 3)
         name_gap = self._get_whitespace(name, 9)
-        string = f"{position}{pos_gap}| Name: {name}{name_gap}|"
-        for key, value in list(self.records.items())[1:]:
-            gap = 4 - (len(str(value)))
-            gap = gap * " "
+        string = f"{position}{pos_gap}{size} | Name: {name}{name_gap}|"
+        for key, value in list(self.records.items())[2:]:
+            gap = self._get_whitespace(value, 3)
             string += f" {key.capitalize()}: {value}{gap}|"
         print(string)
 
@@ -89,12 +90,13 @@ def save_game(records: dict) -> None:
 
     Arguments:
     records: dict -- A dictionary of information about a game. Must include
-                     keys: 'score', 'total moves', 'kills', 'health'.
+                     keys: 'size', 'score', 'total moves', 'kills', 'health'.
 
     Raises ValueError if passed an inappropriate argument, including a
     dictionary without the keys listed above.
     """
     try:
+        records["size"]
         records["score"]
         records["total moves"]
         records["kills"]
@@ -136,7 +138,7 @@ def _get_name() -> str:
     while not name or len(name) > 9:
         name = input("\nEnter a leaderboard name of 9 characters or less:\n")
         if len(name) > 9:
-            print("\nPlease enter a name of 9 characters or less.\n")
+            print("\nName must be 9 characters or less!")
     return name
 
 
@@ -156,16 +158,18 @@ def _get_leaderboard_saves() -> list[_Save]:
 
 def _parse_row(row: list[str]) -> _Save:
     # Take a row from the leaderboard (a list of five items) and return a _Save
-    # with the values from the row.
-    name = row[0]
-    score, total_moves, kills, health = row[1:]
+    # with the values from the row
+    size = row[0]
+    name = row[1]
+    score, total_moves, kills, health = row[2:]
     records = {
+        "size": size,
         "score": score,
         "total moves": total_moves,
         "kills": kills,
         "health": health,
     }
-    name_invalid = type(name) is not str
+    name_invalid = type(name) is not str or len(name) > 9
     records_invalid = any(not val.isdigit() for val in records.values())
     if name_invalid or records_invalid:
         raise TypeError("Cannot parse: row contains corrupted data.")

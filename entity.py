@@ -126,7 +126,7 @@ class Entity:
             f"{article}{dead_string}{hostile_string}" f"{sick_string}{searched_string}"
         )
 
-    def print_status(self):
+    def print_status(self) -> None:
         # Print the entity's status (health, sickness, living state).
         sick_status = " It looks sick and weak." if self._sick else ""
         if self.health == 0:
@@ -136,14 +136,14 @@ class Entity:
                 f"\n{self.name.capitalize()} has {self.health} health.{sick_status}\n"
             )
 
-    def _update_sickness(self):
-        # Update sick and cured attributes based on entity health.
+    def _update_sickness(self) -> bool:
+        # Update sick and cured attributes based on entity health. Return false.
         if self.health > 2 and self._sick:
             self._sick = False
             self.cured = True
             return True
 
-    def _die(self, effect):
+    def _die(self, effect: Effect) -> str:
         # Change alive attribute to false and return string describing death.
         self.alive = False
         return (
@@ -151,7 +151,7 @@ class Entity:
             f"when {effect.name} causing {abs(effect.value)} damage!"
         )
 
-    def _indefinite(self, name: str):
+    def _indefinite(self, name: str) -> str:
         # Return the indefinite article for the given name string.
         vowels = ("a", "e", "i", "o", "u")
         if name[0] in vowels:

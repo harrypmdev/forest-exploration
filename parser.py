@@ -134,7 +134,7 @@ class Parser:
                 if not found_items:
                     print("\nNo items found.\n")
                     return False
-                print("\nFound:")
+                print("\nFound (added to inventory):")
                 for item in found_items:
                     print(item.name)
                 print("")
@@ -197,7 +197,7 @@ class Parser:
                 return False
         raise GameError(f"\nNo item named {entered_item} in inventory.\n")
 
-    def _parse_use_health_item(self, item: Item, target: Entity):
+    def _parse_use_health_item(self, item: Item, target: Entity) -> None:
         # Parse the 'use' command on HealthItems
         if item.target_item and target.name == "player":
             raise GameError("\nThis item must be targeted at a creature.\n")
@@ -214,7 +214,7 @@ class Parser:
                 print(f"{item.name.capitalize()} broke!")
         print("")
 
-    def _parse_use_amulet_item(self, item: Item):
+    def _parse_use_amulet_item(self, item: Item) -> None:
         # Parse the 'use' command on Amulets
         item.activate()
         self._game_state.win(self._player.health)

@@ -123,7 +123,7 @@ def print_tutorial() -> bool:
         "\nTutorial:\n"
         "Travel around the map using the go command (go north, go east etc.)\n"
         "to accumulate points and find the amulet of power! You get points\n"
-        "by defeating enemies, healing sick animals and finding special items.\n"
+        "by defeating enemies and healing sick animals by use items on them.\n"
         "If you can find and use the amulet of power you have won the game!.\n"
         "When you enter an area with a hostile creature, you enter battle. In\n"
         "battle, you will be attacked every turn until the enemy is defeated.\n"
