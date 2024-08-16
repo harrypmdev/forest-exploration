@@ -112,4 +112,4 @@ class Area:
         )
         tree_sentence = f"The trees in this area are {random.choice(tree_adjectives)}.\n"
         ground_sentence = f"The ground is {random.choice(ground_adjectives)}."
-        return tree_sentence + " " + ground_sentence
+        return tree_sentence + ground_sentence
