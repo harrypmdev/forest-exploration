@@ -442,7 +442,6 @@ Save Game to Leaderboard|Attempt to save a game after playing|The game details a
 |2 |Searching enemies always returning no items.| Solved
 |3 | List indexing error when attempting to move off map | Solved
 |4 |Modules not importing correctly| Solved
-||||
 
 <br>
 
