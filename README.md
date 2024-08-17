@@ -1,6 +1,7 @@
 # Forest Exploration
 
 Forest Exploration is a Python terminal game, which runs on the Code Institute mock terminal on Heroku. It is a text-based game in which the player explores a randomly generated forest, accumulates points and searches for an amulet. The player wins by using the amulet and can then save their score and stats to the game leaderboard.
+This product was made to provide a fun gaming experience that people can access online. It was designed such that multiple people can play and compare their scores on the game leaderboard.
 
 ![Responsive Mockup](/readme_images//responsive.webp)
 
