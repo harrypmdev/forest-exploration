@@ -110,7 +110,7 @@ class Entity:
             dead_string = f"{self.name}"
         if indefinite:
             article = self._indefinite(dead_string) + " "
-        if self._sick:
+        if self._sick and self.alive:
             sick_string = " (it looks sick and weak)"
         if not self.alive and self.hostile and self._searched:
             searched_string = " (searched)"
