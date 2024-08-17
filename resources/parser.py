@@ -62,7 +62,7 @@ class Parser:
         score = self._game_state.records["score"]
         description = f"\n{self._board.current_location.get_description()}"
         # Dictionary of commands and their relevant callables and arguments
-        MOVE_CALLABLES = {
+        move_callables = {
             "help": (print_help, ()),
             "tutorial": (print_tutorial, ()),
             "key": (print_key, ()),
@@ -82,7 +82,7 @@ class Parser:
             "look": (print, (description,)),
             "quit": (quit_game, ()),
         }
-        command_func, args = MOVE_CALLABLES[command]
+        command_func, args = move_callables[command]
         return command_func(*args)
 
     def _split_move(self, move: str) -> tuple[str, str, str]:

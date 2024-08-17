@@ -363,7 +363,7 @@ creating a better UX.
 ![Quit Command](/readme_images/quit_command_screenshot.webp)
 
 </details>
-<hr>
+
 
 ## Leaderboard Features
 
@@ -395,20 +395,27 @@ creating a better UX.
 ![Print Leaderboard](/readme_images/leaderboard_screenshot.webp)
 
 </details>
-<hr>
+
 
 ## Features Yet to be Implemented
 
 Forest Exploration is a finished and functional online text adventure. However, certain features could be implemented to improve the product in the future.
 
-1. **Automated email queries:**
-    - Include a button inside each pest division of the services section that links to the contact us page and automatically fills the email query text area with a request for help that matches the pest in question.
-2. **About staff section:**
-    - Include a section that information and pictures of the staff to users so they are familiar with the staff members are given a more personal experience.
-3. **Accolades/awards section:**
-    - List the several accolades/awards won by the company, perhaps as logos that link to the respective award site.
-4. **Interactive pricing section:**
-    - An interactive section in which your pest concern can be inputted and an approximate price will be generated according to how much your issue is likely to cost.
+1. **Items that affect score:**
+    - The game currently includes two ways the player can increase their score: killing enemies and healing sick animals.
+    - One feature that could improve and the game and UX is another item type that increases the score directly. This would make finding items on the ground and on enemies more interesting.
+2. **Enemy variations:**
+    - All enemies in the game essentially function the same. They are instances of the Enemy class, with differing names and effect names but the same functionality.
+    - The game would have more variety and provide a better UX if each enemy had different functionality.
+    - This could be implemented by adding new enemies as children of the Enemy class.
+3. **Item carrying capacity:**
+    - The user starts the game with two items in their inventory and can find items in areas and on enemies throughout the game. 
+    - Though the user is unlikely to accumulate a large amount of items, particularly on the small and medium board sizes, this can potentially happen and the user has to scroll to view all of their items. It may also be hard for the player to keep track of all their items.
+    - A better UX could be provided if an item carrying capacity was introduced, so the player can only carry so many items at a time. The Item class could also have a weight attribute and the carrying capacity be limited by the sum of the all the items' weights. This would add an additional strategy element to gameplay.
+    - An alternate solution to the same problem would be a more compact manner of printing the inventory to the user.
+4. **Graphical UI:**
+    - The game was created from the start to be a text-based adventure. However, it could be adapted to a simple UI with relatively little work. The console could remain for the player to enter their commands, but with the player's inventory and the board map viewable at all times on the page. 
+    - Though this would change the nature of the product somewhat, it could potentially improve UX by allowing the user to better understand the location of their player and their items without clogging up the console with the 'map' and 'inventory' commands.
 
 ## Manual Testing 
 
@@ -451,70 +458,6 @@ Services |Click video|Embedded videos play correctly|
 Query|Click submit with no data inputted|User told to fill required forms
 ||Click submit with relevant data inputted|Data submitted to code institute form dump
 
-## Lighthouse Testing
-
-The Lighthouse feature is included in Google Chrome's DevTools to assess performance, accessibility, best practices and SEO (search engine optimisation).
-
-The site was tested with Lighthouse and received the following results:
-
-### Index Page
-
-![index.html Lighthouse Results](/assets/documentation/index-lighthouse.png)
-
-- #### Performance - 93
-    - The page peformance is 93, which means it overall had good performance. 
-    - The performance was slightly hindered by the quality of the hero image. The hero image was optimised to improve from a prior lower score, but beyond 93 compressions start to impact the quality visually for the user. Other optimisations may be found to improve the performance.
-
-- #### Accessibility - 100
-    - Lighthouse rates the page perfect for accessibility. 
-    - It previously docked points because the social media links did not have labels and the map iframe did not have a title. These were amended to improve the accessibility.
-
-- #### Best practices - 100
-    - Lighthouse rates the page perfect for best practices. This score shares some overlap with the other ratings.
-
-- #### SEO - 100
-    - Lighthouse rates the page perfect for SEO. This is bolstered by the favicon, meta description and semantic HTML.
-
-### Services Page
-
-![services.html Lighthouse Results](/assets/documentation/services-lighthouse.png)
-
-- #### Performance - 90
-    - The page peformance is 90, which means it overall had good performance. 
-    - Like the index page, the performance is hindered by the hero image. It is slightly lower, likely due to the embedded Youtube videos and higher quantity of images. The videos could potentially be hosted with the site to improve performance.
-
-- #### Accessibility - 100
-    - Lighthouse rates the page perfect for accessibility. 
-    - It previously docked points as the Youtube iframes did not have titles. This was amended.
-
-- #### Best practices - 100
-    - Lighthouse rates the page perfect for best practices.
-
-- #### SEO - 100
-    - Lighthouse rates the page perfect for SEO.
-
-
-### Contact Us Page
-
-![contact-us.html Lighthouse Results](/assets/documentation/contact-us-lighthouse.png)
-
-- #### Performance - 91
-    - The site peformance is 91, which means it overall had good performance. 
-    - Like index.html and services.html, the performance was slightly hindered by the quality of the hero image.
-
-- #### Accessibility - 100
-    - Lighthouse rates the site perfect for accessibility. 
-
-- #### Best practices - 100
-    - Lighthouse rates the site perfect for best practices.
-
-- #### SEO - 100
-    - Lighthouse rates the site perfect for SEO.
-    
-<br>
-
-**It is of course important to note that Lighthouse is an automated anaylsis and improvements can likely be made to all four metrics for each page.**
-
 
 ## Validator Testing 
 
@@ -527,7 +470,7 @@ The site was tested with Lighthouse and received the following results:
 
 |  Bug Number |  Problem | Outcome |
 |---|---|---|
-|1 |WAVE evaluator shows empty form label | Fixed
+|1 | New items found in the game have unexpectedly low durability | Fixed
 |2 |Services page images not appearing as circles | Fixed
 3 | Services page videos not appearing correctly | Fixed
 4 | WAVE evaluator shows skipped heading level on services.html | Fixed
@@ -536,69 +479,20 @@ The site was tested with Lighthouse and received the following results:
 <br>
 
 **1.**
-- The WAVE evaluator showed an empty form label for the label associated with the burger checkbox.
-    <details>
-    <summary>Bug one WAVE error</summary>
-
-    ![bug-one](/assets/documentation/bug-one.png)
-
-    </details>
-    <br>
-- This is a downside of using only HTML and CSS for a menu burger rather than Javascript.
-- An aria-label was added to the label.
-    <details>
-    <summary>Bug one WAVE solved</summary>
-
-    ![bug-one-solved](/assets/documentation/zero-errors.png)
-
-    </details>
+- When testing the game in its development, I found some items I was acquiring were breaking quicker than I had intended them to. 
+- For example, the 'sword' item was meant to have a durability of 5 uses, but was breaking after 1 use.
+- I had implemented the item generation by creating a tuple of `HealthItem` objects that the `generate_items` function would iterate through.
+- The generator was only creating references to the original tuple objects, which meant that once an item's durability had broken down, all subsequent items acquired of the same item type would retain the same durability. This meant that once the sword's durability had been worn down to 0 the first time, it broke at the first time its durability was checked on subsequent acquirings.
+- I resolved the issue by changing the nature of item generation. The tuple in question (`HealthItem.ITEMS` in item.py) is now a two-dimensional tuple that holds the arguments for a possible `HealthItem`. A new `HealthItem` object is instantiated every time the `generate_items` function in item.py selects it for generation.
 
 **2.**
 - The images in the services.html pests flexbox sometimes appeared as either vertical or horizontal ovals despite the intention for them to be perfect circles.
-    <details>
-    <summary>Bug two</summary>
-
-    ![bug-two](/assets/documentation/bug-two.png)
-
-    </details>
-    <br>
-- Setting the border radius property of an element to 50% does not inherently make the image a circle if the image is not a square.
-- Complex solutions may be available, considering the project scope the images were simply cropped to be perfect squares.
-    <details>
-    <summary>Bug two solved</summary>
-
-    ![bug-two-solved](/assets/documentation/bug-two-fixed.png)
-
-    </details>
 
 **3.**
 - The Youtube videos in the services.html pests flexbox appeared either on the left side of the flexbox only, or with large black bars on either side of the video if it was stretched to the full size of the flexbox.
-    <details>
-    <summary>Bug three</summary>
-
-    ![bug-three](/assets/documentation/bug-three.png)
-
-    </details>
-    <br>
-- Embedded Youtube videos do not behave exactly like text.
-- Putting the Youtube video inside another flexbox div and setting its flex properties so that the video appeared in the center solved the problem
-    <details>
-    <summary>Bug three solved</summary>
-
-    ![bug-three-solved](/assets/documentation/bug-three-fixed.png)
-
-    </details>
 
 **4.**
 - The WAVE evaluator showed that the services page had skipped a heading level. This is an accessibility problem and bad practice. Headings should always run consecutively.
-    <details>
-    <summary>Bug four</summary>
-
-    ![bug-four](/assets/documentation/bug-four.png)
-
-    </details>
-    <br>
-- A h1 heading had been used for the website logo, then h3 headings for the flexbox pest titles. The flexbox pest titles were changed to h2 headings.
 
 
 ## Deployment
