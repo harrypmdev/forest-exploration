@@ -1,6 +1,5 @@
 """A script to trigger and run the Forest Exploration game."""
 
-
 from resources.utility import print_tutorial, get_move, yes_no_query, quit_game
 from resources.leaderboard import save_game, print_leaderboard
 from resources.game_board import GameBoard
