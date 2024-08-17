@@ -414,7 +414,7 @@ Forest Exploration is a finished and functional online text adventure. However, 
 
 The product utilises various data models. All items are instances of either the `HealthItem` or `Amulet` classes found in `resources/item.py`, both children of the abstract `Item` class. The use of an abstract parent class allows all items to share certain attributes and methods, such as a name and durability. The models are easily scalable, as any additional item types could be added with `Item` as their parent.
 
-All entities (animals, enemies, and the player) are instances of the `Entity` and `Enemy` classes found in `resources/entity.py` and the `Player` class found in `resources/Player.py` respectively. This allows all entities to share common attributes and methods such as the `affect_health` method. This also allows for scability as new entity types could be added with the `Entity` class as their parent.
+All entities (animals, enemies, and the player) are instances of the `Entity` and `Enemy` classes found in `resources/entity.py` and the `Player` class found in `resources/Player.py` respectively. This allows all entities to share common attributes and methods such as the `apply_affect` method. This also allows for scability as new entity types could be added with the `Entity` class as their parent.
 
 ## Manual Testing 
 
@@ -455,7 +455,7 @@ Save Game to Leaderboard|Attempt to save a game after playing.|The game details 
 **2.**
 - In the game, players can search dead enemies using the 'search' command - this sometimes returns items. Testing during development found that searching enemies was never returning items.
 - The public `search` method of the `Enemy` class in `resources/entity.py` returns the enemy's 'loot' (items) so that they can be added to the player's inventory. It then sets the private `_searched` attribute to `True`. The enemy cannot be searched twice, as the the `search` method checks if `_searched` is `False` before returning the items. If it is `True`, it simply returns an empty list.
-- The `search` method was always evaluating `_searched` to `True` and therefore never returning the enemy's items. This was due to a typing error in the public `affect_health` method of the parent `Entity` class. The `affect_health` method was accidentally setting `_searched` to a non-empty string. Since non-empty strings evalute to `True`, this meant that any `Entity` object for which the `affect_health` method had been called had a `True` `_searched` attribute.
+- The `search` method was always evaluating `_searched` to `True` and therefore never returning the enemy's items. This was due to a typing error in the public `apply_affect` method of the parent `Entity` class. The `apply_affect` method was accidentally setting `_searched` to a non-empty string. Since non-empty strings evalute to `True`, this meant that any `Entity` object for which the `apply_affect` method had been called had a `True` `_searched` attribute.
 - The typing error in `affect_health` was corrected, resolving the issue.
 
 <a name="bug_three"></a>
