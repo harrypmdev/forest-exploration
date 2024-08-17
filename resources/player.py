@@ -1,9 +1,9 @@
 """A module for the Player class utilised in Forest Exploration."""
 
-from entity import Entity
-from utility import border
-from item import Item
-from effect import Effect
+from resources.entity import Entity
+from resources.utility import border
+from resources.item import Item
+from resources.effect import Effect
 
 
 class Player(Entity):

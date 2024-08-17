@@ -13,8 +13,8 @@ generate_entities -- Randomly generate game entities.
 import random
 import math
 
-from effect import Effect
-from item import Item, generate_items
+from resources.effect import Effect
+from resources.item import Item, generate_items
 
 
 class Entity:

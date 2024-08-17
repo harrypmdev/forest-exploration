@@ -2,14 +2,14 @@
 
 import random
 
-from effect import Effect
-from entity import Entity
-from player import Player
-from utility import print_help, print_tutorial, print_key, quit_game
-from item import Item, HealthItem, Amulet
-from game_board import GameBoard
-from errors import GameError
-from game_state import GameState
+from resources.effect import Effect
+from resources.entity import Entity
+from resources.player import Player
+from resources.utility import print_help, print_tutorial, print_key, quit_game
+from resources.item import Item, HealthItem, Amulet
+from resources.game_board import GameBoard
+from resources.errors import GameError
+from resources.game_state import GameState
 
 
 class Parser:

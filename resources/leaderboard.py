@@ -12,7 +12,7 @@ from collections import OrderedDict
 import gspread
 from google.oauth2.service_account import Credentials
 
-from errors import LeaderboardError
+from resources.errors import LeaderboardError
 
 
 _SCOPE = [

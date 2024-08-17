@@ -6,10 +6,10 @@ the Forest Exploration game.
 import random
 import math
 
-from utility import get_emojis
-from area import Area
-from game_state import GameState
-from errors import GameError
+from resources.utility import get_emojis
+from resources.area import Area
+from resources.game_state import GameState
+from resources.errors import GameError
 
 
 class GameBoard:

@@ -3,7 +3,7 @@ A module for the GameState class utilised
 in the Forest Exploration game.
 """
 
-from utility import border
+from resources.utility import border
 
 
 class GameState:

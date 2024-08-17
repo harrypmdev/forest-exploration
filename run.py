@@ -1,14 +1,15 @@
 """A script to trigger and run the Forest Exploration game."""
 
-from utility import print_tutorial, get_move, yes_no_query, quit_game
-from leaderboard import save_game, print_leaderboard
-from game_board import GameBoard
-from player import Player
-from errors import GameError, LeaderboardError
-from game_state import GameState
-from parser import Parser
-from item import HealthItem
-from effect import Effect
+
+from resources.utility import print_tutorial, get_move, yes_no_query, quit_game
+from resources.leaderboard import save_game, print_leaderboard
+from resources.game_board import GameBoard
+from resources.player import Player
+from resources.errors import GameError, LeaderboardError
+from resources.game_state import GameState
+from resources.parser import Parser
+from resources.item import HealthItem
+from resources.effect import Effect
 
 
 def get_introduction(player: Player, game_board: GameBoard) -> str:

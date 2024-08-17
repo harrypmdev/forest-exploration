@@ -15,7 +15,7 @@ generate_items -- Randomly generate items.
 import random
 from abc import ABC
 
-from effect import Effect
+from resources.effect import Effect
 
 
 class Item(ABC):

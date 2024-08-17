@@ -2,8 +2,8 @@
 
 import random
 
-from entity import generate_entities
-from item import generate_items
+from resources.entity import generate_entities
+from resources.item import generate_items
 
 
 class Area:
