@@ -143,6 +143,7 @@ def end_game(won: bool, records: dict) -> None:
             "Find and use the amulet to save your score!"
         )
     try:
+        print("Loading leaderboard...")
         print_leaderboard()
     except LeaderboardError as e:
         print(str(e))
