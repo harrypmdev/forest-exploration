@@ -66,6 +66,11 @@ This product was made to provide a fun online game experience for anyone who enj
 - Details (including scores) are saved to a google sheet and printed at the end of every game.
 - Leaderboard saves are ranked by score.
 
+## Rationale For Chosen Libraries
+
+- The emoji library by Taehoon Kim was chosen as it allowed the game map to be printed using emojis. This is more pleasant for the user to look at and what is being depicted is clearer, providing a better UX.
+- The gspread and google.oauth2.service_account libraries by Anton Burnashev and Google were chosen as they allowed access to a Google spreadsheet to which the leaderboard could be saved.
+
 ## Generation Features
 
 **Random Item Generation**
