@@ -1,13 +1,70 @@
 # Forest Exploration
 
 Forest Exploration is a Python terminal game, which runs on the Code Institute mock terminal on Heroku. It is a text-based game in which the player explores a randomly generated forest, accumulates points and searches for an amulet. The player wins by using the amulet and can then save their score and stats to the game leaderboard.
-This product was made to provide a fun online game experience for anyone who enjoys text-based adventures. It was designed such that multiple people can play and compare their scores on the game leaderboard.
 
 ![Responsive Mockup](/readme_images//responsive.webp)
 
 ## How To Play
 
 A tutorial and 'help' list of all valid moves are provided in-game. The user should utilise the available commands to travel around the map, collecting items and defeating enemies. The ultimate goal is to accumulate points and end the game by using an item named 'amulet', which is found somewhere on the board. Points are accumulated by defeating enemies and healing sick animals.
+
+## Pre-Development Project Goals
+
+This product was made to provide a fun online game experience for anyone who enjoys text-based adventures. It was to be designed such that multiple people can play and compare their scores on the game leaderboard.
+
+**Functional Requirements**
+
+**1. Game Start and Navigation**
+
+- The program must introduce the user to the game.
+- The game should allow players to navigate through different parts of the map grid.
+
+**2. Interactions with Items and Entities**
+- If a user goes to a part of the grid, an area will be generated. These areas include enemies to fight and items to collect.
+- This will affect the user’s items, health and their overall game score.
+
+**3. Endgame and Leaderboard**
+- The game must define clear conditions for winning or losing.
+- Scores must be stored in a google spreadsheet and be printable to the game console.
+- Players on the leaderboard should be ranked by score.
+
+## Pre-Development Basic Game Logic Plan
+
+When the game starts, the user should be printed a tutorial if they have never played before.
+The board size they wish to play on should be requested and a game of this board size should then be started.
+The user should be asked to input their move for as long as their player has not died or they have not used the amulet item that ends the game.
+When the game is over, if the user has won the game, they should be given the option to save their game to the leaderboard.
+The leaderboard should then print whether the user won or not.
+The user should be presented with the option to either play again or quit.
+
+This logic is depicted in the form of a pre-development flowchart:
+
+<details>
+<summary> Game Logic Flowchart </summary>
+
+![Game Logic Flowchart](/readme_images/game_chart.webp)
+
+</details>
+
+## Post Development Goal Evaluation
+
+This product was made to provide a fun online game experience for anyone who enjoys text-based adventures. It was to be designed such that multiple people can play and compare their scores on the game leaderboard.
+
+**Functional Requirements**
+
+**1. Game Start and Navigation**
+
+- The program introduces the user to the game with a tutorial, introductory message and the advisory message that the 'help' command is available.
+- The game allows player to move about the map using either the 'go' or 'flee' commands.
+
+**2. Interactions with Items and Entities**
+- Areas are generated and saved as the user traverses the map. Areas generate items and entities (animals and enemies).
+- The user's health, items and score are tracked throughout the game and saved to the leaderboard if they win the game and wish to save it.
+
+**3. Endgame and Leaderboard**
+- The tutorial outlines the game's winning condition (finding and using the amulet).
+- Details (including scores) are saved to a google sheet and printed at the end of every game.
+- Leaderboard saves are ranked by score.
 
 ## Generation Features
 
@@ -460,6 +517,7 @@ Save Game to Leaderboard|Attempt to save a game after playing.|The game details 
 - The typing error in `affect_health` was corrected, resolving the issue.
 
 <a name="bug_three"></a>
+
 **3.**
 - When testing the game during development, I attempted to make an illegal move using the 'go' command that would take my player off the map.
 - This prompted an `IndexError` to be raised.
