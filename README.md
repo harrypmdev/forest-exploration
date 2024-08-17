@@ -14,6 +14,8 @@ This product was made to provide a fun online game experience for anyone who enj
 
 **Functional Requirements**
 
+<hr>
+
 **1. Game Start and Navigation**
 
 - The program must introduce the user to the game.
@@ -50,7 +52,9 @@ This logic is depicted in the form of a pre-development flowchart:
 
 This product was made to provide a fun online game experience for anyone who enjoys text-based adventures. It was to be designed such that multiple people can play and compare their scores on the game leaderboard.
 
-**Functional Requirements**
+**Evaluation of Fulfillment of Functional Requirements**
+
+<hr>
 
 **1. Game Start and Navigation**
 
