@@ -27,17 +27,17 @@ This product was made to provide a fun online game experience for anyone who enj
 
 **3. Endgame and Leaderboard**
 - The game must define clear conditions for winning or losing.
-- Scores must be stored in a google spreadsheet and be printable to the game console.
+- Scores must be stored in a Google spreadsheet and be printable to the game console.
 - Players on the leaderboard should be ranked by score.
 
 ## Pre-Development Basic Game Logic Plan
 
-When the game starts, the user should be printed a tutorial if they have never played before.
-The board size they wish to play on should be requested and a game of this board size should then be started.
-The user should be asked to input their move for as long as their player has not died or they have not used the amulet item that ends the game.
-When the game is over, if the user has won the game, they should be given the option to save their game to the leaderboard.
-The leaderboard should then print whether the user won or not.
-The user should be presented with the option to either play again or quit.
+- When the game starts, the user should be printed a tutorial if they have never played before.
+- The board size they wish to play on should be requested and a game of this board size should then be started.
+- The user should be asked to input their move for as long as their player has not died or they have not used the amulet item that ends the game.
+- When the game is over, if the user has won the game, they should be given the option to save their game to the leaderboard.
+- The leaderboard should then print whether the user has won or not.
+- The user should be presented with the option to either play again or quit.
 
 This logic is depicted in the form of a pre-development flowchart:
 
@@ -67,7 +67,7 @@ This product was made to provide a fun online game experience for anyone who enj
 
 **3. Endgame and Leaderboard**
 - The tutorial outlines the game's winning condition (finding and using the amulet).
-- Details (including scores) are saved to a google sheet and printed at the end of every game.
+- Details (including scores) are saved to a Google sheet and printed at the end of every game.
 - Leaderboard saves are ranked by score.
 
 ## Rationale For Chosen Libraries
