@@ -367,7 +367,7 @@ creating a better UX.
 
 ## Leaderboard Features
 
-**Save Game**
+**Save Game to Leaderboard**
 
 - The user can input the 'help' command to print a list of all valid commands used in the game.
 - A message reminding the user of the 'help' command prints above every prompt for new input in the game.
@@ -419,29 +419,14 @@ Forest Exploration is a finished and functional online text adventure. However, 
 
 ## Manual Testing 
 
-###  Feature testing specific to mobile screen size
-
-The site has been tested on mobile, tablet, and laptop/PC screen sizes. The following is testing done on an iPhone XR (414x896) screen simulator, though other mobile screen sizes have been tried.
-
 |  Feature |  Testing action | Outcome |
 |---|---|---|
-Navbar|Click on burger|Menu opens|
-Hero image| Click on 'CALL US NOW'|Phone app opens|
-Services|Scroll through section|All pest divisons display vertically and are readable|
-<br>
-
-### Feature testing specific to tablet screen size and larger
-
-The following is testing done on an iPad Air (1180x820) and regular desktop screen size, though other tablet and PC screen sizes have been tried.
-
-|  Feature |  Testing action | Outcome |
-|---|---|---|
-Navbar|Hover over navbar links|Link colour temporarily changes and text enlarges|
+|Board Choice |Attempt to enter erroneous inputs|Console prints message advising user to enter 'small', 'medium' or 'large', then repeats question.|
 Hero image|Hover over 'GET IN TOUCH'|Link temporarily fades in opacity|
 ||Click on 'GET IN TOUCH'|Contact us page opens|
-'What do we help with' section|Hover over pest links|Links temporarily fade in opacity|
-Reviews|Hover over individual reviews|Reviews temporarily fade in opacity, mouse changes to pointer to indicate reviews are links|
-Services|Scroll through section|As many pest divisions as can fit display horizontally, then divisions display in rows vertically
+Go Command|Attempt to move outside of board|Initial testing produced [bug three](#bug_three). |
+Save Game to Leaderboard|Attempt to enter invalid name|Console prints message advising user to enter name of 9 characters or less, then repeats question.|
+Save Game to Leaderboard|Attempt to save a game after playing|The game details are added to the leaderboard and displayed on all future games.
 <br>
 
 ### Feature testing generic to all screen sizes
@@ -450,8 +435,8 @@ The following testing should not change outcome based on screen size, but has be
 
 |  Feature |  Testing action | Outcome |
 |---|---|---|
-|Navbar |Click on menu link|Relevant page opens|
-'What do we help with' section|Click pest links|Relevant part of services page opens|
+
+|Click pest links|Relevant part of services page opens|
 Map|Attempt to move map frame|Embedded page functionality tells user to use two fingers|
 Footer|Click social media links|Relevant social media page opens
 Services |Click video|Embedded videos play correctly|
@@ -464,16 +449,14 @@ Query|Click submit with no data inputted|User told to fill required forms
 #### Python
 - No syntax issues or PEP8 style issues returned using <a target="_blank" href="https://docs.astral.sh/ruff/">Ruff linter</a>.
 
-
-
 ## Bugs
 
 |  Bug Number |  Problem | Outcome |
 |---|---|---|
-|1 | New items found in the game have unexpectedly low durability | Fixed
-|2 |Services page images not appearing as circles | Fixed
-3 | Services page videos not appearing correctly | Fixed
-4 | WAVE evaluator shows skipped heading level on services.html | Fixed
+|1 |New items found in the game have unexpectedly low durability| Solved
+|2 |Searching enemies always returning no items.| Solved
+|3 | List indexing error when attempting to move off map | Solved
+|4 |Modules not importing correctly| Solved
 ||||
 
 <br>
@@ -483,16 +466,27 @@ Query|Click submit with no data inputted|User told to fill required forms
 - For example, the 'sword' item was meant to have a durability of 5 uses, but was breaking after 1 use.
 - I had implemented the item generation by creating a tuple of `HealthItem` objects that the `generate_items` function would iterate through.
 - The generator was only creating references to the original tuple objects, which meant that once an item's durability had broken down, all subsequent items acquired of the same item type would retain the same durability. This meant that once the sword's durability had been worn down to 0 the first time, it broke at the first time its durability was checked on subsequent acquirings.
-- I resolved the issue by changing the nature of item generation. The tuple in question (`HealthItem.ITEMS` in item.py) is now a two-dimensional tuple that holds the arguments for a possible `HealthItem`. A new `HealthItem` object is instantiated every time the `generate_items` function in item.py selects it for generation.
+- I resolved the issue by changing the nature of item generation. The tuple in question (`HealthItem.ITEMS` in `resources/item.py`) is now a two-dimensional tuple that holds the arguments for a possible `HealthItem`. A new `HealthItem` object is instantiated every time the `generate_items` function in `resources/item.py` selects it for generation.
 
 **2.**
-- The images in the services.html pests flexbox sometimes appeared as either vertical or horizontal ovals despite the intention for them to be perfect circles.
+- In the game, players can search dead enemies using the 'search' command - this sometimes returns items. Testing during development found that searching enemies was never returning items.
+- The public `search` method of the `Enemy` class in `resources/entity.py` returns the enemy's 'loot' (items) so that they can be added to the player's inventory. It then sets the private `_searched` attribute to `True`. The enemy cannot be searched twice, as the the `search` method checks if `_searched` is `False` before returning the items. If it is `True`, it simply returns an empty list.
+- The `search` method was always evaluating `_searched` to `True` and therefore never returning the enemy's items. This was due to a typing error in the public `affect_health` method of the parent `Entity` class. The `affect_health` method was accidentally setting `_searched` to a non-empty string. Since non-empty strings evalute to `True`, this meant that any `Entity` object for which the `affect_health` method had been called had a `True` `_searched` attribute.
+- The typing error in `affect_health` was corrected, resolving the issue.
 
+<a name="bug_three"></a>
 **3.**
-- The Youtube videos in the services.html pests flexbox appeared either on the left side of the flexbox only, or with large black bars on either side of the video if it was stretched to the full size of the flexbox.
+- When testing the game during development, I attempted to make an illegal move using the 'go' command that would take my player off the map.
+- This prompted an `IndexError` to be raised.
+- The problem was in the `GameBoard` class in `resources/game_board.py`. The private `GameBoard` method `_move_is_on_map` checks if a coordinates are on the map and returns `True` if they are, `False` if they are not. This in this then utilised in the public `move` method of `GameBoard` to check a potential move is valid.
+- The `_move_is_on_map` private method was functioning incorrectly. It used greater than or equal to operators (>=) rather than greater than (>) operators when evaluating its argument coordinates as compared to the board size. This meant it would return `True` for an extra row and column that were not actually valid moves. Then, when the `move` method attempted to use the index, the `IndexError` exception was raised.
+- The operators were corrected to greater than operators and the issue was resolved.
 
 **4.**
-- The WAVE evaluator showed that the services page had skipped a heading level. This is an accessibility problem and bad practice. Headings should always run consecutively.
+- After initially developing the product with all Python files in the main directory, I decided that the product would be better organised if all Python files apart from `run.py` were in a separate subdirectory. I moved the files to the `resources` folder, and changed the `import` statements in `run.py` to accomodate this.
+- This caused a `ModuleNotFoundError` to be raised, traceable to an `import` statement in `resources/leaderboard.py`.
+- I had not realised that the working directory for the files in the `resources` folder would still be the main directory. `resources/leaderboard.py` was the first module to be imported to `run.py` that tried to import another file from the `resources` folder without referencing its directory in its `import` statement.
+- As such, I changed all the `import` statements of the files in the `resources` folder to reflect this, resolving the issue.
 
 
 ## Deployment
