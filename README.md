@@ -1,6 +1,6 @@
 # Forest Exploration
 
-Forest Exploration is a Python terminal game, which runs on the Code Institute mock terminal on Heroku. It is text-based game in which the player explores a randomly generated forest, accumulates points and searches for an amulet. The player wins by using the amulet and can then save their score and stats to the game leaderboard.
+Forest Exploration is a Python terminal game, which runs on the Code Institute mock terminal on Heroku. It is a text-based game in which the player explores a randomly generated forest, accumulates points and searches for an amulet. The player wins by using the amulet and can then save their score and stats to the game leaderboard.
 
 ![Responsive Mockup](/readme_images//responsive.webp)
 
@@ -14,7 +14,7 @@ A tutorial and 'help' list of all valid moves are provided in-game. The user sho
 
 - The game randomly generates items, animals and enemies for each new area.
 - The `generate_items` function in `resources/item.py` and `generate_entities` function in `resources/entity.py` handle the generation of items and entities respectively. These are then utilised by the `Area` class in `resources/area.py`.
-- This bolsters the the UX by ensuring a different experience every time the user plays.
+- This bolsters the UX by ensuring a different experience every time the user plays.
 
 **Area Description Generation**
 
@@ -105,7 +105,7 @@ creating a better UX.
 
 - The user can input the 'status' command to print the user's health and score to the console.
 - This allows the user to make more informed choices during the game, and improves the UX by ensuring users do not have to keep track of their health and score themselves.
-- The user can also input 'status of (entity)' to find the status of an entity in the area. This makes enemy battles more interesting, as player's can utilise strategy in which enemy they target first and with which item, improving the UX.
+- The user can also input 'status of (entity)' to find the status of an entity in the area. This makes enemy battles more interesting, as players can utilise strategy in which enemy they target first and with which item, improving the UX.
 - If an invalid 'status of' command is entered, the console prints a message to explain this. Only 'status of' commands referencing entities in the current area are considered valid, as to maintain the fantasy of occupying only one location at a time.
 
 <details>
@@ -144,7 +144,7 @@ creating a better UX.
 **Punch Command**
 
 - The user can input the 'punch (entity)' command to perform a weak attack on an animal or enemy and lower their health.
-- The ensures that even when the user has no items, they are not powerless against enemies. Since using items affects the item's durability, it can also be a strategic choice when enemies are on low health, making the game more strategy based and creating a better UX.
+- The ensures that even when the user has no items, they are not powerless against enemies. Since using an item affects the item's durability, it can also be a strategic choice when enemies are on low health, making the game more strategy based and creating a better UX.
 
 <details>
 <summary> Punch Command Screenshot </summary>
@@ -163,7 +163,7 @@ creating a better UX.
 **Flee Command**
 
 - The user can input the 'flee' command when in battle to attempt movement to a nearby area.
-- This ensures that user's who encounter multiple powerful enemies can continue playing the game without dying.
+- This ensures that users who encounter multiple powerful enemies can continue playing the game without dying.
 - The 'flee' command moves the player in a random direction, and has a chance of failing. This provides an incentive to stay and fight enemies, making the user experience all aspects of the game and creating a better UX.
 
 <details>
@@ -238,7 +238,7 @@ creating a better UX.
 - The user can input the 'use' command to utilise an item in their inventory.
 - This allows the user to utilise a variety of items.
 - The user can also input 'use (item) on (entity)' to use the item on another creature. This allows weapons to be used on enemies and animals to be healed.
-- Attemping to use a weapon without specifing an entity to be targeted will result in an advise message being printed that the user must enter an entity to target. This ensure that commands like 'use sword' do not assume the player as the target and ensures the user does not accidentally attack themselves.
+- Attemping to use a weapon without specifing an entity to be targeted will result in an advice message being printed that the user must enter an entity to target. This ensure that commands like 'use sword' do not assume the player as the target and ensures the user does not accidentally attack themselves.
 
 <details>
 <summary> Use Command Screenshot </summary>
@@ -268,7 +268,7 @@ creating a better UX.
 
 **Take Command**
 
-- The user can input the 'take' command to pick up items from the ground.
+- The user can input the 'take (item)' command to pick up items from the ground.
 - This allows items to be generated on the ground around the map, allowing players a chance to find items before fighting any enemies.
 
 <details>
@@ -287,7 +287,7 @@ creating a better UX.
 
 **Drop Command**
 
-- The user can input the 'drop' command to drop items. They may choose to do this if their inventory is becoming crowded with duplicate items.
+- The user can input the 'drop (item)' command to drop items. They may choose to do this if their inventory is becoming crowded with duplicate items.
 - This command could have future utilisation if a carrying capacity was introduced.
 
 <details>
@@ -328,7 +328,7 @@ creating a better UX.
 
 - The user can input the 'go (direction)' command to travel around the map.
 - Attempting to move outside the map results in an advisory message that the player cannot move in this direction, ensuring no errors occur in the code.
-- Attempting to use the go command with any direction other than 'north', 'east', 'south' or 'west' results in an advisory message being printed which suggests these options. This ensures that anyone using the 'go' command incorrectly is notified of the correct way to use the command, improving the UX.
+- Attempting to use the 'go' command with any direction other than 'north', 'east', 'south' or 'west' results in an advisory message being printed which suggests these options. This ensures that anyone using the 'go' command incorrectly is notified of the correct way to use the command, improving the UX.
 
 <details>
 <summary> Go Command Screenshot </summary>
@@ -404,29 +404,29 @@ Forest Exploration is a finished and functional online text adventure. However, 
 3. **Item carrying capacity:**
     - The user starts the game with two items in their inventory and can find items in areas and on enemies throughout the game. 
     - Though the user is unlikely to accumulate a large amount of items, particularly on the small and medium board sizes, this can potentially happen and the user has to scroll to view all of their items. It may also be hard for the player to keep track of all their items.
-    - A better UX could be provided if an item carrying capacity was introduced, so the player can only carry so many items at a time. The Item class could also have a weight attribute and the carrying capacity be limited by the sum of the all the items' weights. This would add an additional strategy element to gameplay.
-    - An alternate solution to the same problem would be a more compact manner of printing the inventory to the user.
+    - A better UX could be provided if an item carrying capacity was introduced, so the player can only carry so many items at a time. The Item class could also have a weight attribute and the carrying capacity would be limited by the sum of the all the items' weights. This would add an additional strategy element to gameplay.
+    - An alternative solution to the same problem would be implementing a more compact manner of printing the inventory to the user.
 4. **Graphical UI:**
     - The game was created from the start to be a text-based adventure. However, it could be adapted to a simple UI with relatively little work. The console could remain for the player to enter their commands, but with the player's inventory and the board map viewable at all times on the page. 
     - Though this would change the nature of the product somewhat, it could potentially improve UX by allowing the user to better understand the location of their player and their items without clogging up the console with the 'map' and 'inventory' commands.
 
 ## Data Models
 
-The product utilises various data models. All items are instances of either the `HealthItem` or `Amulet` classes found in `resources/item.py`, both children of the abstract `Item` class. The use of an abstract parent class allows all items to share certain attributes and methods, such as a name and durability. The models is easily scalable, as any additional item types could be added with `Item` as their parent.
+The product utilises various data models. All items are instances of either the `HealthItem` or `Amulet` classes found in `resources/item.py`, both children of the abstract `Item` class. The use of an abstract parent class allows all items to share certain attributes and methods, such as a name and durability. The models are easily scalable, as any additional item types could be added with `Item` as their parent.
 
-All entities (animals, enemies, and the player) are instances of the `Entity` and `Enemy` classes found in `resources/entity.py` and the `Player` class found in `resources/Player.py` respectively. This allows all entities to share common attributes and method such as the `affect_health` method. This also allows for scability as new entity types could be added with the `Entity` class as their parent.
+All entities (animals, enemies, and the player) are instances of the `Entity` and `Enemy` classes found in `resources/entity.py` and the `Player` class found in `resources/Player.py` respectively. This allows all entities to share common attributes and methods such as the `affect_health` method. This also allows for scability as new entity types could be added with the `Entity` class as their parent.
 
 ## Manual Testing 
 
 |  Feature |  Testing action | Outcome |
 |---|---|---|
-|Board Choice |Attempt to enter erroneous inputs|Console prints message advising user to enter 'small', 'medium' or 'large', then repeats question.|
-Use Command|Attempt to use an item that does not exist|An advisory message is printed that the item does not exist.|
+|Board Choice|Attempt to enter erroneous inputs.|Console prints message advising user to enter 'small', 'medium' or 'large', then repeats question.|
+Use Command|Attempt to use an item that does not exist.|An advisory message is printed that the item does not exist.|
 |Status Command|Attempt to find the status of an enemy in the area.|The enemy's health is printed to the console.|
-|Status Command|Attempt to find the status of an enemy that does not exist.|An advisory message is printed that the enemy does not exist.|
-Go Command|Attempt to move outside of board|Initial testing produced [bug three](#bug_three). After resolving, an advisory message is printed to the user that they cannot move in this direction. |
-Save Game to Leaderboard|Attempt to enter invalid name|Console prints message advising user to enter name of 9 characters or less, then repeats question.|
-Save Game to Leaderboard|Attempt to save a game after playing|The game details are added to the leaderboard and displayed on all future games.
+|Status Command|Attempt to find the status of an enemy that does not exist in that area.|An advisory message is printed that the enemy does not exist in that area.|
+Go Command|Attempt to move outside of map.|Initial testing produced [bug three](#bug_three). After resolving, an advisory message is printed to the user that they cannot move in this direction. |
+Save Game to Leaderboard|Attempt to enter invalid name.|Console prints message advising user to enter name of 9 characters or less, then repeats question.|
+Save Game to Leaderboard|Attempt to save a game after playing.|The game details are added to the leaderboard and displayed on all future games.
 <br>
 
 ## Validator Testing 
@@ -438,10 +438,10 @@ Save Game to Leaderboard|Attempt to save a game after playing|The game details a
 
 |  Bug Number |  Problem | Outcome |
 |---|---|---|
-|1 |New items found in the game have unexpectedly low durability| Solved
+|1 |New items found in the game have unexpectedly low durability.| Solved
 |2 |Searching enemies always returning no items.| Solved
-|3 | List indexing error when attempting to move off map | Solved
-|4 |Modules not importing correctly| Solved
+|3 |List indexing error when attempting to move off map.| Solved
+|4 |Modules not importing correctly.| Solved
 
 <br>
 
@@ -463,7 +463,7 @@ Save Game to Leaderboard|Attempt to save a game after playing|The game details a
 - When testing the game during development, I attempted to make an illegal move using the 'go' command that would take my player off the map.
 - This prompted an `IndexError` to be raised.
 - The problem was in the `GameBoard` class in `resources/game_board.py`. The private `GameBoard` method `_move_is_on_map` checks if a coordinates are on the map and returns `True` if they are, `False` if they are not. This in this then utilised in the public `move` method of `GameBoard` to check a potential move is valid.
-- The `_move_is_on_map` private method was functioning incorrectly. It used greater than or equal to operators (>=) rather than greater than (>) operators when evaluating its argument coordinates as compared to the board size. This meant it would return `True` for an extra row and column that were not actually valid moves. Then, when the `move` method attempted to use the index, the `IndexError` exception was raised.
+- The `_move_is_on_map` private method was functioning incorrectly. It used greater than or equal to operators (>=) rather than greater than (>) operators when evaluating its argument set of coordinates as compared to the board size. This meant it would return `True` for an extra row and column that were not actually valid moves. Then, when the `move` method attempted to use the index, the `IndexError` exception was raised.
 - The operators were corrected to greater than operators and the issue was resolved.
 
 **4.**
@@ -476,19 +476,19 @@ Save Game to Leaderboard|Attempt to save a game after playing|The game details a
 ## Deployment
 
 - The site was deployed to Heroku using the following steps: 
-  - Sign up or log in to <a target="_blank" href="https://www.heroku.com">Heroku</a>
-  - Create an new app
+  - Sign up or log in to <a target="_blank" href="https://www.heroku.com">Heroku</a>.
+  - Create an new app.
   - Add any necessary environment variables to 'config vars' in settings. For example, the Google API credentials in this product.
   - Add any relevant buildpacks and ensure they are in the right order. Python and Node.js (JavaScript backend) were used for this product.
   - Connect the Heroku app to the GitHub repo in the deploy section.
   - Enable automatic deploys if desired. Automatic deploys were utilised for the deployment of this project.
 
-The live link can be found here - <a target="_blank" href="https://forest-exploration-d70fdb263fd5.herokuapp.com/">https://forest-exploration-d70fdb263fd5.herokuapp.com/</a>
+The live link can be found here - <a target="_blank" href="https://forest-exploration-d70fdb263fd5.herokuapp.com/">https://forest-exploration-d70fdb263fd5.herokuapp.com/</a>.
 
 
 ## Credits 
 
-All content apart from where stated below is my own work.
+All content apart from where stated below is my own work:
 
 - emoji library by <a target="_blank" href="https://pypi.org/project/emoji/2.12.1/">Taehoon Kim</a>.
 - gspread library by <a target="_blank" href="https://pypi.org/project/gspread/">Anton Burnashev</a>.
