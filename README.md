@@ -473,7 +473,12 @@ Save Game to Leaderboard|Attempt to save a game after playing|The game details a
 ## Deployment
 
 - The site was deployed to Heroku using the following steps: 
-  - Sign up or log in to <a target="_blank" href="https://forest-exploration-d70fdb263fd5.herokuapp.com/">Heroku</a>
+  - Sign up or log in to <a target="_blank" href="https://www.heroku.com">Heroku</a>
+  - Create an new app
+  - Add any necessary environment variables to 'config vars' in settings. For example, the Google API credentials in this product.
+  - Add any relevant buildpacks and ensure they are in the right order. Python and Node.js (JavaScript backend) were used for this product.
+  - Connect the Heroku app to the GitHub repo in the deploy section.
+  - Enable automatic deploys if desired. Automatic deploys were utilised for the deployment of this project.
 
 The live link can be found here - <a target="_blank" href="https://forest-exploration-d70fdb263fd5.herokuapp.com/">https://forest-exploration-d70fdb263fd5.herokuapp.com/</a>
 
