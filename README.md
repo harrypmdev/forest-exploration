@@ -4,11 +4,24 @@ Forest Exploration is text-based game in which the player explores a randomly ge
 
 ![Responsive Mockup](/readme_images//responsive.webp)
 
+## Generation Features
+
+**Random Item Generation**
+
+- The game randomly generates items, animals and enemies for each new area.
+- The `generate_items` function in `resources/item.py` and `generate_entities` function in `resources/entity.py` handle the generation of items and entities respectively. These are then utilised by the `Area` class in `resources/area.py`.
+- This bolsters the the UX by ensuring a different experience every time the user plays.
+
+**Area Description Generation**
+
+- The game randomly generates descriptions for each new area entered from a list of phrases.
+- This helps the user orient themselves on the map as they may remember the area descripton. It also fosters game immersion by adding to the fantasy of the game.
+
 ## Game Introduction Features
 
 **Tutorial Choice**
 
-- The game starts with a console prompt to the user to answer whether it is their first time playing. 
+- The program starts with a console prompt to the user to answer whether it is their first time playing. 
 If so, a tutorial is printed. This ensures the user knows the goal of the game and is able to play properly.
 - The console then prompts the user to press any key to continue. This ensures that only the tutorial is on screen
 at this time and ensures a postive UX by not overloading the user with information.
@@ -40,7 +53,7 @@ is always one of three tested choices and the board size is never too large or t
 
 **Introduction Information**
 
-- The game starts with introduction information being printed to the user. The first area description is printed
+- Following the tutorial and board choices, the game starts with introduction information being printed to the user. The first area description is printed
 along with an extra line giving the context of the forest location of the game.
 - This starts the user off with some information to respond to rather than leaving them to find the look 
 command themselves.
@@ -73,10 +86,8 @@ creating a better UX.
 
 **Inventory Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'inventory' command to print their inventory to the console.
+- This allows them to utilise the 'use' and 'describe' commands effectively, as they do not need to keep track of what items they have picked up, used or dropped.
 
 <details>
 <summary> Inventory Command Screenshot </summary>
@@ -88,10 +99,10 @@ creating a better UX.
 
 **Status Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'status' command to print the user's health and score to the console.
+- This allows the user to make more informed choices during the game, and improves the UX by ensuring users do not have to keep track of their health and score themselves.
+- The user can also input 'status of (entity)' to find the status of an entity in the area. This makes enemy battles more interesting, as player's can utilise strategy in which enemy they target first and with which item, improving the UX.
+- If an invalid 'status of' command is entered, the console prints a message to explain this. Only 'status of' commands referencing entities in the current area are considered valid, as to maintain the fantasy of occupying only one location at a time.
 
 <details>
 <summary> Status Command Screenshot </summary>
@@ -115,10 +126,8 @@ creating a better UX.
 
 **Look Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'look' command to print the current area's description in detail. This includes a brief description of the environment, what entities are present (enemies, animals) and what items are present.
+- Though the area's description is printed automatically when an area is entered, the 'look' command allows the user to remind themselves of the current state of the area after entering other commands that may have affected any present entities or items.
 
 <details>
 <summary> Look Command Screenshot </summary>
@@ -130,10 +139,8 @@ creating a better UX.
 
 **Punch Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'punch (entity)' command to perform a weak attack on an animal or enemy and lower their health.
+- The ensures that even when the user has no items, they are not powerless against enemies. Since using items affects the item's durability, it can also be a strategic choice when enemies are on low health, making the game more strategy based and creating a better UX.
 
 <details>
 <summary> Punch Command Screenshot </summary>
@@ -151,10 +158,9 @@ creating a better UX.
 
 **Flee Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'flee' command when in battle to attempt movement to a nearby area.
+- This ensures that user's who encounter multiple powerful enemies can continue playing the game without dying.
+- The 'flee' command moves the player in a random direction, and has a chance of failing. This provides an incentive to stay and fight enemies, making the user experience all aspects of the game and creating a better UX.
 
 <details>
 <summary> Flee Command Screenshot </summary>
@@ -178,10 +184,9 @@ creating a better UX.
 
 **Map Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'map' command to print the map at any time.
+- The map is made up of emojis so that it is easily readable.
+- This allows the user to easily orient themselves, ensuring they do not have to keep track of player location themselves, and therefore fostering a better UX.
 
 <details>
 <summary> Map Command Screenshot </summary>
@@ -193,10 +198,8 @@ creating a better UX.
 
 **Key Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'key' command to print a key explaining the emojis that make up the map.
+- Though the map emojis were chosen to be easily understable, the 'key' command ensures that no user will be confused by the map, improving UX.
 
 <details>
 <summary> Key Command Screenshot </summary>
@@ -208,10 +211,9 @@ creating a better UX.
 
 **Describe Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'describe' command to receive a brief description of any item in their inventory.
+- This allows users to plan when they will use items as they have some foreknowledge of the items' features, improving UX.
+- If the user attempts to print a description of an item not in their inventory, a message advising them this item is not in the inventory will be printed. This ensures users do not gain knowledge of items they have not yet encountered.
 
 <details>
 <summary> Describe Command Screenshot </summary>
@@ -229,10 +231,10 @@ creating a better UX.
 
 **Use Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'use' command to utilise an item in their inventory.
+- This allows the user to utilise a variety of items.
+- The user can also input 'use (item) on (entity)' to use the item on another creature. This allows weapons to be used on enemies and animals to be healed.
+- Attemping to use a weapon without specifing an entity to be targeted will result in an advise message being printed that the user must enter an entity to target. This ensure that commands like 'use sword' do not assume the player as the target and ensures the user does not accidentally attack themselves.
 
 <details>
 <summary> Use Command Screenshot </summary>
@@ -262,10 +264,8 @@ creating a better UX.
 
 **Take Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'take' command to pick up items from the ground.
+- This allows items to be generated on the ground around the map, allowing players a chance to find items before fighting any enemies.
 
 <details>
 <summary> Take Command Screenshot </summary>
@@ -283,10 +283,8 @@ creating a better UX.
 
 **Drop Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'drop' command to drop items. They may choose to do this if their inventory is becoming crowded with duplicate items.
+- This command could have future utilisation if a carrying capacity was introduced.
 
 <details>
 <summary> Drop Command Screenshot </summary>
@@ -304,10 +302,9 @@ creating a better UX.
 
 **Search Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'search (entity)' command to search dead enemies for items.
+- This provides a reward for completing the task of killing enemies, motiving the player to kill more enemies and continue the gameplay loop, ultimately providing a better UX.
+- Searching an enemy more than once will not result in any additional items. This is to retain the difficulty balance of the game and maintain the fantasy of real objects that have been collected and are no longer present on the enemy.
 
 <details>
 <summary> Search Command Screenshot </summary>
@@ -325,10 +322,9 @@ creating a better UX.
 
 **Go Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'go (direction)' command to travel around the map.
+- Attempting to move outside the map results in an advisory message that the player cannot move in this direction, ensuring no errors occur in the code.
+- Attempting to use the go command with any direction other than 'north', 'east', 'south' or 'west' results in an advisory message being printed which suggests these options. This ensures that anyone using the 'go' command incorrectly is notified of the correct way to use the command, improving the UX.
 
 <details>
 <summary> Go Command Screenshot </summary>
@@ -352,10 +348,8 @@ creating a better UX.
 
 **Quit Command**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user can input the 'quit' command to exit the game at any time.
+- A brief goodbye message is printed so that the user receives feedback of their action and knows the game has quit correctly.
 
 <details>
 <summary> Quit Command Screenshot </summary>
@@ -369,10 +363,8 @@ creating a better UX.
 
 **Save Game to Leaderboard**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The user has the option to save their game to the leaderboard at the end of the game. This allows different users to compare their scores and adds a fun social element to the game that improves UX.
+- The user must enter a name so that they can identify their details on the leaderboard. If the name is over 9 characters, the user is printed an advisory message to enter a name of 9 characters or less and the question is reprinted.
 
 <details>
 <summary> Save Game Screenshot </summary>
@@ -384,10 +376,7 @@ creating a better UX.
 
 **Print Leaderboard**
 
-- The user can input the 'help' command to print a list of all valid commands used in the game.
-- A message reminding the user of the 'help' command prints above every prompt for new input in the game.
-- This ensures the user can always find the command they need without scrolling up on the console or checking the README,
-creating a better UX.
+- The leaderboard is printed at the end of every game. This allows users to see others scores and see how their own scores compare.
 
 <details>
 <summary> Print Leaderboard Screenshot </summary>
@@ -417,32 +406,24 @@ Forest Exploration is a finished and functional online text adventure. However, 
     - The game was created from the start to be a text-based adventure. However, it could be adapted to a simple UI with relatively little work. The console could remain for the player to enter their commands, but with the player's inventory and the board map viewable at all times on the page. 
     - Though this would change the nature of the product somewhat, it could potentially improve UX by allowing the user to better understand the location of their player and their items without clogging up the console with the 'map' and 'inventory' commands.
 
+## Data Models
+
+The product utilises various data models. All items are instances of either the `HealthItem` or `Amulet` classes found in `resources/item.py`, both children of the abstract `Item` class. The use of an abstract parent class allows all items to share certain attributes and methods, such as a name and durability. The models is easily scalable, as any additional item types could be added with `Item` as their parent.
+
+All entities (animals, enemies, and the player) are instances of the `Entity` and `Enemy` classes found in `resources/entity.py` and the `Player` class found in `resources/Player.py` respectively. This allows all entities to share common attributes and method such as the `affect_health` method. This also allows for scability as new entity types could be added with the `Entity` class as their parent.
+
 ## Manual Testing 
 
 |  Feature |  Testing action | Outcome |
 |---|---|---|
 |Board Choice |Attempt to enter erroneous inputs|Console prints message advising user to enter 'small', 'medium' or 'large', then repeats question.|
-Hero image|Hover over 'GET IN TOUCH'|Link temporarily fades in opacity|
-||Click on 'GET IN TOUCH'|Contact us page opens|
-Go Command|Attempt to move outside of board|Initial testing produced [bug three](#bug_three). |
+Use Command|Attempt to use an item that does not exist|An advisory message is printed that the item does not exist.|
+|Status Command|Attempt to find the status of an enemy in the area.|The enemy's health is printed to the console.|
+|Status Command|Attempt to find the status of an enemy that does not exist.|An advisory message is printed that the enemy does not exist.|
+Go Command|Attempt to move outside of board|Initial testing produced [bug three](#bug_three). After resolving, an advisory message is printed to the user that they cannot move in this direction. |
 Save Game to Leaderboard|Attempt to enter invalid name|Console prints message advising user to enter name of 9 characters or less, then repeats question.|
 Save Game to Leaderboard|Attempt to save a game after playing|The game details are added to the leaderboard and displayed on all future games.
 <br>
-
-### Feature testing generic to all screen sizes
-
-The following testing should not change outcome based on screen size, but has been tried on phone, tablet and laptop/PC screen sizes regardless.
-
-|  Feature |  Testing action | Outcome |
-|---|---|---|
-
-|Click pest links|Relevant part of services page opens|
-Map|Attempt to move map frame|Embedded page functionality tells user to use two fingers|
-Footer|Click social media links|Relevant social media page opens
-Services |Click video|Embedded videos play correctly|
-Query|Click submit with no data inputted|User told to fill required forms
-||Click submit with relevant data inputted|Data submitted to code institute form dump
-
 
 ## Validator Testing 
 
@@ -492,7 +473,7 @@ Query|Click submit with no data inputted|User told to fill required forms
 ## Deployment
 
 - The site was deployed to Heroku using the following steps: 
-  - ADD STEPS
+  - Sign up or log in to <a target="_blank" href="https://forest-exploration-d70fdb263fd5.herokuapp.com/">Heroku</a>
 
 The live link can be found here - <a target="_blank" href="https://forest-exploration-d70fdb263fd5.herokuapp.com/">https://forest-exploration-d70fdb263fd5.herokuapp.com/</a>
 
