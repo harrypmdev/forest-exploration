@@ -154,7 +154,7 @@ def end_game(won: bool, records: dict) -> None:
 
 def main() -> None:
     """Run the Forest Exploration game."""
-    print("\nGreetings player!")
+    print("Greetings player!")
     if yes_no_query("Is it your first time playing?"):
         print_tutorial()
         input("Press any key to continue.")
