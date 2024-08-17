@@ -1,7 +1,4 @@
-"""
-A module for the GameBoard class utilised in
-the Forest Exploration game.
-"""
+"""A module for the GameBoard class utilised in the Forest Exploration game."""
 
 import random
 import math
@@ -13,8 +10,7 @@ from resources.errors import GameError
 
 
 class GameBoard:
-    """
-    A class for the game board.
+    """A class for the game board.
 
     Public Instance Attributes:
     size: int -- the dimension size of the board.
@@ -31,11 +27,11 @@ class GameBoard:
     _DIRECTIONS = {"north": (0, -1), "east": (1, 1), "south": (0, 1), "west": (1, -1)}
 
     def __init__(self, size: int, game_state: GameState) -> None:
-        """
-        Constructor for GameBoard class.
+        """Constructor for GameBoard class.
 
         Arguments:
         size: int -- the dimension size of the board.
+        game_state: GameState -- the game state for this game.
         """
         tree, player = get_emojis("tree", "player")
         self.size = size
@@ -54,8 +50,7 @@ class GameBoard:
         print("")
 
     def move(self, direction: str, fleeing: bool = False) -> bool:
-        """
-        Move in a specified direction on the game board's map.
+        """Move in a specified direction on the game board's map.
 
         Arguments:
         direction: str -- the direction the player should move
@@ -63,9 +58,9 @@ class GameBoard:
         fleeing: bool -- whether the player is currently fleeing
                         (default False).
 
-        Raises GameError the provided direction is invalid.
+        Raises GameError if the provided direction is invalid.
 
-        Returns False
+        Returns False.
         """
         if direction not in self._DIRECTIONS.keys():
             raise GameError(
@@ -86,8 +81,7 @@ class GameBoard:
         return False
 
     def flee(self) -> bool:
-        """
-        Attempt to 'flee' the player.
+        """Attempt to 'flee' the player.
 
         Raises GameError is player is not in battle.
 

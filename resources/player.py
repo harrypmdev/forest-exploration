@@ -7,10 +7,9 @@ from resources.effect import Effect
 
 
 class Player(Entity):
-    """
-    A class for the player of the Forest Exploration game.
+    """A class for the player of the Forest Exploration game.
 
-    Public Attributes:
+    Public Instance Attributes:
     inventory: list[Items] -- a list of Items that the player can use.
 
     Public Methods:
@@ -19,8 +18,7 @@ class Player(Entity):
     """
 
     def __init__(self, health: int, inventory: list[Item] = []) -> None:
-        """
-        Constructor for Player class.
+        """Constructor for Player class.
 
         Arguments:
         health: int -- the player's starting health.

@@ -1,5 +1,4 @@
-"""
-A module for the Item class utilised in the Forest exploration game, its child classes
+"""A module for the Item class utilised in the Forest exploration game, its child classes
 and the generate_items function.
 
 Classes:
@@ -19,20 +18,18 @@ from resources.effect import Effect
 
 
 class Item(ABC):
-    """
-    An abstract class for game items. Inherited by HealthItem and Amulet.
+    """An abstract class for game items. Inherited by HealthItem and Amulet.
 
     Public Instance Attributes:
     name: str -- the name of the item.
     description: str -- a short description of the item.
     one_time_use: bool -- whether the item starts with a durability of 1 or
-                          not, True if it does, False if it doesn't.
+                          not, True if it does, False if it does not.
     broken: bool -- whether the item is broken (True) or not broken (False).
     """
 
     def __init__(self, name: str, description: str, durability: int = 1) -> None:
-        """
-        Constructor for Item class.
+        """Constructor for Item class.
 
         Arguments:
         name: str -- the name of the item.
@@ -54,8 +51,7 @@ class Item(ABC):
 
 
 class HealthItem(Item):
-    """
-    A class for items which affect an entity's health. Extends Item.
+    """A class for items which affect an entity's health. Extends Item.
 
     Public Class Attributes:
     ITEMS: tuple -- a two dimensional tuple that contains the game's items.
@@ -87,8 +83,7 @@ class HealthItem(Item):
         durability: int = 1,
         target_item: bool = False,
     ) -> None:
-        """
-        Constructor for HealthItem class.
+        """Constructor for HealthItem class.
 
         Arguments:
         name: str -- the name of the item.
@@ -105,15 +100,14 @@ class HealthItem(Item):
         self.target_item = target_item
         self._health_effect_value = health_effect_value
 
-    def get_effect(self) -> str:
+    def get_effect(self) -> Effect:
         """Decrement the item durability and return the item's effect."""
         self._affect_durability(-1)
         return Effect(f"you used your {self.name}", self._health_effect_value)
 
 
 class Amulet(Item):
-    """
-    A class for the amulet item which ends the game. Extends Item.
+    """A class for the amulet item which ends the game. Extends Item.
 
     Public Methods:
     activate -- return the amulet activation message.
@@ -126,7 +120,7 @@ class Amulet(Item):
         )
         super().__init__("amulet", description, 1)
 
-    def activate(self) -> None:
+    def activate(self) -> str:
         """Return the amulet activation message."""
         return (
             "The amulet glows and shakes as you put it around you neck.\n"
@@ -147,8 +141,7 @@ _ITEM_GEN_PROBABILITY = {
 def generate_items(
     *args: str, amulet_probability: float = 0, multiplier: float = 1.0
 ) -> list[Item]:
-    """
-    Randomly generate game items.
+    """Randomly generate game items.
 
     Arguments:
     *args: str -- variable number of string arguments which denote the item

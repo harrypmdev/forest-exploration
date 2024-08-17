@@ -1,14 +1,10 @@
-"""
-A module for the GameState class utilised
-in the Forest Exploration game.
-"""
+"""A module for the GameState class utilised in the Forest Exploration game."""
 
 from resources.utility import border
 
 
 class GameState:
-    """
-    A class for the game's key variables.
+    """A class for the game's key variables.
 
     Public Instance Attributes:
     game_won: bool -- whether or not the game has been won
@@ -18,11 +14,11 @@ class GameState:
                                 a game (0 is never, 1 is definitely).
 
     Public Methods:
-    update_amulet_gen -- Update probability of amulet generating based on
+    update_amulet_gen -- update probability of amulet generating based on
                          amount of areas visited.
-    update_kill_records -- Update record of total kills and score in accordance.
-    update_score -- Update score and print score message.
-    win -- Print the win message and set the game_won attribute to True.
+    update_kill_records -- update record of total kills and score in accordance.
+    update_score -- update score and print score message.
+    win -- print the win message and set the game_won attribute to True.
     """
 
     def __init__(self) -> None:
@@ -42,15 +38,30 @@ class GameState:
         self.amulet_probability = (not self.amulet_generated) * percent_visited
 
     def update_kill_records(self) -> None:
+        """Update the game state's 'kills'.
+        Gives the player 10 points and prints a message informing them.
+        """
         self.update_score(10)
         self.records["kills"] += 1
 
     def update_score(self, score: int) -> None:
+        """Update the game state's score by the given argument.
+        Prints a message informing the player.
+
+        Arguments:
+        score: int -- the points which should be added to the current score.
+        """
         print(f"Score +{score}!")
         self.records["score"] += score
 
     @border
     def win(self, final_health: int) -> None:
+        """Print the game's win message and set game_won attribute to True.
+
+        Arguments:
+        final_health: int -- the final health of the player at the time
+                             the game was won.
+        """
         self.game_won = True
         print(
             f"You win! You finished the game with a score total of {self.records["score"]} and {final_health} health."

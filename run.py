@@ -12,8 +12,7 @@ from resources.effect import Effect
 
 
 def get_introduction(player: Player, game_board: GameBoard) -> str:
-    """
-    Return a game introductory message.
+    """Return a game introductory message.
 
     Arguments:
     player: Player -- the player for which the message should
@@ -98,8 +97,7 @@ def game_loop(player: Player, board: GameBoard, game_state: GameState) -> None:
 
 
 def get_size() -> int:
-    """
-    Ask the user for the board size they wish to play on and validate input.
+    """Ask the user for the board size they wish to play on and validate input.
     Returns int of 3, 5 or 9 for small, medium and large inputs respectively.
     """
     size = ""
@@ -127,7 +125,9 @@ def end_game(won: bool, records: dict) -> None:
     Arguments:
     won: bool -- whether or not the user won the game (True if so, False if not).
     records: dict -- A dictionary of information about a game. Must include
-                        keys: 'size', 'score', 'total moves', 'kills', 'health'.
+                     keys: 'size', 'score', 'total moves', 'kills', 'health'.
+                     Usually the result of adding a 'health' key to the records
+                     attribute of a game's GameState object.
     """
     if won:
         query = "Well done on finishing the game. Save score to leaderboard?"

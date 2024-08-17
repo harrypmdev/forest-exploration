@@ -1,5 +1,4 @@
-"""
-A module containing functions to manipulate game scores from the leaderboard
+"""A module containing functions to manipulate game scores from the leaderboard
 Google sheets file associated with the Forest Exploration game.
 
 Functions:
@@ -28,10 +27,9 @@ _leaderboard = _SHEET.worksheet("leaderboard")
 
 
 class _Save:
-    """
-    A class for game saves that are read from and saved to the leaderboard.
+    """A class for game saves that are read from and saved to the leaderboard.
 
-    Public Attributes:
+    Public Instance Attributes:
     records: OrderedDict -- an ordered dictionary of the information relevant
                             to the save. Holds (in this order): 'size', 'name',
                             'score', 'total moves', 'kills', 'health'.
@@ -42,8 +40,7 @@ class _Save:
     """
 
     def __init__(self, name: str, records: dict) -> None:
-        """
-        Constructor for _Save class.
+        """Constructor for _Save class.
 
         Arguments:
         name: str -- the name underwhich these records are saved to the
@@ -60,7 +57,10 @@ class _Save:
         self.records["health"] = records["health"]
 
     def add_to_leaderboard(self) -> None:
-        """Add this save to the leaderboard spreadsheet."""
+        """Add this save to the leaderboard spreadsheet.
+
+        Raises LeaderboardError if there is an issue saving to the leaderboard.
+        """
         try:
             _leaderboard.append_row(list(self.records.values()))
         except Exception as exc:
@@ -93,8 +93,7 @@ class _Save:
 
 
 def save_game(records: dict) -> None:
-    """
-    Save a game to the leaderboard.
+    """Save a game to the leaderboard.
 
     Arguments:
     records: dict -- A dictionary of information about a game. Must include
@@ -121,9 +120,10 @@ def save_game(records: dict) -> None:
 
 
 def print_leaderboard() -> None:
-    """
-    Print the leaderboard.
+    """Print the leaderboard.
     If leaderboard is empty, prints message to explain this.
+
+    Raises LeaderboardError if there is an issue accessing the leaderboard.
     """
     saves = _get_leaderboard_saves()
     if not saves:

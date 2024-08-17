@@ -1,5 +1,4 @@
-"""
-A module containing general purpose functions for use by the other modules in
+"""A module containing general purpose functions for use by other modules in
 the Forest Exploration game.
 
 Functions:
@@ -46,8 +45,7 @@ def yes_no_query(question: str) -> bool:
 
 
 def get_emojis(*args: str) -> list[str]:
-    """
-    Return the relevant emojis for areas on the map.
+    """Return the relevant emojis for areas on the map.
 
     Arguments:
     *args: str -- variable number of string arguments which denote the emojis
@@ -75,8 +73,7 @@ def get_emojis(*args: str) -> list[str]:
 
 
 def border(func: Callable) -> Callable:
-    """
-    Decorate a callable with a two line border above and below its output.
+    """Decorate a callable with a two line border above and below its output.
 
     Arguments:
     func: Callable -- the callable to which the border should be added

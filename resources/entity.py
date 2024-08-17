@@ -1,5 +1,4 @@
-"""
-A module for the Entity and Enemy classes utilised in the Forest exploration
+"""A module for the Entity and Enemy classes utilised in the Forest exploration
 game and the generate_entities function.
 
 Classes:
@@ -18,8 +17,7 @@ from resources.item import Item, generate_items
 
 
 class Entity:
-    """
-    A class for the game entities, which includes all living creatures.
+    """A class for the game entities, which includes all living creatures.
     Inherited by Player and Enemy classes.
 
     Public Class Attributes:
@@ -46,14 +44,13 @@ class Entity:
     ANIMAL_NAMES = ("rabbit", "squirrel", "horse", "fox", "badger", "raccoon", "dog")
 
     def __init__(self, health: int, name: str, hostile: bool = False) -> None:
-        """
-        Constructor for Entity class.
+        """Constructor for Entity class.
 
         Arguments:
         health: int -- the health of the entity.
         name: str -- the entity's name.
         hostile: bool - whether the entity will attack the player when the turn
-                        ends (True if so, False if not). Default False.
+                        ends (True if so, False if not). Default is False.
         """
         self.health = health
         self.name = name
@@ -64,8 +61,7 @@ class Entity:
         self._sick = health <= 2
 
     def apply_effect(self, effect: Effect) -> str:
-        """
-        Apply an Effect object to the entity.
+        """Apply an Effect object to the entity.
         Potentially alters entity's health and alive attributes.
 
         Arguments:
@@ -93,14 +89,13 @@ class Entity:
         )
 
     def detailed_name(self, indefinite=False) -> str:
-        """
-        Return the 'detailed name' of the entity.
+        """Return the 'detailed name' of the entity.
         This includes whether the entity is dead, hostile, sick or searched.
 
         Arguments:
         indefinite: bool -- Whether the indefinite article should be added to
                             the return string. True if yes, False if not.
-                            Default False.
+                            Default is False.
 
         Returns a string.
         """
@@ -127,7 +122,7 @@ class Entity:
         )
 
     def print_status(self) -> None:
-        # Print the entity's status (health, sickness, living state).
+        """Print the entity's status (health, sickness, living state)."""
         sick_status = " It looks sick and weak." if self._sick else ""
         if self.health == 0:
             print(f"\n{self.name.capitalize()} is dead.\n")
@@ -160,8 +155,7 @@ class Entity:
 
 
 class Enemy(Entity):
-    """
-    A class for the game enemies, creatures that attack the player at the
+    """A class for the game enemies, creatures that attack the player at the
     end of each turn. Extends Entity.
 
     Public Class Attributes:
@@ -188,9 +182,8 @@ class Enemy(Entity):
 
     def __init__(
         self, health: int, name: str, attack_name: str, max_damage: int, accuracy: float
-    ):
-        """
-        Constructor for Enemy class.
+    ) -> None:
+        """Constructor for Enemy class.
 
         Arguments:
         health: int -- the health of the entity.
@@ -214,8 +207,7 @@ class Enemy(Entity):
         return attack
 
     def search(self) -> list[Item]:
-        """
-        Search the enemy for loot, returning a list of items.
+        """Search the enemy for loot, returning a list of items.
         Sets private bool attribute _searched to True so only returns
         the enemy's loot once, otherwise returns an empty list.
         """
@@ -226,16 +218,14 @@ class Enemy(Entity):
             return self._loot
 
     def attack_chance(self) -> bool:
-        """
-        Randomly return either True if an attack hits,
+        """Randomly return either True if an attack hits,
         or False if it misses according to the enemy's hit accuracy.
         """
         return True if random.random() < self._accuracy else False
 
 
-def generate_entities(*args: str):
-    """
-    Randomly generate game entities.
+def generate_entities(*args: str) -> list[Entity]:
+    """Randomly generate game entities.
 
     Arguments:
     *args: str -- variable number of string arguments which denote the entity
@@ -252,7 +242,7 @@ def generate_entities(*args: str):
     return entity_list
 
 
-def _generate_animals():
+def _generate_animals() -> list[Entity]:
     # Return a list of randomly generated animals
     animal_list = []
     for name in Entity.ANIMAL_NAMES:
@@ -263,7 +253,7 @@ def _generate_animals():
     return animal_list
 
 
-def _generate_enemies():
+def _generate_enemies() -> list[Entity]:
     # Return a list of randomly generated enemies
     enemy_list = []
     gen_chance = 0.10

@@ -7,8 +7,7 @@ from resources.item import generate_items
 
 
 class Area:
-    """
-    A class for areas, one of which is created for each map coordinate.
+    """A class for areas, one of which is created for each map coordinate.
 
     Public Instance Attributes:
     y: int -- the y coordinate for this area on the map
@@ -24,8 +23,7 @@ class Area:
     def __init__(
         self, y: int, x: int, amulet_probability: float = 0, hostiles=True
     ) -> None:
-        """
-        Constructor for Area class.
+        """Constructor for Area class.
 
         Arguments:
         y: int -- the y coordinate this area is located at.

@@ -13,8 +13,7 @@ from resources.game_state import GameState
 
 
 class Parser:
-    """
-    A class for the parser, which interprets the players input during the game.
+    """A class for the parser, which interprets the player's input during the game.
 
     Public Methods:
     parse_move: bool -- parse a raw move from the user
@@ -35,8 +34,7 @@ class Parser:
     _MOVES = _ONE_WORD_MOVES + _TWO_WORD_MOVES
 
     def __init__(self, player: Player, board: GameBoard, game_state: GameState) -> None:
-        """
-        Constructor for Parser class.
+        """Constructor for Parser class.
 
         Arguments:
         player: Player -- the player for which moves are being parsed.
@@ -48,8 +46,7 @@ class Parser:
         self._game_state = game_state
 
     def parse_move(self, move: str) -> bool:
-        """
-        Parse raw move from the user.
+        """Parse raw move from the user.
 
         Arguments:
         move: str -- the move string the user inputted.
